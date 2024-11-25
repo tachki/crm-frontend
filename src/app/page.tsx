@@ -1,5 +1,9 @@
+'use client'
+
+import Auth from "./auth/Auth";
+
 export default function Home() {
   return (
-    <div>Home</div>
+    <Auth />
   );
 }
