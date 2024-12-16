@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import LOGO from "../../images/logo.svg"
-import FACEBOOK from "../../images/social-media/facebook.png"
-import GOOGLE from "../../images/social-media/google.png"
-import VK from "../../images/social-media/vk.png"
-import { IAuthForm } from '@/types/auth.type'
+import { IAuthForm, IAuthLoginResponse, IAuthRegisterResponse } from '@/types/auth.type'
 import { Field } from '@/components/fields/Field'
 import Image from 'next/image'
+import { useAppDispatch } from '@/hooks/redux'
+import { setAuth } from '@/store/slice/isAuthSlice'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function Register() {
 	const [isLoginForm, setIsLoginForm] = useState(false)
@@ -15,16 +15,27 @@ export default function Register() {
 		mode: 'onChange'
 	})
 
+	const dispatch = useAppDispatch()
+
+	const { authMutate, isError, errorMessage, reset: resetForm } = useAuth(isLoginForm, setIsLoginForm)
+
 	const onSubmit: SubmitHandler<IAuthForm> = data => {
-		console.log(data)
 		reset()
+
+		if (!isLoginForm) {
+			authMutate(data)
+		}
+		else {
+			dispatch(setAuth(true))
+			authMutate(data)
+		}
 	}
 
 	const toggleForm = () => {
 		setIsLoginForm(prevState => !prevState)
 		reset()
+		resetForm()
 	}
-
 
 	return (
 		<div className="min-h-screen w-1/2 m-auto py-20">
@@ -67,15 +78,24 @@ export default function Register() {
 								message: 'Пароль должен содержать не менее 8 символов',
 							},
 						})}
-						aria-invalid={errors.password ? "true" : "false"}
 						extra=''
 					/>
 
 					{errors.password && (
 						<p
 							role='alert'
+							className='text-xs text-red-500 font-medium pt-1.5'
 						>
 							{errors.password.message}</p>
+					)}
+
+					{isError && (
+						<p
+							role="alert"
+							className="text-xs text-red-500 font-medium pt-1.5"
+						>
+							{errorMessage}
+						</p>
 					)}
 
 					<button
@@ -92,17 +112,6 @@ export default function Register() {
 					{isLoginForm ? "Или войди через" : "Или зарегестрируйся через"}
 				</p>
 
-				<div className='flex flex-row w-36 m-auto justify-between my-3 cursor-pointer'>
-					<div>
-						<Image src={FACEBOOK} alt="facebook icon" />
-					</div>
-					<div>
-						<Image src={GOOGLE} alt="facebook icon" />
-					</div>
-					<div>
-						<Image src={VK} alt="facebook icon" />
-					</div>
-				</div>
 
 				<div className='justify-center flex items-center font-light'>
 					<p>{isLoginForm ? "Нет аккаунта?" : "Уже есть аккаунт?"}</p>
