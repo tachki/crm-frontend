@@ -1,7 +1,8 @@
-import AddCar from "./AddCar";
-
-export default function AddCarPage() {
+import Cars from "./Cars";
+export default function CarsPage() {
   return (
-    <AddCar />
+    <div>
+      <Cars />
+    </div>
   );
 }

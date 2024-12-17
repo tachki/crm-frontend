@@ -1,13 +1,11 @@
 "use client";
 
-import { Provider } from "react-redux";
-import { store } from "@/store/store";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { getAccessToken, getRefreshToken } from "@/services/auth-token.service";
+import { getAccessToken } from "@/services/auth-token.service";
 import { authService } from "@/services/auth.service";
 import AuthPage from "./auth/page";
-import CarsPage from "./UI/page";
+
 const queryClient = new QueryClient();
 
 export default function Home() {
@@ -16,11 +14,6 @@ export default function Home() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <AuthPage />
-        <CarsPage />
-      </Provider>
-    </QueryClientProvider>
+    <AuthPage />
   );
 }

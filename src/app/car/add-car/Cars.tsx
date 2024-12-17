@@ -1,11 +1,11 @@
 "use client";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { IСhoiceCar } from "@/types/auth.type";
-// import { useAppDispatch } from "@/hooks/redux";
-import { setCar } from "@/store/slice/isCarSlice";
 import styles from "./Cars.module.css";
+import { useAppDispatch } from "@/hooks/redux";
+import { setCar } from "@/store/slice/isCarSlice";
 export default function Cars() {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
   const {
     register,
     handleSubmit,
@@ -18,7 +18,7 @@ export default function Cars() {
     if (!data) {
       console.log("Ошибка");
     } else {
-      // dispatch(setCar(data));
+      dispatch(setCar(data));
       console.log(data);
     }
   };
