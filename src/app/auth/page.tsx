@@ -1,5 +1,7 @@
-export default function Auth() {
+import Auth from "./Auth";
+
+export default function AuthPage() {
   return (
-    <div>Home</div>
+    <Auth />
   );
 }

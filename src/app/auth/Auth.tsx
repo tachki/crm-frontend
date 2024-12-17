@@ -8,7 +8,7 @@ import { useAppDispatch } from '@/hooks/redux'
 import { setAuth } from '@/store/slice/isAuthSlice'
 import { useAuth } from '@/hooks/useAuth'
 
-export default function Register() {
+export default function Auth() {
 	const [isLoginForm, setIsLoginForm] = useState(false)
 
 	const { register, handleSubmit, reset, formState: { errors } } = useForm<IAuthForm>({
