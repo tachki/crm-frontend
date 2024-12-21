@@ -4,14 +4,17 @@ import { IСhoiceCar } from "@/types/auth.type";
 import styles from "./Cars.module.css";
 import { useAppDispatch } from "@/hooks/redux";
 import { setCar } from "@/store/slice/isCarSlice";
+import { useState } from "react";
+
 export default function Cars() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<IСhoiceCar>();
+  const [photos, setPhotos] = useState<File[]>([]);
 
   const onSubmit: SubmitHandler<IСhoiceCar> = (data) => {
     reset();
@@ -22,6 +25,32 @@ export default function Cars() {
       console.log(data);
     }
   };
+
+  const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const newPhotos = [...photos, ...Array.from(event.target.files)];
+      if (newPhotos.length > 8) {
+        newPhotos.length = 8;
+      }
+      setPhotos(newPhotos);
+    }
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    if (event.dataTransfer.files) {
+      const newPhotos = [...photos, ...Array.from(event.dataTransfer.files)];
+      if (newPhotos.length > 8) {
+        newPhotos.length = 8;
+      }
+      setPhotos(newPhotos);
+    }
+  };
+
+  const handleRemovePhoto = (index: number) => {
+    setPhotos(photos.filter((_, i) => i !== index));
+  };
+
   return (
     <div className={styles.items}>
       <div className={styles.conteiner}>
@@ -113,6 +142,84 @@ export default function Cars() {
               placeholder="Введите описание"
               {...register("text", { required: "Описание обязательно" })}
             ></textarea>
+          </div>
+
+          <div
+            className={`${styles.contentBottom} ${styles.addPhotosContainer}`}
+          >
+            <div className={styles.addPhotosTitle}>
+              {photos.length === 0 ? (
+                <label>Загрузите фотографии</label>
+              ) : (
+                <>
+                  <label>Фотографии</label>
+                  <label>Количество добавленных фото: {photos.length}/8</label>
+                </>
+              )}
+            </div>
+            <div
+              className={styles.addPhotosWrapper}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={handleDrop}
+            >
+              {photos.length === 0 && (
+                <div className={styles.addFirstPhotoWrapper}>
+                  <label>Выберите или перетащите фотографии в область</label>
+                  <label className={styles.fontGrayThin}>
+                    Форматы JPEG, JPG или PNG до 10 МБ каждый
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png"
+                    multiple
+                    onChange={handleAddPhoto}
+                  />
+                  <button
+                    className={styles.addPhotoButton}
+                    type="button"
+                    onClick={() =>
+                      document.querySelector('input[type="file"]')?.click()
+                    }
+                  >
+                    Выбрать фотографии
+                  </button>
+                </div>
+              )}
+              {photos.map((photo, index) => (
+                <div key={index} className={styles.photoContainer}>
+                  <img
+                    src={URL.createObjectURL(photo)}
+                    alt={`Фото ${index + 1}`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemovePhoto(index)}
+                  >
+                    ✖
+                  </button>
+                </div>
+              ))}
+              {photos.length > 0 && photos.length < 8 && (
+                <div>
+                  <p>Выберите или перетащите фотографии в область</p>
+                  <p>Форматы JPEG, JPG или PNG до 10 МБ каждый</p>
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png"
+                    multiple
+                    onChange={handleAddPhoto}
+                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.querySelector('input[type="file"]')?.click()
+                    }
+                  >
+                    Выбрать фотографии
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </form>
       </div>
