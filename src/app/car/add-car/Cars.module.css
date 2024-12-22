@@ -140,6 +140,18 @@
   font-size: 16px;
 }
 
+.photosWrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.imagesCounter {
+  background-color: #F0F0F0;
+  border-radius: 10px;
+  padding: 8px 18px;
+  margin-left: 12px;
+}
+
 .photoContainer {
   display: inline-block;
   position: relative;
@@ -147,23 +159,41 @@
 }
 
 .photoContainer img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
+  width: 280px;
+  height: 200px;
+  border-radius: 10px;
+
 }
 
 .photoContainer button {
   position: absolute;
   top: 5px;
   right: 5px;
-  background-color: red;
-  color: white;
+  background-color: white;
   border: none;
-  padding: 2px 5px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  width: 24px;
+  height: 24px;
+  opacity: 75%;
+  padding-left: 1px;
 }
 
-.photoContainer button:hover {
-  background-color: darkred;
+.addMorePhotos {
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 280px;
+  height: 200px;
+  border-radius: 10px;
+  border: 2px dashed rgba(59, 68, 255, 0.75);;
+  background-color: rgba(59, 68, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
