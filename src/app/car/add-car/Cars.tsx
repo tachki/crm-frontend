@@ -4,8 +4,9 @@ import { IСhoiceCar } from "@/types/auth.type";
 import styles from "./Cars.module.css";
 import { useAppDispatch } from "@/hooks/redux";
 import { setCar } from "@/store/slice/isCarSlice";
+import { Field } from "@/components/fields/Field";
 export default function Cars() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -55,20 +56,20 @@ export default function Cars() {
             </div>
 
             <div className={styles.contentTop}>
-              <label>Год выпуска</label>
-              <input
+              <Field
                 placeholder="Введите год"
-                className={styles.choice}
-                {...register("year", { required: "Год обязательна" })}
+                label="Год выпуска"
+                id="1"
+                {...register("year", { required: "Год обязятелен!" })}
               />
               {errors.year && <p>{errors.year.message}</p>}
             </div>
 
             <div className={styles.contentTop}>
-              <label>Номерной знак</label>
-              <input
+              <Field
                 placeholder="Введите номер"
-                className={styles.choice}
+                label="Номерной знак"
+                id="1"
                 {...register("number", { required: "Номер обязательный" })}
               />
               {errors.number && <p>{errors.number.message}</p>}
@@ -78,29 +79,35 @@ export default function Cars() {
           <div className={styles.components}>
             <div className={styles.contentBottom}>
               <label>Класс</label>
-              <input
-                placeholder="Выберите класс"
-                className={styles.choice}
-                {...register("kpp", { required: "Класс обязателен" })}
-              />
+              <select
+                className={styles.choiceBottom}
+                {...register("stamp", { required: "Марка обязательна" })}
+              >
+                <option value="">Выберите класс</option>
+                <option value="Toyota">Toyota</option>
+                <option value="BMW">BMW</option>
+              </select>
               {errors.kpp && <p>{errors.kpp.message}</p>}
             </div>
 
             <div className={styles.contentBottom}>
               <label>Тип КПП</label>
-              <input
-                placeholder="Выберите тип КПП"
-                className={styles.choice}
-                {...register("classCar", { required: "Тип КПП обязателен" })}
-              />
+              <select
+                className={styles.choiceBottom}
+                {...register("stamp", { required: "Марка обязательна" })}
+              >
+                <option value="">Выберите тип КПП</option>
+                <option value="Toyota">Toyota</option>
+                <option value="BMW">BMW</option>
+              </select>
               {errors.classCar && <p>{errors.classCar.message}</p>}
             </div>
 
             <div className={styles.contentBottom}>
-              <label>Цена (BYN в сутки)</label>
-              <input
+              <Field
                 placeholder="Введите цену"
-                className={styles.choice}
+                label="Цена (BYN в сутки)"
+                id="1"
                 {...register("price", { required: "Цена обязательна" })}
               />
               {errors.price && <p>{errors.price.message}</p>}
