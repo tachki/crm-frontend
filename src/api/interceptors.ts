@@ -2,7 +2,6 @@ import axios, { type CreateAxiosDefaults } from 'axios'
 
 import { errorCatch } from './error'
 import {
-	getAccessToken,
 	removeFromStorage
 } from '@/services/auth-token.service'
 import { authService } from '@/services/auth.service'
@@ -18,7 +17,7 @@ const options: CreateAxiosDefaults = {
 const axiosWithAuth = axios.create(options)
 
 axiosWithAuth.interceptors.request.use(config => {
-	config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
+	config.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`
 	return config
 })
 

@@ -5,6 +5,8 @@
 :root {
   --background: #ffffff;
   --foreground: #000;
+  --regular-text-size: 18px;
+  --grey: rgba(0, 0, 0, 0.5);
 }
 
 @media (prefers-color-scheme: light) {
