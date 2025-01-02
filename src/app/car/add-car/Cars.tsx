@@ -155,7 +155,7 @@ export default function Cars() {
           >
             <div className={styles.addPhotosTitle}>
               {photos.length === 0 ? (
-                <label>Загрузите фотографии</label>
+                <label className={styles.h1}>Загрузите фотографии</label>
               ) : (
                 <>
                   <label>Фотографии</label>
