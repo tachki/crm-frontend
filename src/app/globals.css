@@ -1,4 +1,4 @@
-@tailwind base;
+@import url('./reset.css');
 @tailwind components;
 @tailwind utilities;
 
@@ -25,4 +25,55 @@ body {
 	font-family: var(--font-zen), sans-serif;
 }
 
+.h1 {
+  font-size: 94px;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+}
 
+.h2 {
+  font-size: 48px;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+}
+ 
+.h3 {
+  font-size: 24px;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.h4 {
+  font-size: 20px;
+  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.text {
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.textMedium {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.textButton {
+  font-size: 20px;
+  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
+}
+.textOptionRegular {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.textOptionMedium {
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
+}
