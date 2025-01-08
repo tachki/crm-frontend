@@ -4,13 +4,13 @@ export interface IAuthForm {
 }
 
 export interface IUser {
-  business_id: string;
-  created_at: string;
   id: string;
-  is_verified: boolean;
   login: string;
-  updated_at: string;
+  business_id: string;
+  is_verified: boolean;
   user_type: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface IAuthLoginResponse {
@@ -28,6 +28,7 @@ export interface IAuthRefreshResponse {
   refresh_token: string;
 }
 
+
 export interface IСhoiceCar {
   stamp: string;
   model: string;
@@ -38,3 +39,5 @@ export interface IСhoiceCar {
   price: string;
   text: string;
 }
+
+

@@ -1,5 +1,5 @@
 import axios, { type CreateAxiosDefaults } from 'axios'
-
+import Cookies from 'js-cookie'
 import { errorCatch } from './error'
 import {
 	removeFromStorage
@@ -17,7 +17,7 @@ const options: CreateAxiosDefaults = {
 const axiosWithAuth = axios.create(options)
 
 axiosWithAuth.interceptors.request.use(config => {
-	config.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`
+	config.headers.Authorization = `Bearer ${Cookies.get('accessToken')}`
 	return config
 })
 
