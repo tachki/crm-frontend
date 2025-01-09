@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import LOGO from "../../images/logo.svg"
-import { IAuthForm, IAuthLoginResponse, IAuthRegisterResponse } from '@/types/auth.type'
+import { IAuthForm } from '@/types/auth.type'
 import { Field } from '@/components/fields/Field'
 import Image from 'next/image'
 import { useAppDispatch } from '@/hooks/redux'
@@ -60,8 +60,8 @@ export default function Auth() {
 					<Field
 						id='email'
 						label=''
-						placeholder='Логин'
-						type='email'
+						placeholder={isLoginForm ? 'Логин' : 'Электронная почта'}
+						type={isLoginForm ? 'text' : 'email'}
 						extra=''
 						{...register('email', {
 							required: 'Необходимо ввести логин'
@@ -76,8 +76,8 @@ export default function Auth() {
 						{...register('password', {
 							required: 'Необходимо ввести пароль',
 							minLength: {
-								value: 8,
-								message: 'Пароль должен содержать не менее 8 символов',
+								value: 4,
+								message: 'Пароль должен содержать не менее 4 символов',
 							},
 						})}
 						extra=''
