@@ -3,12 +3,13 @@
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import LOGO from "../../images/logo.svg"
-import { IAuthForm, IAuthLoginResponse, IAuthRegisterResponse } from '@/types/auth.type'
+import { IAuthForm } from '@/types/auth.type'
 import { Field } from '@/components/fields/Field'
 import Image from 'next/image'
 import { useAppDispatch } from '@/hooks/redux'
 import { setAuth } from '@/store/slice/isAuthSlice'
 import { useAuth } from '@/hooks/useAuth'
+import { Button } from '@/components/buttons/Button'
 
 export default function Auth() {
 	const [isLoginForm, setIsLoginForm] = useState(false)
@@ -40,21 +41,20 @@ export default function Auth() {
 	}
 
 	return (
-		<div className="min-h-screen w-1/2 m-auto py-20">
+		<div className="align-center w-96 m-auto flex flex-col justify-center items-center h-screen space-y-12">
 			<div>
 				<Image
-					className='mb-20'
+					className='m-auto'
 					src={LOGO}
 					alt="logo" />
 			</div>
 
-			<div className="w-80 text-center m-auto">
-				<h1 className='text-primary uppercase text-xl font-bold mb-10'>
+			<div className="w-full text-center m-auto">
+				<h1 className='text-black text-3xl font-bold mb-8'>
 					{isLoginForm ? "Авторизация" : "Регистрация"}
 				</h1>
 
 				<form
-					className='w-full'
 					onSubmit={handleSubmit(onSubmit)}
 				>
 					<Field
@@ -100,30 +100,20 @@ export default function Auth() {
 						</p>
 					)}
 
-					<button
-						className='w-full py-5 px-10 bg-primary uppercase text-white text-m rounded-xl my-6'
-						type='submit'
-					>
+					<Button className='mt-6 mb-8'>
 						{isLoginForm ? "Войти" : "Зарегестрироваться"}
-					</button>
+					</Button>
+
+					<div className='justify-center flex items-center font-medium'>
+						<p>{isLoginForm ? "Нет аккаунта?" : "Уже есть аккаунт?"}</p>
+						<button
+							className='text-primary underline pl-2'
+							onClick={toggleForm}
+						>
+							{isLoginForm ? "Зарегестрироваться" : "Войти"}
+						</button>
+					</div>
 				</form>
-
-				<p
-					className='text-m font-light '
-				>
-					{isLoginForm ? "Или войди через" : "Или зарегестрируйся через"}
-				</p>
-
-
-				<div className='justify-center flex items-center font-light'>
-					<p>{isLoginForm ? "Нет аккаунта?" : "Уже есть аккаунт?"}</p>
-					<button
-						className='text-primary underline pl-2'
-						onClick={toggleForm}
-					>
-						{isLoginForm ? "Зарегестрироваться" : "Войти"}
-					</button>
-				</div>
 
 			</div>
 
