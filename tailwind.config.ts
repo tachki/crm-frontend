@@ -12,9 +12,10 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        grey: "var(--grey)",
         primary: "#3B44FF"
       },
     },
   },
   plugins: [],
-} satisfies Config;
+}
