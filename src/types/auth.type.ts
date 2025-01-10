@@ -13,6 +13,8 @@ export interface IUser {
   user_type: string;
 }
 
+// export type TypeNoteListFormState = Partial<Omit<IUser, 'id' | 'updatedAt' | 'createdAt'>>
+
 export interface IAuthLoginResponse {
   access_token: string;
   refresh_token: string;
