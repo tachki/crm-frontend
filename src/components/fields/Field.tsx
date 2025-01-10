@@ -18,7 +18,7 @@ export const Field = forwardRef<HTMLInputElement, InputFieldProps>(
     ref
   ) => {
     return (
-      <div>
+      <div className='w-full'>
         {label ? (
           <label
             htmlFor={id}
@@ -36,7 +36,7 @@ export const Field = forwardRef<HTMLInputElement, InputFieldProps>(
           type={type}
           id={id}
           placeholder={placeholder}
-          className={`mt-5 flex w-full items-center justify-center rounded-xl border border-black bg-transparent p-4 font-light text-base outline-none placeholder:text-black placeholder:font-light duration-500 transition-colors focus:border-primary 
+          className={`mt-5 w-full items-center rounded-xl border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-medium duration-500 transition-colors focus:border-primary 
 						${
               disabled === true
                 ? "!border-none !bg-gray-100 dark:!bg-white/5 dark:placeholder:!text-[rgba(255,255,255,0.15)]"
