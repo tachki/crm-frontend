@@ -11,6 +11,7 @@ export async function middleware(
   const refreshToken = cookies.get(EnumTokens.REFRESH_TOKEN)?.value
 
   const isAuthPage = url.includes('/auth')
+  // todo remove logs 
   if(isAuthPage) console.log("IsAUTHPAGE ", isAuthPage)
   else console.log("dont auth page")
   
