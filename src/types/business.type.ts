@@ -2,6 +2,10 @@ export interface IGetAllBusinessesResponse {
     businesses: Array<IBusiness>;
 }
 
+export interface IGetBusinessResponse {
+    business: IBusiness;
+}
+
 export interface IBusiness {
     id: string;
     name: string;
