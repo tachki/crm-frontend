@@ -8,6 +8,7 @@
   --foreground: #000;
   --regular-text-size: 18px;
   --grey: rgba(0, 0, 0, 0.5);
+  --error-red: #F23434;
 }
 
 @media (prefers-color-scheme: light) {
@@ -26,55 +27,28 @@ body {
 	font-family: var(--font-zen), sans-serif;
 }
 
+a {
+  cursor: pointer;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
 .h1 {
   font-size: 94px;
-  font-weight: 700;
-  font-family: 'Montserrat', sans-serif;
 }
 
 .h2 {
   font-size: 48px;
-  font-weight: 700;
-  font-family: 'Montserrat', sans-serif;
 }
  
 .h3 {
   font-size: 24px;
-  font-weight: 600;
-  font-family: 'Montserrat', sans-serif;
 }
 
 .h4 {
   font-size: 20px;
-  font-weight: 500;
-  font-family: 'Montserrat', sans-serif;
 }
 
-.text {
-  font-size: 18px;
-  font-weight: 400;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.textMedium {
-  font-size: 18px;
-  font-weight: 500;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.textButton {
-  font-size: 20px;
-  font-weight: 500;
-  font-family: 'Montserrat', sans-serif;
-}
-.textOptionRegular {
-  font-size: 14px;
-  font-weight: 400;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.textOptionMedium {
-  font-size: 14px;
-  font-weight: 500;
-  font-family: 'Montserrat', sans-serif;
-}

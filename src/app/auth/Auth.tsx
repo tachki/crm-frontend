@@ -12,7 +12,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/buttons/Button'
 
 export default function Auth() {
-	const [isLoginForm, setIsLoginForm] = useState(false)
+	const [isLoginForm, setIsLoginForm] = useState(true)
 
 	const { register, handleSubmit, reset, formState: { errors } } = useForm<IAuthForm>({
 		mode: 'onChange'
@@ -37,7 +37,6 @@ export default function Auth() {
 	const toggleForm = () => {
 		setIsLoginForm(prevState => !prevState)
 		reset()
-		resetForm()
 	}
 
 	return (
@@ -67,6 +66,14 @@ export default function Auth() {
 							required: 'Необходимо ввести логин'
 						})}
 					/>
+					{errors.email && (
+						<p
+							role='alert'
+							className='text-xs text-red-500 font-medium pt-1.5'
+						>
+							{errors.email.message}
+						</p>
+					)}
 
 					<Field
 						id='password'
@@ -82,14 +89,15 @@ export default function Auth() {
 						})}
 						extra=''
 					/>
-
 					{errors.password && (
 						<p
 							role='alert'
 							className='text-xs text-red-500 font-medium pt-1.5'
 						>
-							{errors.password.message}</p>
+							{errors.password.message}
+						</p>
 					)}
+
 
 					{isError && (
 						<p
