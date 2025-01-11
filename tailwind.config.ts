@@ -14,7 +14,8 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         grey: "var(--grey)",
-        primary: "#3B44FF"
+        primary: "#3B44FF",
+				errorRed: "var(--error-red)",
       },
 			spacing: {
 				0.5: '0.12rem',
@@ -179,9 +180,6 @@ const config: Config = {
 		},
 		colors: {
 			white: '#ffffff',
-			lightPrimary: '#F4F7FE',
-			blueSecondary: '#4318FF',
-			brandLinear: '#868CFF',
 			transparent: 'transparent',
 			gray: {
 				50: '#F5F6FA',
