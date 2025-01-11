@@ -40,7 +40,7 @@ export default function BusinessesPage() {
                 <h2>{business.name}</h2>
                 <p>{business.description}</p>
                 <Link className="text-blue-600" href={`/super/businesses/${business.id}`}>
-                    перейти ->
+                    перейти &rarr;
                 </Link>
             </div>
           ))}
