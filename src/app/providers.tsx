@@ -21,7 +21,7 @@ export function Providers({ children }: PropsWithChildren) {
 		<QueryClientProvider client={client}>
 			<ReduxProvider store={store}>
 				{children}
-				{process.env.NODE_ENV === 'production' && <ReactQueryDevtools />}
+				{process.env.NODE_ENV !== 'production' && <ReactQueryDevtools />}
 				{/* <ReactQueryDevtools initialIsOpen={true} buttonPosition="top-right" /> */}
 			</ReduxProvider>
 		</QueryClientProvider>
