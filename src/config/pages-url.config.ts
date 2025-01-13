@@ -1,5 +1,5 @@
 class DASHBOARD {
-  HOME = `/home`
+  HOME = `/dashboard/home`
 }
 
 export const DASHBOARD_PAGES = new DASHBOARD()

@@ -2,10 +2,8 @@
 
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import LOGO from "../../images/logo.svg"
 import { IAuthForm } from '@/types/auth.type'
 import { Field } from '@/components/fields/Field'
-import Image from 'next/image'
 import { useAppDispatch } from '@/hooks/redux'
 import { setAuth } from '@/store/slice/isAuthSlice'
 import { useAuth } from '@/hooks/useAuth'
@@ -42,10 +40,11 @@ export default function Auth() {
 	return (
 		<div className="align-center w-96 m-auto flex flex-col justify-center items-center h-screen space-y-12">
 			<div>
-				<Image
+				<img
 					className='m-auto'
-					src={LOGO}
-					alt="logo" />
+					src="logo.svg"
+					alt="logo"
+				/>
 			</div>
 
 			<div className="w-full text-center m-auto">
