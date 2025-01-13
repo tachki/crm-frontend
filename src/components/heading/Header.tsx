@@ -26,13 +26,17 @@ export default function Header() {
 			<nav className='font-medium'>
 				{user?.user_type === 'admin' || user?.user_type === 'worker' ? (
 					<>
-						<a href='#'>Компании</a>
-						<a href='#'>Клиенты</a>
+                        <a href='#'>Автопарк</a>
+				        <a href='#'>Запросы на аренду</a>	
 					</>
 				) : user?.user_type === 'customer' ? (
-					<a href='#'>Автопарк</a>
+                    <>
+                    </>
 				) : (
-					null
+                    <>
+                        <a href='#'>Компании</a>
+						<a href='#'>Верификация</a>
+                    </>
 				)}
 			</nav>
 
