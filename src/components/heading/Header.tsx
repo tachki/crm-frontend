@@ -29,10 +29,10 @@ export default function Header() {
 						<a href='#'>Компании</a>
 						<a href='#'>Клиенты</a>
 					</>
-				) : user?.user_type === 'superuser' ? (
-					null
-				) : (
+				) : user?.user_type === 'customer' ? (
 					<a href='#'>Автопарк</a>
+				) : (
+					null
 				)}
 			</nav>
 
