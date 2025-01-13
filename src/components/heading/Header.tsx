@@ -24,7 +24,7 @@ export default function Header() {
 				/>
 			</div>
 			<nav className='font-medium'>
-				{user?.user_type === 'business' ? (
+				{user?.user_type === 'admin' || user?.user_type === 'worker' ? (
 					<>
 						<a href='#'>Компании</a>
 						<a href='#'>Клиенты</a>
