@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 export interface Car {
     id: string;
@@ -35,21 +34,11 @@ car: Car;
 }
 
 export const statusStyles: Record<CarStatus, string> = {
-"Бронь": "bg-orange-500 text-white",
-"Арендовано": "bg-red-500 text-white",
-"Свободно": "bg-green-500 text-white",
-"Временно недоступно": "bg-yellow-500 text-white",
-"Недоступно": "bg-gray-500 text-white",
-};
-=======
-export interface IСhoiceCar {
-  stamp: string;
-  model: string;
-  year: string;
-  number: string;
-  kpp: string;
-  classCar: string;
-  price: string;
-  text: string;
-}
->>>>>>> 159910da18bdc811271c77ac0330f9fc75d76903
+    "Бронь": "bg-orange-500", // Только цвет фона
+    "Арендовано": "bg-red-500", // Только цвет фона
+    "Свободно": "bg-green-500", // Только цвет фона
+    "Временно недоступно": "bg-yellow-500", // Только цвет фона
+    "Недоступно": "bg-gray-500", // Только цвет фона
+  };
+  
+  

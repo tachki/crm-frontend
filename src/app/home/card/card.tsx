@@ -3,9 +3,8 @@ import React from "react";
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
     return (
-      <div className="flex bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
-        {/* Левая часть - картинка */}
-        <div className="w-1/3">
+      <div className="flex bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200 mx-[120px] w-[calc(100%-240px)]">
+        <div className="w-1/2">
           <img
             src={car.previewImage}
             alt={`${car.brand} ${car.model}`}
@@ -13,74 +12,71 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           />
         </div>
   
-        {/* Правая часть - данные */}
-        <div className="w-2/3 p-4 flex flex-col">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold mb-2">
-              {car.brand} {car.model} ({car.year})
+        <div className="w-1/2 p-4 flex flex-col">
+            <div className="flex justify-between items-center mb-2">
+            <h2 className="text-2xl font-extrabold text-black">
+                {car.brand} {car.model} ({car.year})
             </h2>
-            <p
-              className={`text-sm px-2 py-1 rounded ${
-                car.status === "Свободно"
-                  ? "bg-green-100 text-green-700"
-                  : car.status === "Бронь"
-                  ? "bg-yellow-100 text-yellow-700"
-                  : "bg-red-100 text-red-700"
-              }`}
-            >
-              {car.status}
+            <p className="text-black font-medium px-2 py-1 rounded inline-flex items-center">
+            {car.status}
+            <span
+                className={`ml-2 w-3 h-3 rounded-full ${statusStyles[car.status]}`}
+            ></span>
             </p>
-          </div>
-          <p className="text-gray-500 text-sm mb-4">
+
+            </div>
+            <p className="text-black text-lg font-medium mb-2">
             {car.class} | {car.transmission} | {car.businessId}
-          </p>
-  
-          <div className="text-sm text-gray-500 grid grid-cols-2 gap-2">
+            </p>
+
+            <div className="text-sm grid grid-cols-1 gap-1/2">
             <p>
-              <span className="font-semibold text-gray-400">Общий пробег: </span>
-              <span className="text-black">{car.totalMileage} км</span>
+                <span className="font-light text-gray-800">Общий пробег: </span>
+                <span className="text-black font-medium">{car.totalMileage} км</span>
             </p>
             <p>
-              <span className="font-semibold text-gray-400">Средний пробег: </span>
-              <span className="text-black">{car.averageMileage} км</span>
+                <span className="font-light text-gray-800">Средний пробег: </span>
+                <span className="text-black font-medium">{car.averageMileage} км</span>
             </p>
             <p>
-              <span className="font-semibold text-gray-400">Средний расход: </span>
-              <span className="text-black">{car.averageConsumption} л</span>
+                <span className="font-light text-gray-800">Средний расход: </span>
+                <span className="text-black font-medium">{car.averageConsumption} л</span>
             </p>
             <p>
-              <span className="font-semibold text-gray-400">Сумма затрат: </span>
-              <span className="text-black">{car.totalExpenses} BYN</span>
+                <span className="font-light text-gray-800">Сумма затрат: </span>
+                <span className="text-black font-medium">{car.totalExpenses} BYN</span>
             </p>
             <p>
-              <span className="font-semibold text-gray-400">Рейтинг: </span>
-              <span className="text-black">{car.rating}</span>
+                <span className="font-light text-gray-800">Рейтинг: </span>
+                <span className="text-black font-medium">{car.rating}</span>
             </p>
             <p>
-              <span className="font-semibold text-gray-400">Коэфф. простоя: </span>
-              <span className="text-black">{car.downtimeCoefficient}</span>
+                <span className="font-light text-gray-800">Коэфф. простоя: </span>
+                <span className="text-black font-medium">{car.downtimeCoefficient}</span>
             </p>
             <p>
-              <span className="font-semibold text-gray-400">Цена в сутки: </span>
-              <span className="text-black">{car.pricePerDay} BYN</span>
+                <span className="font-light text-gray-800">Цена в сутки: </span>
+                <span className="text-black font-medium">{car.pricePerDay} BYN</span>
             </p>
-          </div>
-  
-          {/* Кнопки */}
-          <div className="mt-4 flex gap-2">
-            <button className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
-              Подробнее
-            </button>
-            <button className="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600">
-              Календарь
-            </button>
-            <button className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600">
-              Удалить
-            </button>
-          </div>
+            </div>
+
+            <div className="mt-4 flex gap-2 justify-between">
+                <button className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 font-medium text-sm w-1/3">
+                Подробнее
+                </button>
+                <button className="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 font-medium text-sm w-1/3">
+                Календарь
+                </button>
+                <button className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 font-medium text-sm w-1/3">
+                Удалить
+                </button>
+            </div>
         </div>
       </div>
     );
   };
-
+  
   export default CarCard;
+  
+
+  
