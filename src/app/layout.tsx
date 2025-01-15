@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from 'next/font/google'
+import { Montserrat } from 'next/font/google'
 import "./globals.css";
+import { Providers } from "./providers";
 
-const zen = Inter({
+const zen = Montserrat({
 	subsets: ['cyrillic', 'latin'],
 	weight: ['300', '400', '500', '600', '700'],
 	display: 'swap',
@@ -20,12 +21,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body
         className={`${zen.variable} antialiased`}
       >
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

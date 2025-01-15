@@ -1,3 +1,4 @@
+@import url('./reset.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,6 +6,9 @@
 :root {
   --background: #ffffff;
   --foreground: #000;
+  --regular-text-size: 18px;
+  --grey: rgba(0, 0, 0, 0.5);
+  --error-red: #F23434;
 }
 
 @media (prefers-color-scheme: light) {
@@ -22,3 +26,29 @@ body {
   background: var(--background);
 	font-family: var(--font-zen), sans-serif;
 }
+
+a {
+  cursor: pointer;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.h1 {
+  font-size: 94px;
+}
+
+.h2 {
+  font-size: 48px;
+}
+ 
+.h3 {
+  font-size: 24px;
+}
+
+.h4 {
+  font-size: 20px;
+}
+

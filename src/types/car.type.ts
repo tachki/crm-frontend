@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 export interface Car {
     id: string;
@@ -40,3 +41,15 @@ export const statusStyles: Record<CarStatus, string> = {
 "Временно недоступно": "bg-yellow-500 text-white",
 "Недоступно": "bg-gray-500 text-white",
 };
+=======
+export interface IСhoiceCar {
+  stamp: string;
+  model: string;
+  year: string;
+  number: string;
+  kpp: string;
+  classCar: string;
+  price: string;
+  text: string;
+}
+>>>>>>> 159910da18bdc811271c77ac0330f9fc75d76903

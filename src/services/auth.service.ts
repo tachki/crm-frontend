@@ -1,5 +1,5 @@
 import { axiosWithAuth } from '@/api/interceptors'
-import { getRefreshToken, saveTokenStorage } from './auth-token.service'
+import { getRefreshToken, getUserStorage, removeFromStorage, saveTokenStorage, saveUserStorage } from './auth-token.service'
 import { IAuthForm, IAuthLoginResponse, IAuthRefreshResponse, IAuthRegisterResponse } from '@/types/auth.type'
 
 export const authService = {
@@ -14,6 +14,11 @@ export const authService = {
 			saveTokenStorage(response.data.access_token, response.data.refresh_token)
 		}
 
+		if(response.data.user) {
+			saveUserStorage(response.data.user)
+			console.log(getUserStorage())
+		}
+
 		return response
 	},
 
@@ -26,30 +31,10 @@ export const authService = {
 	async checkAuth() {
 		const refreshToken = getRefreshToken()
 
-		const response = await axiosWithAuth.post<IAuthRefreshResponse>(`/auth/refresh`, { refreshToken })
+		const response = await axiosWithAuth.post<IAuthRefreshResponse>(`/auth/refresh`, { refresh_token: refreshToken })
 
 		if (response.data.access_token && response.data.refresh_token) {
 			saveTokenStorage(response.data.access_token, response.data.refresh_token)
 		}
 	}
-
-	// async getNewTokens() {
-	// 	const response = await axiosWithAuth.post<IAuthLoginResponse>(
-	// 		'/auth/login/access-token' // auth/refresh
-	// 	)
-
-	// 	if (response.data.accessToken) saveTokenStorage(response.data.accessToken)
-
-	// 	return response
-	// },
-
-	// async logout() {
-	// 	const response = await axiosWithAuth.post<boolean>('/auth/logout')
-
-	// 	if (response.data) removeFromStorage()
-
-	// 	dispatch(setAuth(false))
-
-	// 	return response
-	// }
 }
