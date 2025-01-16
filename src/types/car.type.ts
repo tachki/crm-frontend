@@ -8,3 +8,11 @@ export interface IСhoiceCar {
   price: string;
   text: string;
 }
+
+export interface IFormCar {
+  place: any;
+  dataRes: number;
+  timeRes: number;
+  dataRet: number;
+  timeRet: number;
+}
