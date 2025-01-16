@@ -1,6 +1,6 @@
-import { Car } from "@/types/car.type";
 import React from "react";
 import CarCard from "./card/card";
+import { Car } from "@/types/car.type";
 
 
 const sampleCar: Car = {
@@ -13,7 +13,7 @@ const sampleCar: Car = {
   year: "2014",
   pricePerDay: 77,
   businessId: "8682 AX-3",
-  previewImage: "https://via.placeholder.com/300x200",
+  previewImage: "https://образжизни.москва/wp-content/uploads/2018/08/1-3.jpg",
   status: "Бронь",
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -28,7 +28,7 @@ const sampleCar: Car = {
 
 export default function Home() {
   return (
-    <div className="p-6">
+    <div className="p-6 mb">
       <h1 className="text-2xl font-bold mb-6">Автомобили</h1>
       <CarCard car={sampleCar} />
     </div>
