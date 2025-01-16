@@ -13,7 +13,7 @@ const sampleCar: Car = {
   year: "2014",
   pricePerDay: 77,
   businessId: "8682 AX-3",
-  previewImage: "https://via.placeholder.com/300x200",
+  previewImage: "https://образжизни.москва/wp-content/uploads/2018/08/1-3.jpg",
   status: "Бронь",
   createdAt: new Date(),
   updatedAt: new Date(),
