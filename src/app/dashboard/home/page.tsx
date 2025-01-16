@@ -1,4 +1,3 @@
-<<<<<<< HEAD:src/app/home/page.tsx
 import { Car } from "@/types/car.type";
 import React from "react";
 import CarCard from "./card/card";
@@ -33,14 +32,5 @@ export default function Home() {
       <h1 className="text-2xl font-bold mb-6">Автомобили</h1>
       <CarCard car={sampleCar} />
     </div>
-=======
-'use client'
-
-export default function Home() {
-  return (
-    <>
-      Home
-    </>
->>>>>>> 159910da18bdc811271c77ac0330f9fc75d76903:src/app/dashboard/home/page.tsx
   );
 }
