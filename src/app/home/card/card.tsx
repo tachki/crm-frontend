@@ -1,10 +1,10 @@
 "use client";
+
 import Calendar from "@/components/calendar/Calendar";
 import { CarCardProps, statusStyles } from "@/types/car.type";
 import React, { useState } from "react";
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
-
     const [isCalendarVisible, setIsCalendarVisible] = useState(false); 
 
     const toggleCalendarVisibility = () => {
@@ -70,7 +70,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
               </p>
             </div>
       
-            <div className="mt-14 flex gap-2 justify-between">
+            <div className="flex gap-2 justify-between">
                 <button className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 font-medium text-sm w-1/3">
                 Подробнее
                 </button>
@@ -96,11 +96,6 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           </div>
         </div>
       );
-      
-      
   };
-  
-  export default CarCard;
-  
 
-  
+export default CarCard;

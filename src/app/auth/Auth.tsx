@@ -59,7 +59,7 @@ export default function Auth() {
 						id='email'
 						label=''
 						placeholder='Логин'
-						type='email'
+						type='text'
 						extra=''
 						{...register('email', {
 							required: 'Необходимо ввести логин'
@@ -82,7 +82,7 @@ export default function Auth() {
 						{...register('password', {
 							required: 'Необходимо ввести пароль',
 							minLength: {
-								value: 8,
+								value: 4,
 								message: 'Пароль должен содержать не менее 8 символов',
 							},
 						})}

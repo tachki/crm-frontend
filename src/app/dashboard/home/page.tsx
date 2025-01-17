@@ -1,7 +1,6 @@
-import { Car } from "@/types/car.type";
 import React from "react";
-import CarCard from "./card/card";
-
+import { Car } from "@/types/car.type";
+import CarCard from "@/app/home/card/card"
 
 const sampleCar: Car = {
   id: "1",

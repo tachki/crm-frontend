@@ -2,7 +2,7 @@
 import { CarService } from "@/services/car.service";
 import { Car, mapCarDtoToCar } from "@/types/car.type";
 import { useEffect, useState } from "react";
-import CarCard from "./card/card";
+import CarCard from "@/app/home/card/card"
 import { getUserStorage } from "@/services/auth-token.service";
 import { TailSpin } from 'react-loader-spinner';
 
@@ -45,7 +45,6 @@ export default function Home() {
     <div className="p-6 mb">
        <h1 className="text-2xl font-bold mb-6 text-center">
         Автомобили ({totalCars}) 
-        
       </h1>
 
       {/* TODO должны быть заглушки */}
