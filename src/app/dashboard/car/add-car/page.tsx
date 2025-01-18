@@ -5,12 +5,8 @@ import Cars from "./Cars";
 
 export default function CarsPage() {
   return (
-    <div className={styles.items}>
-      <div className={styles.main_form}>
-        <div className={styles.container}>
-          <Cars />
-        </div>
-      </div>
+    <div className={`flex justify-between items-center m-6 mb-9`} >
+      <Cars />
     </div>
   );
 }
