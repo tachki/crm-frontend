@@ -5,8 +5,22 @@ import styles from "./Cars.module.css";
 import { useAppDispatch } from "@/hooks/redux";
 import { setCar } from "@/store/slice/isCarSlice";
 import { Field } from "@/components/fields/Field";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export default function Cars() {
+  const carTransmissionsData = ['Автоматическая', 'Механическая' ]
+  const carClassData = [ 'Эконом класс', 'Бизнес класс', 'Внедорожники', 'Грузовые микроавтобусы', 'Кабриолеты', 'Купе', 'Лимузины', 'Микроавтобусы', 'Мотоциклы', 'Пассажирские микроавтобусы', 'Универсалы' ]
+
+  const [carBrand, setCarBrand] = useState('')
+  const [carTransmission, setCarTransmission] = useState('')
+  const [carClass, setCarClass] = useState('')
+
+  useEffect(()=> {
+    console.log('brand', carBrand)
+    console.log('carTransmission', carTransmission)
+    console.log('carClass', carClass)
+
+  }, [carBrand, carTransmission, carClass])
+
   const dispatch = useAppDispatch();
   const {
     register,
@@ -71,7 +85,7 @@ export default function Cars() {
             {errors.stamp && <p>{errors.stamp.message}</p>}
           </div>
 
-          <div  className="flex flex-col">
+          <div className="flex flex-col">
             <label className={styles.labelTop}>Модель</label>
             <select
               className={styles.choice}
@@ -105,7 +119,9 @@ export default function Cars() {
           </div>
         </div>
 
-        <div className={`flex flex-row flex-wrap items-center justify-center gap-4 mb-5 mt-5`}>
+        <div
+          className={`flex flex-row flex-wrap items-center justify-center gap-4 mb-5 mt-5`}
+        >
           <div>
             <label className={styles.labelBottom}>Класс</label>
             <select
@@ -113,8 +129,9 @@ export default function Cars() {
               {...register("stamp", { required: "Марка обязательна" })}
             >
               <option value="">Выберите класс</option>
-              <option value="Toyota">Toyota</option>
-              <option value="BMW">BMW</option>
+              {carClassData.map((carClass)=> (
+                <option value={carClass}>{carClass}</option>
+              ))}
             </select>
             {errors.kpp && <p>{errors.kpp.message}</p>}
           </div>
@@ -126,8 +143,10 @@ export default function Cars() {
               {...register("stamp", { required: "Марка обязательна" })}
             >
               <option value="">Выберите тип КПП</option>
-              <option value="Toyota">Toyota</option>
-              <option value="BMW">BMW</option>
+
+              {carTransmissionsData.map((carTransmission)=> (
+                <option value={carTransmission}>{carTransmission}</option>
+              ))}
             </select>
             {errors.classCar && <p>{errors.classCar.message}</p>}
           </div>
@@ -273,16 +292,21 @@ export default function Cars() {
               )}
             </div>
           </div>
-
         </div>
         <div className="flex flex-row gap-6 justify-between flex-wrap">
-          <button className={`${styles.whiteButton}`} style={{margin: '24px auto 0 auto'}}>
-                Отменить
-              </button>
-              <button className={`${styles.addPhotoButton}`} style={{margin: '0 auto'}}>
-                Создать
-              </button>
-          </div>
+          <button
+            className={`${styles.whiteButton}`}
+            style={{ margin: "0 auto 0 auto" }}
+          >
+            Отменить
+          </button>
+          <button
+            className={`${styles.blueButton}`}
+            style={{ margin: "0 auto" }}
+          >
+            Создать
+          </button>
+        </div>
       </form>
     </div>
   );
