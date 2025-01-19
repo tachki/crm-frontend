@@ -1,29 +1,63 @@
-.images {
-  display: flex;
-  gap: 20px;
+.slider {
+  position: relative;
+  max-width: 100%;
+  width: 600px;
+  height: 400px;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
-.current {
-  width: 375px;
-  height: 375px;
-  background-position: center;
-  background-repeat: no-repeat;
+.currentImage {
+  width: 100%;
+  height: 100%;
   background-size: cover;
-  border-radius: 6px;
-}
-
-.images-list {
-  display: flex;
-  flex-direction: column;
-  row-gap: 5px;
-}
-
-.image {
-  width: 90px;
-  height: 90px;
   background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: 6px;
+  transition: background-image 0.5s ease-in-out;
+}
+
+.prev,
+.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
   cursor: pointer;
+  font-size: 20px;
+  z-index: 10;
+}
+
+.prev {
+  left: 10px;
+}
+
+.next {
+  right: 10px;
+}
+
+.thumbnails {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.thumbnail {
+  width: 60px;
+  height: 60px;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border 0.3s;
+}
+
+.thumbnail:hover {
+  border-color: rgba(0, 0, 0, 0.8);
+}
+
+.active {
+  border-color: rgba(0, 0, 0, 0.8);
 }

@@ -1,14 +1,10 @@
 "use client";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import { FaSearch } from "react-icons/fa";
-import { IFormCar } from "@/types/car.type";
 import { useCarForm } from "@/store/slice/iCarFormSlice";
 import Slider from "@/components/slider/Slider";
-import imgI from "@/images/social-media/google.png";
-const img = [imgI];
+import imgI from "@/images/car/car.jpg";
 export function ChoiseCarForm() {
-  const dispatch = useDispatch();
   const { senData } = useCarForm();
   const {
     register,
@@ -18,7 +14,7 @@ export function ChoiseCarForm() {
   } = useForm();
   const data = ["12.12.2024", "13.12.2024", "14.12.2024"];
   const time = ["12:20", "12:21"];
-
+  const images: any = [imgI, imgI, imgI, imgI, imgI];
   const onSubmit: SubmitHandler<any> = (dataForm) => {
     reset();
     if (!dataForm) {
@@ -130,7 +126,7 @@ export function ChoiseCarForm() {
           </form>
         </div>
       </div>
-      <Slider images={img} />
+      <Slider images={images} />
     </div>
   );
 }
