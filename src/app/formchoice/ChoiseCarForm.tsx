@@ -4,6 +4,9 @@ import { useDispatch } from "react-redux";
 import { FaSearch } from "react-icons/fa";
 import { IFormCar } from "@/types/car.type";
 import { useCarForm } from "@/store/slice/iCarFormSlice";
+import Slider from "@/components/slider/Slider";
+import imgI from "@/images/social-media/google.png";
+const img = [imgI];
 export function ChoiseCarForm() {
   const dispatch = useDispatch();
   const { senData } = useCarForm();
@@ -127,6 +130,7 @@ export function ChoiseCarForm() {
           </form>
         </div>
       </div>
+      <Slider images={img} />
     </div>
   );
 }

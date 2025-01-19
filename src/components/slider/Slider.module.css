@@ -1,0 +1,29 @@
+.images {
+  display: flex;
+  gap: 20px;
+}
+
+.current {
+  width: 375px;
+  height: 375px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 6px;
+}
+
+.images-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.image {
+  width: 90px;
+  height: 90px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 6px;
+  cursor: pointer;
+}
