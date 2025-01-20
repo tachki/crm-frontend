@@ -12,8 +12,8 @@ const zen = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: "uCar",
-  description: "Кар-шеринг",
+  title: "Tachki",
+  description: "Агрегатор автопарков для аренды",
 };
 
 export default function RootLayout({
