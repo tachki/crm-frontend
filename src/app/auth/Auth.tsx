@@ -59,7 +59,7 @@ export default function Auth() {
 						id='email'
 						label=''
 						placeholder='Логин'
-						type='text'
+						type='email'
 						extra=''
 						{...register('email', {
 							required: 'Необходимо ввести логин'
