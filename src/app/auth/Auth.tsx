@@ -82,7 +82,7 @@ export default function Auth() {
 						{...register('password', {
 							required: 'Необходимо ввести пароль',
 							minLength: {
-								value: 8,
+								value: 4,
 								message: 'Пароль должен содержать не менее 8 символов',
 							},
 						})}
