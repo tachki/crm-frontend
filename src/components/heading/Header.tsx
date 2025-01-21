@@ -3,11 +3,16 @@
 import { getUserStorage, removeFromStorage } from '@/services/auth-token.service'
 import { useRouter } from 'next/navigation'
 import { IUser } from '@/types/auth.type'
+import { useEffect, useState } from 'react'
 
 export default function Header() {
 	const router = useRouter()
 
-	const user: IUser | null = getUserStorage()
+	const [user, setUser] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    setUser(getUserStorage());
+  }, []);
 
 	const logout = () => {
 		removeFromStorage()
@@ -15,10 +20,9 @@ export default function Header() {
 	}
 
 	return (
-		<div className='h-20 flex justify-between items-center'>
-			<div>
+		<header className='h-20 flex justify-between items-center'>
+			<div className='w-48'>
 				<img
-					className='m-auto'
 					src="/logo_tachki.svg"
 					alt="logo"
 				/>
@@ -42,6 +46,6 @@ export default function Header() {
 			>
 				Выйти
 			</button>
-		</div>
+		</header>
 	)
 }
