@@ -1,18 +1,14 @@
 'use client'
-
 import { getUserStorage, removeFromStorage } from '@/services/auth-token.service'
 import { useRouter } from 'next/navigation'
 import { IUser } from '@/types/auth.type'
-import { useEffect, useState } from 'react'
+
 
 export default function Header() {
 	const router = useRouter()
 
-	const [user, setUser] = useState<IUser | null>(null);
+	const user: IUser | null = getUserStorage()
 
-  useEffect(() => {
-    setUser(getUserStorage());
-  }, []);
 
 	const logout = () => {
 		removeFromStorage()
@@ -20,9 +16,11 @@ export default function Header() {
 	}
 
 	return (
-		<header className='h-20 flex justify-between items-center'>
-			<div className='w-48'>
+
+		<div className='h-20 flex justify-between items-center'>
+			<div>
 				<img
+					className='m-auto'
 					src="/logo_tachki.svg"
 					alt="logo"
 				/>
@@ -30,13 +28,17 @@ export default function Header() {
 			<nav className='font-medium'>
 				{user?.user_type === 'admin' || user?.user_type === 'worker' ? (
 					<>
-						<a href='#'>Компании</a>
-						<a href='#'>Клиенты</a>
+                        <a href='#'>Автопарк</a>
+				        <a href='#'>Запросы на аренду</a>	
 					</>
 				) : user?.user_type === 'customer' ? (
-					<a href='#'>Автопарк</a>
+                    <>
+                    </>
 				) : (
-					null
+                    <>
+                        <a href='#'>Компании</a>
+						<a href='#'>Верификация</a>
+                    </>
 				)}
 			</nav>
 
@@ -46,6 +48,8 @@ export default function Header() {
 			>
 				Выйти
 			</button>
-		</header>
+
+		</div>
 	)
 }
+

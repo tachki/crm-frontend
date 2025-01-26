@@ -18,7 +18,7 @@ export const Field = forwardRef<HTMLInputElement, InputFieldProps>(
     ref
   ) => {
     return (
-      <div className='w-full'>
+      <div style={{width: '270px'}}>
         {label ? (
           <label
             htmlFor={id}
@@ -36,7 +36,7 @@ export const Field = forwardRef<HTMLInputElement, InputFieldProps>(
           type={type}
           id={id}
           placeholder={placeholder}
-          className={`mt-5 w-full items-center rounded-xl border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-medium duration-500 transition-colors focus:border-primary 
+          className={`mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary 
 						${
               disabled === true
                 ? "!border-none !bg-gray-100 dark:!bg-white/5 dark:placeholder:!text-[rgba(255,255,255,0.15)]"
@@ -46,6 +46,7 @@ export const Field = forwardRef<HTMLInputElement, InputFieldProps>(
                 ? "border-green-500 text-green-500 placeholder:text-green-500 dark:!border-green-400 dark:!text-green-400 dark:placeholder:!text-green-400"
                 : ""
             }`}
+            style={{height: '55px', borderRadius: '10px'}}
           onKeyDown={(event) => {
             if (
               isNumber &&
