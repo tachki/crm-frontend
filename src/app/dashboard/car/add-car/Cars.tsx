@@ -7,6 +7,7 @@ import {setCar} from "@/store/slice/isCarSlice";
 import {Field} from "@/components/fields/Field";
 import {useEffect, useState} from "react";
 import {number} from "prop-types";
+import { CarService } from "@/services/car.service";
 
 export default function Cars() {
     const carTransmissionsData = ['Автоматическая', 'Механическая']
@@ -44,23 +45,12 @@ export default function Cars() {
         };
 
         try {
-            const response = await fetch("http://localhost:8080/v1/cars/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(carData)
-            });
-
-            if (!response.ok) {
-                throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
-            }
-
-            const responseData = await response.json();
-            console.log("Машина успешно создана:", responseData);
-        } catch (error) {
-            console.error("Произошла ошибка при создании машины:", error);
-        }
+            const createdCar = await CarService.createCar(carData);
+            console.log('Созданная машина:', createdCar);
+         
+          } catch (error) {
+            console.error('Ошибка при создании машины:', error);
+          }
     };
 
     useEffect(() => {

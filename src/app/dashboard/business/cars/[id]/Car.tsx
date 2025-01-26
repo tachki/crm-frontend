@@ -2,7 +2,6 @@
 
 import { useParams } from 'next/navigation'
 import { useCar } from '../hooks/useCar'
-import { Loader } from 'lucide-react'
 import { ICar } from '@/types/car.type'
 import { Button } from '@/components/buttons/Button'
 import Link from 'next/link'

@@ -5,252 +5,396 @@ import styles from "./Cars.module.css";
 import { useAppDispatch } from "@/hooks/redux";
 import { setCar } from "@/store/slice/isCarSlice";
 import { Field } from "@/components/fields/Field";
-import { useState } from "react";
-export default function Cars() {
-  const dispatch = useAppDispatch();
-  const {
-    register,
-    handleSubmit, 
-    reset,
-    formState: { errors },
-  } = useForm<IСhoiceCar>();
-  const [photos, setPhotos] = useState<File[]>([]);
+import { useEffect, useRef, useState } from "react";
+import { CarService } from "@/services/car.service";
 
-  const onSubmit: SubmitHandler<IСhoiceCar> = (data) => {
-    reset();
-    if (!data) {
-      console.log("Ошибка");
-    } else {
-      dispatch(setCar(data));
-      console.log(data);
-    }
+
+export default function Cars() {
+  // TODO add it when will be needed
+  //const dispatch = useAppDispatch();
+  const carTransmissionsData = ['Автоматическая', 'Механическая']
+  const carClassData = ['Эконом класс', 'Бизнес класс', 'Внедорожники', 'Грузовые микроавтобусы', 'Кабриолеты', 'Купе', 'Лимузины', 'Микроавтобусы', 'Мотоциклы', 'Пассажирские микроавтобусы', 'Универсалы']
+
+  const [carBrand, setCarBrand] = useState('')
+  const [carModel, setCarModel] = useState('')
+  const [carNumber, setCarNumber] = useState('')
+  const [carTransmission, setCarTransmission] = useState('')
+  const [carClass, setCarClass] = useState('')
+  const [carPrice, setCarPrice] = useState(1)
+  const [carYear, setCarYear] = useState(2010)
+  const [carDescription, setCarDescription] = useState('')
+  const [photos, setPhotos] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [addCarData, setAddCarData] = useState({});
+
+  const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true)
+
+  const createCar = async () => {
+      const carData = {
+          car: {
+              brand: "Alfa Romeo",
+              class: "Эконом класс",
+              description: "string",
+              images: [
+                  "string"
+              ],
+              model: "string",
+              price_per_day: 0,
+              transmission: "Автоматическая",
+              year: "string"
+          }
+      };
+
+      try {
+        const createdCar = await CarService.createCar(carData);
+        console.log('Созданная машина:', createdCar);
+        // Дополнительные действия после успешного создания
+      } catch (error) {
+        console.error('Ошибка при создании машины:', error);
+      }
   };
 
-  const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const newPhotos = [...photos, ...Array.from(event.target.files)];
-      if (newPhotos.length > 8) {
-        newPhotos.length = 8;
+  const handleCancelAddCar = () => {
+      setIsFieldPreparing(true)
+      setCarBrand('')
+      setCarModel('')
+      setCarNumber('')
+      setCarTransmission('')
+      setCarClass('')
+      setCarPrice(1)
+      setCarYear(2010)
+      setCarDescription('')
+      setPhotos([])
+  }
+
+  const handleAddCar = () => {
+      setIsFieldPreparing(false)
+      if (carBrand && carModel && carNumber && carTransmission && carClass && carPrice && carYear && carDescription && photos.length) {
+          setAddCarData({
+              brand: carBrand,
+              class: carClass,
+              description: carDescription,
+              images: photos,
+              model: carModel,
+              price_per_day: carPrice,
+              transmission: carTransmission,
+              year: carYear
+          })
+          // TODO add it when will be needed
+          //dispatch(setCar(addCarData));
       }
-      setPhotos(newPhotos);
-    }
+  }
+
+  useEffect(() => {
+      console.log('--------------------------------------')
+      createCar()
+      console.log('addCarData', addCarData)
+  }, [addCarData])
+
+  const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.files) {
+          const newPhotos = [...photos, ...Array.from(event.target.files)];
+          if (newPhotos.length > 8) {
+              newPhotos.length = 8;
+          }
+          setPhotos(newPhotos);
+      }
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    if (event.dataTransfer.files) {
-      const newPhotos = [...photos, ...Array.from(event.dataTransfer.files)];
-      if (newPhotos.length > 8) {
-        newPhotos.length = 8;
+      event.preventDefault();
+      if (event.dataTransfer.files) {
+          const newPhotos = [...photos, ...Array.from(event.dataTransfer.files)];
+          if (newPhotos.length > 8) {
+              newPhotos.length = 8;
+          }
+          setPhotos(newPhotos);
       }
-      setPhotos(newPhotos);
-    }
   };
 
   const handleRemovePhoto = (index: number) => {
-    setPhotos(photos.filter((_, i) => i !== index));
+      setPhotos(photos.filter((_, i) => i !== index));
+  };
+
+  const openFilePicker = () => {
+      if (fileInputRef.current) {
+          fileInputRef.current.click();
+      }
   };
 
   return (
-    <div className={styles.items}>
-      <div className={styles.conteiner}>
-        <h1>Добавление нового автомобиля</h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.components}>
-            <div className={styles.contentTop}>
-              <label>Марка</label>
-              <select
-                className={styles.choice}
-                {...register("stamp", { required: "Марка обязательна" })}
+      <div>
+          <h1 className={styles.h1}>Добавление нового автомобиля</h1>
+          <form onSubmit={(e)=> {e.preventDefault()}}>
+              <div
+                  className={`flex flex-row flex-wrap items-center justify-center gap-4 mb-5 mt-5`}
               >
-                <option value="">Выберите марку</option>
-                <option value="Toyota">Toyota</option>
-                <option value="BMW">BMW</option>
-              </select>
-              {errors.stamp && <p>{errors.stamp.message}</p>}
-            </div>
-
-            <div className={styles.contentTop}>
-              <label>Модель</label>
-              <select
-                className={styles.choice}
-                {...register("model", { required: "Модель обязательна" })}
-              >
-                <option value="">Выберите модель</option>
-                <option value="Camry">Camry</option>
-                <option value="X5">X5</option>
-              </select>
-              {errors.model && <p>{errors.model.message}</p>}
-            </div>
-
-            <div className={styles.contentTop}>
-              <Field
-                placeholder="Введите год"
-                label="Год выпуска"
-                id="1"
-                {...register("year", { required: "Год обязятелен!" })}
-              />
-              {errors.year && <p>{errors.year.message}</p>}
-            </div>
-
-            <div className={styles.contentTop}>
-              <Field
-                placeholder="Введите номер"
-                label="Номерной знак"
-                id="1"
-                {...register("number", { required: "Номер обязательный" })}
-              />
-              {errors.number && <p>{errors.number.message}</p>}
-            </div>
-          </div>
-
-          <div className={styles.components}>
-            <div className={styles.contentBottom}>
-              <label>Класс</label>
-              <select
-                className={styles.choiceBottom}
-                {...register("stamp", { required: "Марка обязательна" })}
-              >
-                <option value="">Выберите класс</option>
-                <option value="Toyota">Toyota</option>
-                <option value="BMW">BMW</option>
-              </select>
-              {errors.kpp && <p>{errors.kpp.message}</p>}
-            </div>
-
-            <div className={styles.contentBottom}>
-              <label>Тип КПП</label>
-              <select
-                className={styles.choiceBottom}
-                {...register("stamp", { required: "Марка обязательна" })}
-              >
-                <option value="">Выберите тип КПП</option>
-                <option value="Toyota">Toyota</option>
-                <option value="BMW">BMW</option>
-              </select>
-              {errors.classCar && <p>{errors.classCar.message}</p>}
-            </div>
-
-            <div className={styles.contentBottom}>
-              <Field
-                placeholder="Введите цену"
-                label="Цена (BYN в сутки)"
-                id="1"
-                {...register("price", { required: "Цена обязательна" })}
-              />
-              {errors.price && <p>{errors.price.message}</p>}
-            </div>
-          </div>
-
-          <div className={styles.contentText}>
-            <label>Описание</label>
-            <textarea
-              placeholder="Введите описание"
-              {...register("text", { required: "Описание обязательно" })}
-            ></textarea>
-          </div>
-
-          <div
-            className={`${styles.contentBottom} ${styles.addPhotosContainer}`}
-          >
-            <div className={styles.addPhotosTitle}>
-              {photos.length === 0 ? (
-                <label>Загрузите фотографии</label>
-              ) : (
-                <>
-                  <label>Фотографии</label>
-                  <label className={`${styles.fontGrayThin} ${styles.imagesCounter}`}>Загружено: {photos.length}/8</label>
-                </>
-              )}
-            </div>
-            <div
-              className={styles.addPhotosWrapper}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={handleDrop}
-            >
-              {photos.length === 0 && (
-                <div className={styles.addFirstPhotoWrapper}>
-                  <label>Выберите или перетащите фотографии в область</label>
-                  <label className={styles.fontGrayThin}>
-                    Форматы JPEG, JPG или PNG до 10 МБ каждый
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/jpeg,image/jpg,image/png"
-                    multiple
-                    onChange={handleAddPhoto}
-                  />
-                  <button
-                    className={styles.addPhotoButton}
-                    type="button"
-                  // onClick={() =>
-                  //   document.querySelector('input[type="file"]')?.click()
-                  // }
-                  >
-                    Выбрать фотографии
-                  </button>
-                </div>
-              )}
-              <div className={styles.photosWrapper}>
-                {photos.map((photo, index) => (
-                  <div key={index} className={styles.photoContainer}>
-                    <img
-                      src={URL.createObjectURL(photo)}
-                      alt={`Фото ${index + 1}`}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleRemovePhoto(index)}
-                    >
-                      <svg
-                        width="10"
-                        height="10"
-                        viewBox="0 0 10 10"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M1.46484 8.53484L8.53684 1.46484M1.46484 1.46484L8.53684 8.53484"
-                          stroke="black"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                        />
-                      </svg>
-                    </button>
+                  <div className={styles.inputWrap}>
+                      <label className={styles.labelBottom}>Марка</label>
+                      <input type="text"
+                      value={carBrand}
+                             className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
+                             placeholder={'Введите марку'}
+                             onChange={(e) => setCarBrand(e.target.value)}
+                             style={(isFieldPreparing || carBrand) === '' ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+                      />
                   </div>
-                ))}
-                {photos.length > 0 && photos.length < 8 && (
-                  <div
-                    className={styles.addMorePhotos}
-                  // onClick={() =>
-                  //   document.querySelector('input[type="file"]')?.click()
-                  // }
 
+                  <div className={styles.inputWrap}>
+                      <label className={styles.labelBottom}>Модель</label>
+                      <input type="text"
+                      value={carModel}
+                             className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
+                             placeholder={'Введите модель'}
+                             onChange={(e) => setCarModel(e.target.value)}
+                             style={(isFieldPreparing || carModel) === '' ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
 
-                  // ?
-                  >
-
-                    <label>
-                      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18.3333 8.22222H18.3478M1 5.33333C1 4.18406 1.45655 3.08186 2.2692 2.2692C3.08186 1.45655 4.18406 1 5.33333 1H22.6667C23.8159 1 24.9181 1.45655 25.7308 2.2692C26.5435 3.08186 27 4.18406 27 5.33333V22.6667C27 23.8159 26.5435 24.9181 25.7308 25.7308C24.9181 26.5435 23.8159 27 22.6667 27H5.33333C4.18406 27 3.08186 26.5435 2.2692 25.7308C1.45655 24.9181 1 23.8159 1 22.6667V5.33333Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M1 19.7775L8.22222 12.5553C9.56267 11.2654 11.2151 11.2654 12.5556 12.5553L19.7778 19.7775" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M16.8887 16.8884L18.3331 15.444C19.6736 14.1541 21.326 14.1541 22.6664 15.444L26.9998 19.7773" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                      </svg>
-                    </label>
-                    <label>Добавить</label>
-                    <input
-                      type="file"
-                      accept="image/jpeg,image/jpg,image/png"
-                      multiple
-                      onChange={handleAddPhoto}
-                    />
+                      />
                   </div>
-                )}
+
+                  <div className={styles.inputWrap}>
+                      <label className={styles.labelBottom}>Год выпуска</label>
+                      <input type="number"
+                      value={carYear}
+                             className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
+                             onChange={((e) => {
+                                 if (Number(e.target.value) < 1) {
+                                     e.target.value = '1'
+                                 } else if (Number(e.target.value) > 2025) {
+                                     e.target.value = '2025'
+                                 }
+                                 setCarYear(Number(e.target.value))
+                             })}
+                             style={(isFieldPreparing || carYear) === 1 ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+
+                      />
+                  </div>
+                      <div className={styles.inputWrap}>
+                          <label className={styles.labelBottom}>Номерной знак</label>
+                          <input type="text"
+                          value={carNumber}
+                                 className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
+
+                                 placeholder={'Введите номер'}
+                                 onChange={(e) => setCarNumber(e.target.value)}
+                                 style={(isFieldPreparing || carNumber) === '' ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+
+                          />
+                      </div>
               </div>
-            </div>
-          </div>
-        </form>
+
+              <div
+                  className={`flex flex-row flex-wrap items-center justify-center gap-4 mb-5 mt-5`}
+
+              >
+                  <div className={styles.inputWrap}>
+                      <label className={styles.labelBottom}>Класс</label>
+                      <select
+                          className={styles.choiceBottom}
+                          onChange={(e)=>{
+                              setCarClass(e.target.value)
+                          }}
+                          value={carClass}
+                          style={(isFieldPreparing || carClass) === '' ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+
+                      >
+                          <option value="">Выберите класс</option>
+
+                          {carClassData.map((carClass, index) => (
+                              <option key={carClass + index} value={carClass}>{carClass}</option>
+                          ))}
+                      </select>
+                  </div>
+
+                  <div className={styles.inputWrap}>
+                      <label className={styles.labelBottom}>Тип КПП</label>
+                      <select
+                          className={styles.choiceBottom}
+                          onChange={(e)=>{
+                              setCarTransmission(e.target.value)
+                          }}
+                          value={carTransmission}
+                          style={(isFieldPreparing || carTransmission) === '' ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+
+                      >
+                          <option value="">Выберите тип КПП</option>
+
+                          {carTransmissionsData.map((carTransmission, index) => (
+                              <option key={carTransmission + index} value={carTransmission}>{carTransmission}</option>
+                          ))}
+                      </select>
+                  </div>
+
+                  <div className={styles.inputWrap}>
+                      <label className={styles.labelBottom}>Цена (BYN в сутки)</label>
+                      <input type="number"
+                             value={carPrice}
+                             placeholder={"Введите цену"}
+                             className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
+
+                             onChange={((e) => {
+                                 if (Number(e.target.value) < 1) {
+                                     e.target.value = '1'
+                                 }
+                                 setCarPrice(Number(e.target.value))
+                             })}
+                             style={(isFieldPreparing || carPrice) === 1 ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+
+                      />
+                  </div>
+              </div>
+
+              <div className={styles.contentText}>
+                  <label className={styles.labelBottom}>Описание</label>
+                  <textarea
+                      value={carDescription}
+                      placeholder="Введите описание"
+                      onChange={(e) => setCarDescription(e.target.value)}
+                      style={(isFieldPreparing || carDescription) === '' ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+                  ></textarea>
+              </div>
+
+              <div className={`${styles.addPhotosContainer}`}>
+                  <div className={styles.addPhotosTitle}>
+                      {photos.length === 0 ? (
+                          <label className={styles.labelBottom}>Загрузите фотографии</label>
+                      ) : (
+                          <>
+                              <label className={styles.labelBottom}>Фотографии</label>
+                              <label
+                                  className={`${styles.fontGrayThin} ${styles.imagesCounter}`}
+                              >
+                                  Загружено: {photos.length}/8
+                              </label>
+                          </>
+                      )}
+                  </div>
+                  <div
+                      className={styles.addPhotosWrapper}
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={handleDrop}
+
+                  >
+                      {photos.length === 0 && (
+                          <div className={styles.addFirstPhotoWrapper}
+                               style={(!isFieldPreparing || photos.length) ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+                               onClick={openFilePicker}
+                          >
+                              <label className={`${styles.labelBottom} ${styles.addPhotoText}`}>Выберите или перетащите фотографии в область</label>
+                              <label className={`${styles.fontGrayThin} ${styles.addPhotoText}`}>
+                                  Форматы JPEG, JPG или PNG до 10 МБ каждый
+                              </label>
+                              <input
+                                  type="file"
+                                  accept="image/jpeg,image/jpg,image/png"
+                                  multiple
+                                  ref={fileInputRef}
+                                  onChange={handleAddPhoto}
+                              />
+                              <button
+                                  className={styles.addPhotoButton}
+                                  type="button"
+                                  onClick={openFilePicker}
+                              >
+                                  Выбрать фотографии
+                              </button>
+                          </div>
+                      )}
+                      <div className={styles.photosWrapper}>
+                          {photos.map((photo, index) => (
+                              <div key={index} className={styles.photoContainer}>
+                                  <img
+                                      src={URL.createObjectURL(photo)}
+                                      alt={`Фото ${index + 1}`}
+                                  />
+                                  <button
+                                      type="button"
+                                      onClick={() => handleRemovePhoto(index)}
+                                  >
+                                      <svg
+                                          width="10"
+                                          height="10"
+                                          viewBox="0 0 10 10"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                          <path
+                                              d="M1.46484 8.53484L8.53684 1.46484M1.46484 1.46484L8.53684 8.53484"
+                                              stroke="black"
+                                              stroke-width="1.5"
+                                              stroke-linecap="round"
+                                          />
+                                      </svg>
+                                  </button>
+                              </div>
+                          ))}
+                          {photos.length > 0 && photos.length < 8 && (
+                              <div
+                                  className={styles.addMorePhotos}
+                                  onClick={openFilePicker}
+                              >
+                                  <label>
+                                      <svg
+                                          width="28"
+                                          height="28"
+                                          viewBox="0 0 28 28"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                          <path
+                                              d="M18.3333 8.22222H18.3478M1 5.33333C1 4.18406 1.45655 3.08186 2.2692 2.2692C3.08186 1.45655 4.18406 1 5.33333 1H22.6667C23.8159 1 24.9181 1.45655 25.7308 2.2692C26.5435 3.08186 27 4.18406 27 5.33333V22.6667C27 23.8159 26.5435 24.9181 25.7308 25.7308C24.9181 26.5435 23.8159 27 22.6667 27H5.33333C4.18406 27 3.08186 26.5435 2.2692 25.7308C1.45655 24.9181 1 23.8159 1 22.6667V5.33333Z"
+                                              stroke="black"
+                                              stroke-width="2"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                          />
+                                          <path
+                                              d="M1 19.7775L8.22222 12.5553C9.56267 11.2654 11.2151 11.2654 12.5556 12.5553L19.7778 19.7775"
+                                              stroke="black"
+                                              stroke-width="2"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                          />
+                                          <path
+                                              d="M16.8887 16.8884L18.3331 15.444C19.6736 14.1541 21.326 14.1541 22.6664 15.444L26.9998 19.7773"
+                                              stroke="black"
+                                              stroke-width="2"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                          />
+                                      </svg>
+                                  </label>
+                                  <label className={styles.labelBottom}>Добавить</label>
+                                  <input
+                                      type="file"
+                                      accept="image/jpeg,image/jpg,image/png"
+                                      multiple
+                                      ref={fileInputRef}
+                                      onChange={handleAddPhoto}
+                                  />
+                              </div>
+                          )}
+                      </div>
+                  </div>
+              </div>
+              <div className="flex flex-row gap-6 justify-between flex-wrap">
+                  <button
+                      className={`${styles.whiteButton}`}
+                      style={{margin: "0 auto 0 auto"}}
+                      onClick={handleCancelAddCar}
+                  >
+                      Отменить
+                  </button>
+                  <button
+                      className={`${styles.blueButton}`}
+                      style={{margin: "0 auto"}}
+                      onClick={handleAddCar}
+                  >
+                      Создать
+                  </button>
+              </div>
+          </form>
       </div>
-    </div>
   );
 }

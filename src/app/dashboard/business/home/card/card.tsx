@@ -2,8 +2,9 @@
 import Calendar from "@/components/calendar/Calendar";
 import { CarCardProps, statusStyles } from "@/types/car.type";
 import React, { useState } from "react";
-import calendarIcon from '../../../../images/car_card/buttons/calendar_logo.png';
-import deleteIcon from '../../../../images/car_card/buttons/bucket_logo.png';
+import calendarIcon from '@/images/car_card/buttons/calendar_logo.png';
+import deleteIcon from '@/images/car_card/buttons/bucket_logo.png';
+import { DASHBOARD_PAGES } from "@/config/pages-url.config";
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
     const [isCalendarVisible, setIsCalendarVisible] = useState(false); 
@@ -73,9 +74,14 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           </div>
     
           <div className=" flex gap-2 justify-between pt-2 mb-7">
-            <button className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 font-medium text-xs w-1/3">
-              Подробнее
-            </button>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 font-medium text-xs w-1/3"
+            onClick={() => {
+              window.location.href = DASHBOARD_PAGES.CAR_DETAILS.replace(':id', car.id);
+            }}
+          >
+            Подробнее
+          </button>
             <button
               onClick={toggleCalendarVisibility}
               className="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 font-medium text-xs w-1/3 flex items-center justify-center gap-2"
