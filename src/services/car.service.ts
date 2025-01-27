@@ -39,7 +39,7 @@ export const CarService = {
 
     async getCar(id: string) {
       try {
-        const response = await axiosWithAuth.post<ICar>(`/v1/cars/${id}`, id);
+        const response = await axiosWithAuth.get<CarDto>(`/v1/cars/${id}`);
         return response;
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -51,21 +51,14 @@ export const CarService = {
       }
     },
 
-    async createCar(carData: {
-      car: {
-        brand: string;
-        class: string;
-        description: string;
-        images: string[];
-        model: string;
-        price_per_day: number;
-        transmission: string;
-        year: string;
-      };
-    }) {
+    async createCar(formData: FormData) {
       try {
-        const response = await axiosWithAuth.post('/v1/cars/', carData);
-  
+        const response = await axiosWithAuth.post('/v1/cars/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+    
         if (response.status === 201 && response.data) {
           console.log('Машина успешно создана:', response.data);
           return response.data;
@@ -76,7 +69,7 @@ export const CarService = {
         console.error('Произошла ошибка при создании машины:', error);
         throw error;
       }
-    },
+    }
 };
 
 

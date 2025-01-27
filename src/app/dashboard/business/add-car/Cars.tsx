@@ -1,10 +1,10 @@
 "use client";
 import styles from "./Cars.module.css";
-import {useAppDispatch} from "@/hooks/redux";
-import {setCar} from "@/store/slice/isCarSlice";
-import {Field} from "@/components/fields/Field";
-import {useEffect, useState} from "react";
-import {number} from "prop-types";
+import {useEffect, useRef, useState} from "react";
+import { CarService } from "@/services/car.service";
+import { DASHBOARD_PAGES } from "@/config/pages-url.config";
+import { Button } from '@/components/buttons/Button'
+import Link from 'next/link'
 
 export default function Cars() {
     // TODO add it when will be needed
@@ -28,29 +28,29 @@ export default function Cars() {
     const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true)
 
     const createCar = async () => {
-        const carData = {
-            car: {
-                brand: "Alfa Romeo",
-                class: "Эконом класс",
-                description: "string",
-                images: [
-                    "string"
-                ],
-                model: "string",
-                price_per_day: 0,
-                transmission: "Автоматическая",
-                year: "string"
-            }
-        };
-
+        const formData = new FormData();
+      
+      
+        formData.append('brand', carBrand);
+        formData.append('class', carClass);
+        formData.append('description', carDescription);
+        formData.append('model', carModel);
+        formData.append('price_per_day', carPrice.toString());
+        formData.append('transmission', carTransmission);
+        formData.append('year', carYear.toString());
+      
+     
+        photos.forEach((photo) => {
+          formData.append(`image`, photo);
+        });
+      
         try {
-            const createdCar = await CarService.createCar(carData);
-            console.log('Созданная машина:', createdCar);
-         
-          } catch (error) {
-            console.error('Ошибка при создании машины:', error);
-          }
-    };
+          const createdCar = await CarService.createCar(formData);
+          console.log('Созданная машина:', createdCar);
+        } catch (error) {
+          console.error('Ошибка при создании машины:', error);
+        }
+      };
 
     const handleCancelAddCar = () => {
         setIsFieldPreparing(true)
@@ -59,7 +59,7 @@ export default function Cars() {
         setCarNumber('')
         setCarTransmission('')
         setCarClass('')
-        setCarPrice(1)
+        setCarPrice(0)
         setCarYear(2010)
         setCarDescription('')
         setPhotos([])
@@ -376,6 +376,7 @@ export default function Cars() {
                     </div>
                 </div>
                 <div className="flex flex-row gap-6 justify-between flex-wrap">
+                    <Link href={DASHBOARD_PAGES.BUSINESS_CARS}>
                     <button
                         className={`${styles.whiteButton}`}
                         style={{margin: "0 auto 0 auto"}}
@@ -383,6 +384,7 @@ export default function Cars() {
                     >
                         Отменить
                     </button>
+                    </Link>
                     <button
                         className={`${styles.blueButton}`}
                         style={{margin: "0 auto"}}

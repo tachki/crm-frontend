@@ -1,6 +1,3 @@
-import FormCar from "./FormCar";
-import TableCar from "./TableCar";
-import styles from "./Cars.module.css";
 import Cars from "./Cars";
 
 export default function CarsPage() {
