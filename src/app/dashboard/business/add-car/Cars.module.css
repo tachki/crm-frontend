@@ -106,9 +106,6 @@
 
 .contentText label {
   margin-bottom: 8px;
-  font-size: 20px;
-  font-weight: 400;
-  color: #333;
 }
 
 .contentTop p {
@@ -131,6 +128,15 @@
   background-position: right 20px center;
   background-size: 15px;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='none' d='M0 0h20v20H0z'/%3E%3Cpath fill='%23000000' d='M5 7l5 5 5-5z'/%3E%3C/svg%3E");
+}
+
+.customInput {
+  height: 55px;
+  border-radius: 10px;
+}
+
+.inputWrap {
+  width: 270px;
 }
 
 .addPhotosContainer {
@@ -253,8 +259,21 @@
   font-size: 16px;
 }
 
-@media(max-width:548px) {
+@media(max-width:604px) {
   .addPhotosContainer {
     margin-bottom: 36px;
+  }
+
+  .addPhotoText {
+    text-align: center;
+    font-size: 15px;
+  }
+
+  .inputWrap {
+    width: 100%;
+  }
+
+  .h1 {
+    font-size: 24px;
   }
 }

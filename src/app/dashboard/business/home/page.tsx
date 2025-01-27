@@ -2,12 +2,13 @@
 import { CarService } from "@/services/car.service";
 import { Car, mapCarDtoToCar } from "@/types/car.type";
 import { useEffect, useState } from "react";
-import CarCard from "@/app/dashboard/home/card/card"
+import CarCard from "@/app/dashboard/business/home/card/card"
 import { getUserStorage } from "@/services/auth-token.service";
 import { TailSpin } from 'react-loader-spinner';
 import Image from 'next/image';
-import emptyParkImage from '../../../images/main_page_park/empty_park.png';
-import plusIcon from '../../../images/main_page_park/plus.png';
+import emptyParkImage from '@/images/main_page_park/empty_park.png';
+import plusIcon from '@/images/main_page_park/plus.png';
+import { DASHBOARD_PAGES } from "@/config/pages-url.config";
 
 
 
@@ -87,16 +88,19 @@ export default function Home() {
        ))} 
       </div>
 
-      <button 
-        className="fixed bottom-10 right-10 bg-yellow-500 rounded-full w-16 h-16 flex items-center justify-center shadow-lg"
-      >
-        <Image 
-          src={plusIcon} 
-          alt="Plus Icon" 
-          width={18} 
-          height={18}
-        />
-      </button>
+      <button
+      className="fixed bottom-10 right-10 bg-yellow-500 rounded-full w-16 h-16 flex items-center justify-center shadow-lg"
+      onClick={() => {
+        window.location.href = DASHBOARD_PAGES.CREATE; 
+      }}
+    >
+      <Image
+        src={plusIcon}
+        alt="Plus Icon"
+        width={18}
+        height={18}
+      />
+    </button>
     </div>
   );
 }

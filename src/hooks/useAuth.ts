@@ -28,7 +28,7 @@ export function useAuth(
         : authService.registration(data);
     },
     onSuccess: () => {
-      if (isLoginForm) push(DASHBOARD_PAGES.HOME)
+      if (isLoginForm) push(DASHBOARD_PAGES.BUSINESS_CARS)
       else setIsLoginForm(true)
     },
     onError: (error) => {
