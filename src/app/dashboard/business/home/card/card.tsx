@@ -1,20 +1,29 @@
-"use client";
 import Calendar from "@/components/calendar/Calendar";
 import { CarCardProps, statusStyles } from "@/types/car.type";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import calendarIcon from '@/images/car_card/buttons/calendar_logo.png';
 import deleteIcon from '@/images/car_card/buttons/bucket_logo.png';
 import { DASHBOARD_PAGES } from "@/config/pages-url.config";
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+  const [calendarPosition, setCalendarPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const calendarButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const toggleCalendarVisibility = () => {
     setIsCalendarVisible(!isCalendarVisible);
   };
 
-  //TODO не выносим в сервис, т.к. не совсем дефолт запрос,
-  //можно убрать если найдете более удобный вариант получения картинок с минио
+  useEffect(() => {
+    if (isCalendarVisible && calendarButtonRef.current) {
+      const buttonRect = calendarButtonRef.current.getBoundingClientRect();
+      setCalendarPosition({
+        top: buttonRect.bottom + window.scrollY, 
+        left: buttonRect.left + window.scrollX, 
+      });
+    }
+  }, [isCalendarVisible]); 
+
   const minio = "http://localhost:9002/cars/";
 
   return (
@@ -37,7 +46,6 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
             <span className={`ml-2 w-3 h-3 rounded-full ${statusStyles[car.status]}`}></span>
           </p>
         </div>
-
         <p className="text-black text-lg font-medium mb-2">
           {car.class} | {car.transmission}
         </p>
@@ -73,7 +81,6 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           </p>
         </div>
 
-
         <div className="flex gap-2 justify-between pt-2 mb-7">
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 font-medium text-sm w-1/3"
@@ -84,6 +91,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
             Подробнее
           </button>
           <button
+            ref={calendarButtonRef} // Привязываем реф
             onClick={toggleCalendarVisibility}
             className="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 font-medium text-sm w-1/3 flex items-center justify-center gap-2"
           >
@@ -99,10 +107,14 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
       {isCalendarVisible && (
         <div
-          className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4 z-50 bg-white shadow-lg p-4 rounded-lg"
-          style={{ width: "590px" }}
+          className="absolute z-50 bg-white shadow-lg p-4 rounded-lg"
+          style={{
+            top: `${calendarPosition.top + 10}px`,
+            left: `${calendarPosition.left-200}px`,
+            width: "590px",
+          }}
         >
-          <Calendar />
+          <Calendar carId={car.id} />
         </div>
       )}
     </div>
