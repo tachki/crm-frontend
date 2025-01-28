@@ -1,6 +1,6 @@
 import { axiosWithAuth } from "@/api/interceptors";
 import { CarDto } from "@/types/car.type";
-import { ICar } from '@/types/car.type'
+
 
 export const CarService = {
 
@@ -20,22 +20,6 @@ export const CarService = {
         throw error;
       }
     },
-
-    async getCarById(carId: string) {
-        try {
-        const response = await axiosWithAuth.get<CarDto>(`/v1/cars/${carId}`);
-
-        if (response.status === 200 && response.data) {
-            return response.data; 
-        } else {
-            throw new Error('Не удалось получить данные машины');
-        }
-        } catch (error) {
-        console.error('Ошибка при получении машины:', error);
-        throw error;
-        }
-    },
-
 
     async getCar(id: string) {
       try {
@@ -69,7 +53,46 @@ export const CarService = {
         console.error('Произошла ошибка при создании машины:', error);
         throw error;
       }
-    }
+    },
+
+    async deleteCar(carId: string) {
+      try {
+        const response = await axiosWithAuth.delete(
+          `/v1/cars/${carId}`
+        );
+  
+        if (response.status === 200) {
+          console.log('Машина удалена');
+          return response.data;
+        } else {
+          throw new Error('Не удалось удалить машину');
+        }
+      } catch (error) {
+        console.error('Ошибка при удалении машины:', error);
+        throw error;
+      }
+    },
+
+    async updateCar(carId: string, carData: any) {
+      try {
+        const response = await axiosWithAuth.patch(
+          `/v1/cars/${carId}`,
+          carData
+        );
+  
+        if (response.status === 200) {
+          console.log('Машина обновлена');
+          return response.data;
+        } else {
+          throw new Error('Не удалось обновить информацию о машине');
+        }
+      } catch (error) {
+        console.error('Ошибка при обновлении информации о машине:', error);
+        throw error;
+      }
+    },
+
+
 };
 
 
