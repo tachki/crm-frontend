@@ -7,11 +7,11 @@ import Image from 'next/image';
 
 
 //TODO временная заглушка пока нет основного сервиса и доки по резервации
-const fetchReservations = async () => {
-  const response = await fetch("http://localhost:8081/v1/cars/reservations/1");
-  const data = await response.json();
-  return data.reservations || [];
-};
+// const fetchReservations = async () => {
+//   const response = await fetch("http://localhost:8081/v1/cars/reservations/1");
+//   const data = await response.json();
+//   return data.reservations || [];
+// };
 
 const Calendar: React.FC = () => {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
@@ -21,8 +21,8 @@ const Calendar: React.FC = () => {
 
   useEffect(() => {
     const getReservations = async () => {
-      const fetchedReservations = await fetchReservations();
-      setReservations(fetchedReservations);
+      // const fetchedReservations = await fetchReservations();
+      // setReservations(fetchedReservations);
     };
     getReservations();
   }, []);

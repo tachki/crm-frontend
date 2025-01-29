@@ -9,6 +9,7 @@
   --regular-text-size: 18px;
   --grey: rgba(0, 0, 0, 0.5);
   --error-red: #F23434;
+  --orange: #F6C61A;
 }
 
 @media (prefers-color-scheme: light) {

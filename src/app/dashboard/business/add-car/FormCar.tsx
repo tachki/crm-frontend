@@ -1,10 +1,10 @@
 "use client";
 
 import { useForm, SubmitHandler } from "react-hook-form";
-import { IСhoiceCar } from "@/types/car.type";
 import styles from "./Cars.module.css";
 import { useAppDispatch } from "@/hooks/redux";
 import { setCar } from "@/store/slice/isCarSlice";
+import { IСhoiceCar } from "@/types/auth.type";
 
 export default function FormCar() {
   const dispatch = useAppDispatch()

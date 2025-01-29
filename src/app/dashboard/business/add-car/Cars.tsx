@@ -1,14 +1,14 @@
 "use client";
-import {useForm, SubmitHandler} from "react-hook-form";
-import {IСhoiceCar} from "@/types/auth.type";
 import styles from "./Cars.module.css";
-import {useAppDispatch} from "@/hooks/redux";
-import {setCar} from "@/store/slice/isCarSlice";
-import {Field} from "@/components/fields/Field";
-import {useEffect, useState} from "react";
-import {number} from "prop-types";
+import {useEffect, useRef, useState} from "react";
+import { CarService } from "@/services/car.service";
+import { DASHBOARD_PAGES } from "@/config/pages-url.config";
+import { Button } from '@/components/buttons/Button'
+import Link from 'next/link'
 
 export default function Cars() {
+    // TODO add it when will be needed
+    //const dispatch = useAppDispatch();
     const carTransmissionsData = ['Автоматическая', 'Механическая']
     const carClassData = ['Эконом класс', 'Бизнес класс', 'Внедорожники', 'Грузовые микроавтобусы', 'Кабриолеты', 'Купе', 'Лимузины', 'Микроавтобусы', 'Мотоциклы', 'Пассажирские микроавтобусы', 'Универсалы']
 
@@ -18,82 +18,76 @@ export default function Cars() {
     const [carTransmission, setCarTransmission] = useState('')
     const [carClass, setCarClass] = useState('')
     const [carPrice, setCarPrice] = useState(1)
-    const [carYear, setCarYear] = useState(2024)
+    const [carYear, setCarYear] = useState(2010)
     const [carDescription, setCarDescription] = useState('')
+    const [photos, setPhotos] = useState<File[]>([]);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const [addCarData, setAddCarData] = useState({});
+
+    const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true)
 
     const createCar = async () => {
-        const carData = {
-            car: {
-                brand: "Alfa Romeo",
-                business_id: "string",
-                class: "Эконом класс",
-                created_at: "string",
-                description: "string",
-                id: "string",
-                images: [
-                    "string"
-                ],
-                model: "string",
-                preview_image: "string",
-                price_per_day: 0,
-                status: "string",
-                transmission: "Автоматическая",
-                updated_at: "string",
-                year: "string"
-            }
-        };
-
+        const formData = new FormData();
+      
+      
+        formData.append('brand', carBrand);
+        formData.append('class', carClass);
+        formData.append('description', carDescription);
+        formData.append('model', carModel);
+        formData.append('price_per_day', carPrice.toString());
+        formData.append('transmission', carTransmission);
+        formData.append('year', carYear.toString());
+      
+     
+        photos.forEach((photo) => {
+          formData.append(`image`, photo);
+        });
+      
         try {
-            const response = await fetch("http://localhost:8080/v1/cars/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(carData)
-            });
-
-            if (!response.ok) {
-                throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
-            }
-
-            const responseData = await response.json();
-            console.log("Машина успешно создана:", responseData);
+          const createdCar = await CarService.createCar(formData);
+          console.log('Созданная машина:', createdCar);
         } catch (error) {
-            console.error("Произошла ошибка при создании машины:", error);
+          console.error('Ошибка при создании машины:', error);
         }
-    };
+      };
+
+    const handleCancelAddCar = () => {
+        setIsFieldPreparing(true)
+        setCarBrand('')
+        setCarModel('')
+        setCarNumber('')
+        setCarTransmission('')
+        setCarClass('')
+        setCarPrice(0)
+        setCarYear(2010)
+        setCarDescription('')
+        setPhotos([])
+    }
+
+    const handleAddCar = () => {
+        setIsFieldPreparing(false)
+        if (carBrand && carModel && carNumber && carTransmission && carClass && carPrice && carYear && carDescription && photos.length) {
+            setAddCarData({
+                brand: carBrand,
+                class: carClass,
+                description: carDescription,
+                images: photos,
+                model: carModel,
+                price_per_day: carPrice,
+                transmission: carTransmission,
+                year: carYear
+            })
+            // TODO add it when will be needed
+            //dispatch(setCar(addCarData));
+        }
+    }
 
     useEffect(() => {
         console.log('--------------------------------------')
         createCar()
-        console.log('brand', carBrand)
-        console.log('carTransmission', carTransmission)
-        console.log('carClass', carClass)
-        console.log('carPrice', carPrice)
-        console.log('carNumber', carNumber)
-        console.log('carModel', carModel)
-        console.log('carYear', carYear)
-        console.log('carDescription', carDescription)
-    }, [carBrand, carTransmission, carClass, carPrice, carYear, carNumber, carModel, carDescription])
-
-    const dispatch = useAppDispatch();
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: {errors},
-    } = useForm<IСhoiceCar>();
-    const [photos, setPhotos] = useState<File[]>([]);
-
-    const onSubmit: SubmitHandler<IСhoiceCar> = (data) => {
-        reset();
-        if (!data) {
-            console.log("Ошибка");
-        } else {
-            dispatch(setCar(data));
-            console.log(data);
-        }
-    };
+        console.log('addCarData', addCarData)
+    }, [addCarData])
 
     const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -120,73 +114,87 @@ export default function Cars() {
         setPhotos(photos.filter((_, i) => i !== index));
     };
 
-
-
+    const openFilePicker = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
 
     return (
         <div>
             <h1 className={styles.h1}>Добавление нового автомобиля</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={(e)=> {e.preventDefault()}}>
                 <div
                     className={`flex flex-row flex-wrap items-center justify-center gap-4 mb-5 mt-5`}
                 >
-                    <div style={{width: '270px'}}>
+                    <div className={styles.inputWrap}>
                         <label className={styles.labelBottom}>Марка</label>
                         <input type="text"
-                               className={`mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
-                               style={{height: '55px', borderRadius: '10px'}}
+                        value={carBrand}
+                               className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
                                placeholder={'Введите марку'}
                                onChange={(e) => setCarBrand(e.target.value)}
+                               style={(isFieldPreparing || carBrand) === '' ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
                         />
                     </div>
 
-                    <div style={{width: '270px'}}>
+                    <div className={styles.inputWrap}>
                         <label className={styles.labelBottom}>Модель</label>
                         <input type="text"
-                               className={`mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
-                               style={{height: '55px', borderRadius: '10px'}}
+                        value={carModel}
+                               className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
                                placeholder={'Введите модель'}
                                onChange={(e) => setCarModel(e.target.value)}
+                               style={(isFieldPreparing || carModel) === '' ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+
                         />
                     </div>
 
-                    <div style={{width: '270px'}}>
+                    <div className={styles.inputWrap}>
                         <label className={styles.labelBottom}>Год выпуска</label>
                         <input type="number"
-                               className={`mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
-                               style={{height: '55px', borderRadius: '10px'}}
+                        value={carYear}
+                               className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
                                onChange={((e) => {
-                                   if (Number(e.target.value) < 2000) {
-                                       e.target.value = '2000'
+                                   if (Number(e.target.value) < 1) {
+                                       e.target.value = '1'
                                    } else if (Number(e.target.value) > 2025) {
                                        e.target.value = '2025'
                                    }
                                    setCarYear(Number(e.target.value))
                                })}
+                               style={(isFieldPreparing || carYear) === 1 ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+
                         />
                     </div>
-                        <div style={{width: '270px'}}>
+                        <div className={styles.inputWrap}>
                             <label className={styles.labelBottom}>Номерной знак</label>
                             <input type="text"
-                                   className={`mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
-                                   style={{height: '55px', borderRadius: '10px'}}
+                            value={carNumber}
+                                   className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
+
                                    placeholder={'Введите номер'}
                                    onChange={(e) => setCarNumber(e.target.value)}
+                                   style={(isFieldPreparing || carNumber) === '' ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+
                             />
                         </div>
                 </div>
 
                 <div
                     className={`flex flex-row flex-wrap items-center justify-center gap-4 mb-5 mt-5`}
+
                 >
-                    <div>
+                    <div className={styles.inputWrap}>
                         <label className={styles.labelBottom}>Класс</label>
                         <select
                             className={styles.choiceBottom}
-                            {...register("stamp", {required: "Класс обязателен"})}
                             onChange={(e)=>{
                                 setCarClass(e.target.value)
                             }}
+                            value={carClass}
+                            style={(isFieldPreparing || carClass) === '' ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+
                         >
                             <option value="">Выберите класс</option>
 
@@ -194,17 +202,18 @@ export default function Cars() {
                                 <option key={carClass + index} value={carClass}>{carClass}</option>
                             ))}
                         </select>
-                        {errors.classCar && <p>{errors.classCar.message}</p>}
                     </div>
 
-                    <div>
+                    <div className={styles.inputWrap}>
                         <label className={styles.labelBottom}>Тип КПП</label>
                         <select
                             className={styles.choiceBottom}
-                            {...register("stamp", {required: "Марка обязательна"})}
                             onChange={(e)=>{
                                 setCarTransmission(e.target.value)
                             }}
+                            value={carTransmission}
+                            style={(isFieldPreparing || carTransmission) === '' ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+
                         >
                             <option value="">Выберите тип КПП</option>
 
@@ -212,40 +221,44 @@ export default function Cars() {
                                 <option key={carTransmission + index} value={carTransmission}>{carTransmission}</option>
                             ))}
                         </select>
-                        {errors.classCar && <p>{errors.classCar.message}</p>}
                     </div>
 
-                    <div style={{width: '270px'}}>
+                    <div className={styles.inputWrap}>
                         <label className={styles.labelBottom}>Цена (BYN в сутки)</label>
                         <input type="number"
-                               className={`mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
-                               style={{height: '55px', borderRadius: '10px'}}
+                               value={carPrice}
+                               placeholder={"Введите цену"}
+                               className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
+
                                onChange={((e) => {
                                    if (Number(e.target.value) < 1) {
                                        e.target.value = '1'
                                    }
                                    setCarPrice(Number(e.target.value))
                                })}
+                               style={(isFieldPreparing || carPrice) === 1 ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+
                         />
                     </div>
                 </div>
 
                 <div className={styles.contentText}>
-                    <label>Описание</label>
+                    <label className={styles.labelBottom}>Описание</label>
                     <textarea
+                        value={carDescription}
                         placeholder="Введите описание"
-                        {...register("text", {required: "Описание обязательно"})}
                         onChange={(e) => setCarDescription(e.target.value)}
+                        style={(isFieldPreparing || carDescription) === '' ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
                     ></textarea>
                 </div>
 
                 <div className={`${styles.addPhotosContainer}`}>
                     <div className={styles.addPhotosTitle}>
                         {photos.length === 0 ? (
-                            <label>Загрузите фотографии</label>
+                            <label className={styles.labelBottom}>Загрузите фотографии</label>
                         ) : (
                             <>
-                                <label>Фотографии</label>
+                                <label className={styles.labelBottom}>Фотографии</label>
                                 <label
                                     className={`${styles.fontGrayThin} ${styles.imagesCounter}`}
                                 >
@@ -258,25 +271,28 @@ export default function Cars() {
                         className={styles.addPhotosWrapper}
                         onDragOver={(e) => e.preventDefault()}
                         onDrop={handleDrop}
+
                     >
                         {photos.length === 0 && (
-                            <div className={styles.addFirstPhotoWrapper}>
-                                <label>Выберите или перетащите фотографии в область</label>
-                                <label className={styles.fontGrayThin}>
+                            <div className={styles.addFirstPhotoWrapper}
+                                 style={(!isFieldPreparing || photos.length) ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
+                                 onClick={openFilePicker}
+                            >
+                                <label className={`${styles.labelBottom} ${styles.addPhotoText}`}>Выберите или перетащите фотографии в область</label>
+                                <label className={`${styles.fontGrayThin} ${styles.addPhotoText}`}>
                                     Форматы JPEG, JPG или PNG до 10 МБ каждый
                                 </label>
                                 <input
                                     type="file"
                                     accept="image/jpeg,image/jpg,image/png"
                                     multiple
+                                    ref={fileInputRef}
                                     onChange={handleAddPhoto}
                                 />
                                 <button
                                     className={styles.addPhotoButton}
                                     type="button"
-                                    // onClick={() =>
-                                    //   document.querySelector('input[type="file"]')?.click()
-                                    // }
+                                    onClick={openFilePicker}
                                 >
                                     Выбрать фотографии
                                 </button>
@@ -313,11 +329,7 @@ export default function Cars() {
                             {photos.length > 0 && photos.length < 8 && (
                                 <div
                                     className={styles.addMorePhotos}
-                                    // onClick={() =>
-                                    //   document.querySelector('input[type="file"]')?.click()
-                                    // }
-
-                                    // ?
+                                    onClick={openFilePicker}
                                 >
                                     <label>
                                         <svg
@@ -350,11 +362,12 @@ export default function Cars() {
                                             />
                                         </svg>
                                     </label>
-                                    <label>Добавить</label>
+                                    <label className={styles.labelBottom}>Добавить</label>
                                     <input
                                         type="file"
                                         accept="image/jpeg,image/jpg,image/png"
                                         multiple
+                                        ref={fileInputRef}
                                         onChange={handleAddPhoto}
                                     />
                                 </div>
@@ -363,15 +376,19 @@ export default function Cars() {
                     </div>
                 </div>
                 <div className="flex flex-row gap-6 justify-between flex-wrap">
+                    <Link href={DASHBOARD_PAGES.BUSINESS_CARS}>
                     <button
                         className={`${styles.whiteButton}`}
                         style={{margin: "0 auto 0 auto"}}
+                        onClick={handleCancelAddCar}
                     >
                         Отменить
                     </button>
+                    </Link>
                     <button
                         className={`${styles.blueButton}`}
                         style={{margin: "0 auto"}}
+                        onClick={handleAddCar}
                     >
                         Создать
                     </button>
