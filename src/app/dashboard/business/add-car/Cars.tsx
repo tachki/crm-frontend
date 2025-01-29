@@ -276,7 +276,6 @@ export default function Cars() {
                         {photos.length === 0 && (
                             <div className={styles.addFirstPhotoWrapper}
                                  style={(!isFieldPreparing || photos.length) ? {backgroundColor: 'rgba(255,0,0,0.025)', border: '2px solid red'} : {}}
-                                 onClick={openFilePicker}
                             >
                                 <label className={`${styles.labelBottom} ${styles.addPhotoText}`}>Выберите или перетащите фотографии в область</label>
                                 <label className={`${styles.fontGrayThin} ${styles.addPhotoText}`}>
