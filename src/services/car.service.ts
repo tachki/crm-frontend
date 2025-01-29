@@ -1,6 +1,5 @@
 import { axiosWithAuth } from "@/api/interceptors";
 import { CarDto } from "@/types/car.type";
-import { ICar } from '@/types/car.type'
 
 
 export const CarService = {
