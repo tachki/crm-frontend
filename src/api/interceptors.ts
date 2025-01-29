@@ -19,7 +19,6 @@ const axiosWithAuth = axios.create(options)
 
 axiosWithAuth.interceptors.request.use(config => {
 	config.headers.Authorization = `Bearer ${getAccessToken()}`
-	console.log('Retrieved access token:', getAccessToken());
 	return config
 })
 
