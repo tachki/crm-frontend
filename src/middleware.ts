@@ -16,8 +16,8 @@ export async function middleware(
   
 
   if (isAuthPage && refreshToken) {
-    console.log("redirect on: ", new URL(DASHBOARD_PAGES.HOME, url))
-    return NextResponse.redirect(new URL(DASHBOARD_PAGES.HOME, url))
+    console.log("redirect on: ", new URL(DASHBOARD_PAGES.BUSINESS_CARS, url))
+    return NextResponse.redirect(new URL(DASHBOARD_PAGES.BUSINESS_CARS, url))
   }
 
   if (isAuthPage) {

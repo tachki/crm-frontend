@@ -7,6 +7,14 @@ interface CalendarProps {
   carId: string; 
 }
 
+
+//TODO временная заглушка пока нет основного сервиса и доки по резервации
+// const fetchReservations = async () => {
+//   const response = await fetch("http://localhost:8081/v1/cars/reservations/1");
+//   const data = await response.json();
+//   return data.reservations || [];
+// };
+
 const Calendar: React.FC<CalendarProps> = ({ carId }) => {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [markedDates, setMarkedDates] = useState<Date[]>([]); // серые дни
@@ -18,7 +26,7 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
     const getReservations = async () => {
       // Подставьте свой API запрос с carId
       // const fetchedReservations = await fetchReservations(carId);
-      // setReservations(fetchedReservations);
+
     };
     getReservations();
   }, [carId]);
