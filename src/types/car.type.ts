@@ -35,31 +35,6 @@ export interface ICar {
   year: string
 }
 
-
-
-export interface Car {
-    id: string;
-    brand: string;
-    model: string;
-    class: string;
-    transmission: string;
-    description: string;
-    year: string;
-    pricePerDay: number;
-    businessId: string;
-    previewImage: string;
-    status: CarStatus;
-    createdAt: Date;
-    updatedAt: Date;
-    images?: string[];
-    totalMileage: number; 
-    averageMileage: number;
-    averageConsumption: number;
-    totalExpenses: number; 
-    rating: string; 
-    downtimeCoefficient: number;
-}
-
 export type CarStatus = 
   | "Бронь" 
   | "Арендовано" 

@@ -107,7 +107,7 @@ export default function Auth() {
 						</p>
 					)}
 
-					<Button className='mt-6 mb-8'>
+					<Button className='mt-6 mb-8 w-full bg-primary text-white'>
 						{isLoginForm ? "Войти" : "Зарегестрироваться"}
 					</Button>
 

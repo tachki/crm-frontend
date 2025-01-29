@@ -1,21 +1,23 @@
-"use client";
-import Calendar from "@/components/calendar/Calendar";
-import { CarCardProps, statusStyles } from "@/types/car.type";
-import React, { useState } from "react";
-import calendarIcon from '@/images/car_card/buttons/calendar_logo.png';
-import deleteIcon from '@/images/car_card/buttons/bucket_logo.png';
-import { DASHBOARD_PAGES } from "@/config/pages-url.config";
+"use client"
+
+import Calendar from "@/components/calendar/Calendar"
+import { CarCardProps, statusStyles } from "@/types/car.type"
+import React, { useState } from "react"
+import calendarIcon from '@/images/car_card/buttons/calendar_logo.png'
+import deleteIcon from '@/images/car_card/buttons/bucket_logo.png'
+import { DASHBOARD_PAGES } from "@/config/pages-url.config"
+import Link from 'next/link'
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
-  const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+  const [isCalendarVisible, setIsCalendarVisible] = useState(false)
 
   const toggleCalendarVisibility = () => {
-    setIsCalendarVisible(!isCalendarVisible);
-  };
+    setIsCalendarVisible(!isCalendarVisible)
+  }
 
   //TODO не выносим в сервис, т.к. не совсем дефолт запрос,
   //можно убрать если найдете более удобный вариант получения картинок с минио
-  const minio = "http://localhost:9002/cars/";
+  const minio = "http://localhost:9002/cars/"
 
   return (
     <div className="flex gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
@@ -28,7 +30,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
       </div>
 
       <div className="w-1/2 p-2 flex mt-4 flex-col justify-between h-full">
-        <div className="flex justify-between items-center mb-2"> 
+        <div className="flex justify-between items-center mb-2">
           <h2 className="text-xl font-extrabold text-black">
             {car.brand} {car.model} ({car.year})
           </h2>
@@ -42,7 +44,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           {car.class} | {car.transmission}
         </p>
 
-        <div className="text-base grid grid-cols-1 mb-4"> 
+        <div className="text-base grid grid-cols-1 mb-4">
           <p>
             <span className="font-light text-gray-800">Общий пробег: </span>
             <span className="text-black font-medium">{car.totalMileage} км</span>
@@ -77,11 +79,13 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
         <div className="flex gap-2 justify-between pt-2 mb-7">
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 font-medium text-sm w-1/3"
-            onClick={() => {
-              window.location.href = DASHBOARD_PAGES.CAR_DETAILS.replace('[id]', car.id);
-            }}
+            // onClick={() => {
+            //   window.location.href = DASHBOARD_PAGES.CAR_DETAILS.replace('[id]', car.id)
+            // }}
           >
-            Подробнее
+            <Link href={`/${car.id}`}>
+              Подробнее
+            </Link>
           </button>
           <button
             onClick={toggleCalendarVisibility}
@@ -106,7 +110,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default CarCard;
+export default CarCard

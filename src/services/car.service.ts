@@ -1,6 +1,5 @@
 import { axiosWithAuth } from "@/api/interceptors";
-import { CarDto } from "@/types/car.type";
-import { ICar } from '@/types/car.type'
+import { CarDto, ICar } from "@/types/car.type";
 
 export const CarService = {
 
@@ -26,7 +25,7 @@ export const CarService = {
         const response = await axiosWithAuth.get<CarDto>(`/v1/cars/${carId}`);
 
         if (response.status === 200 && response.data) {
-            return response.data; 
+            return response.data;
         } else {
             throw new Error('Не удалось получить данные машины');
         }
@@ -36,19 +35,10 @@ export const CarService = {
         }
     },
 
-
     async getCar(id: string) {
-      try {
-        const response = await axiosWithAuth.get<CarDto>(`/v1/cars/${id}`);
-        return response;
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.error('Ошибка при получении данных автомобиля:', error.message);
-        } else {
-          console.error('Неизвестная ошибка:', error);
-        }
-        throw error;
-      }
+      const response = await axiosWithAuth.get<ICar>(`/v1/cars/${id}`);
+
+      return response;
     },
 
     async createCar(formData: FormData) {

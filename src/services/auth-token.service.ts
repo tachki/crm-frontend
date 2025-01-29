@@ -39,6 +39,9 @@ export const saveUserStorage = (user: IUser) => {
 }
 
 export const getUserStorage = (): IUser | null => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
   const userJson = Cookies.get('userData');
   if (userJson) {
     try {
@@ -48,7 +51,17 @@ export const getUserStorage = (): IUser | null => {
     }
   }
   return null;
-}
+	// return {
+	// 	business_id: '1',
+	// 	created_at: '2023-01-01T00:00:00Z',
+	// 	id: '123',
+	// 	is_verified: true,
+	// 	login: 'adminUser',
+	// 	updated_at: '2023-01-02T00:00:00Z',
+	// 	user_type: 'admin'
+	// };
+};
+
 
 export const removeFromStorage = () => {
 	Cookies.remove(EnumTokens.ACCESS_TOKEN)
