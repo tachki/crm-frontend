@@ -92,3 +92,4 @@ export const CarService = {
         throw error;
       }
     },
+  }
