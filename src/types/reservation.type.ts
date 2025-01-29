@@ -9,3 +9,7 @@ export interface Reservation {
     updated_at: string;
     user_id: string;
 }
+
+export interface ReservationsResponseDto {
+    reservations: Reservation[];
+}

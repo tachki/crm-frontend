@@ -54,7 +54,7 @@ export default function Car() {
           <Slider images={imagesArr} />
         </div>
         <div className='flex-1'>
-          <Calendar />
+          <Calendar carId={carId} />
         </div>
       </div>
 
