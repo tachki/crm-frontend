@@ -20,7 +20,7 @@ export const CarService = {
       }
     },
     async getCar(id: string) {
-      const response = await axiosWithAuth.get<ICar>(`/v1/cars/${id}`);
+      const response = await axiosWithAuth.get<CarDto>(`/v1/cars/${id}`);
       return response;
     },
 
