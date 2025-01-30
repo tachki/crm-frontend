@@ -79,9 +79,6 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
         <div className="flex gap-2 justify-between pt-2 mb-7">
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 font-medium text-sm w-1/3"
-            // onClick={() => {
-            //   window.location.href = DASHBOARD_PAGES.CAR_DETAILS.replace('[id]', car.id)
-            // }}
           >
             <Link href={`/${car.id}`}>
               Подробнее
@@ -106,7 +103,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4 z-50 bg-white shadow-lg p-4 rounded-lg"
           style={{ width: "590px" }}
         >
-          <Calendar />
+          <Calendar carId={car.id} />
         </div>
       )}
     </div>

@@ -92,9 +92,6 @@ export default function Home() {
       <Link href={DASHBOARD_PAGES.CREATE}>
         <div
           className="fixed bottom-10 right-10 bg-yellow-500 rounded-full w-16 h-16 flex items-center justify-center shadow-lg"
-        // onClick={() => {
-        //   window.location.href = DASHBOARD_PAGES.CREATE; 
-        // }}
         >
           <Image
             src={plusIcon}
@@ -104,20 +101,6 @@ export default function Home() {
           />
         </div>
       </Link>
-
-      {/* <button
-      className="fixed bottom-10 right-10 bg-yellow-500 rounded-full w-16 h-16 flex items-center justify-center shadow-lg"
-      // onClick={() => {
-      //   window.location.href = DASHBOARD_PAGES.CREATE; 
-      // }}
-    >
-        <Image
-          src={plusIcon}
-          alt="Plus Icon"
-          width={18}
-          height={18}
-        />
-    </button> */}
     </div>
   )
 }

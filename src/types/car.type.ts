@@ -92,7 +92,7 @@ export function mapCarDtoToCar(dto: CarDto): Car {
     averageMileage: 0, 
     averageConsumption: 0,
     totalExpenses: 0, 
-    rating: 'N/A', 
+    rating: 'N/A',
     downtimeCoefficient: 0, 
     businessId: dto.business_id,
   };
