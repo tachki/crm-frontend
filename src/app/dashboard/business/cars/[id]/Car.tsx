@@ -32,7 +32,7 @@ export default function Car() {
           {/* Галерея */}
         </div>
         <div className='flex-1'>
-          <Calendar />
+          
         </div>
       </div>
 
@@ -46,11 +46,14 @@ export default function Car() {
           className={'px-28 bg-transparent hover:bg-primary hover:text-white'}
         />
         </Link>
+        <Link href={`${DASHBOARD_PAGES.CAR_DETAILS.replace('[id]', carId)}/update`}>
           <Button
             children={'Изменить'}
             className={'bg-orangeEdit border-none'}
             icon={'/edit-icon.svg'}
           />
+        </Link>
+
   
         <Button
           children={'Удалить'}
