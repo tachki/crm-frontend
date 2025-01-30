@@ -3,47 +3,12 @@ import styles from "./Cars.module.css";
 import { useEffect, useRef, useState } from "react";
 import { CarService } from "@/services/car.service";
 import { DASHBOARD_PAGES } from "@/config/pages-url.config";
-import { Button } from "@/components/buttons/Button";
 import Link from "next/link";
+import { carBrandData, carClassData, carTransmissionsData } from "@/utils/constants";
 
 export default function Cars() {
   // TODO add it when will be needed
   //const dispatch = useAppDispatch();
-  const carTransmissionsData = ["Автоматическая", "Механическая"];
-  const carClassData = [
-    "Эконом класс",
-    "Бизнес класс",
-    "Внедорожники",
-    "Грузовые микроавтобусы",
-    "Кабриолеты",
-    "Купе",
-    "Лимузины",
-    "Микроавтобусы",
-    "Мотоциклы",
-    "Пассажирские микроавтобусы",
-    "Универсалы",
-  ];
-  const carBrandData = [
-    "Alfa Romeo",
-    "Audi",
-    "BMW",
-    "Chevrolet",
-    "Chrysler",
-    "Dodge",
-    "Ferrari",
-    "Ford",
-    "Hummer",
-    "Lincoln",
-    "Maybach",
-    "Mazda",
-    "Mercedes",
-    "Opel",
-    "Peugeot",
-    "Porsche",
-    "Renault",
-    "Skoda",
-    "Volkswagen",
-  ];
 
   const [carBrand, setCarBrand] = useState("");
   const [carModel, setCarModel] = useState("");
