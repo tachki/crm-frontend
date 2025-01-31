@@ -4,52 +4,53 @@ import { useEffect, useRef, useState } from "react";
 import { CarService } from "@/services/car.service";
 import { DASHBOARD_PAGES } from "@/config/pages-url.config";
 import Link from "next/link";
-import { carBrandData, carClassData, carTransmissionsData } from "@/utils/constants";
+import {
+  carBrandData,
+  carClassData,
+  carTransmissionsData,
+} from "@/utils/constants";
 import { useParams } from "next/navigation";
 import { useCar } from "../../hooks/useCar";
 
 export default function Update() {
   // TODO add it when will be needed
   //const dispatch = useAppDispatch();
-    const { id } = useParams()
-    const carId = Array.isArray(id) ? id.join('') : id || ''
-  
-    const { data, isLoading } = useCar(carId)
-    useEffect(()=> {
-        console.log('data', data)
-    }, [data])
+  const { id } = useParams()
+  const carId = Array.isArray(id) ? id.join('') : id || ''
+
+  const { data, isLoading } = useCar(carId)
+  useEffect(()=> {
+      console.log('data', data)
+  }, [data])
 
   const [carNumber, setCarNumber] = useState("");
   const [carPrice, setCarPrice] = useState(1);
   const [carDescription, setCarDescription] = useState("");
   const [photos, setPhotos] = useState<File[]>([]);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [addCarData, setAddCarData] = useState({});
+  const [updateCarData, setUpdateCarData] = useState({});
 
   const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true);
 
   const updateCar = async () => {
-    const formData = new FormData();
+    const carData = new FormData();
 
-    formData.append("description", carDescription);
-    formData.append("price_per_day", carPrice.toString());
+    carData.append("description", carDescription);
+    carData.append("price_per_day", carPrice.toString());
+    carData.append("image", '');
 
-    //formData.append("brand", data?.data.car.brand);
-    //formData.append("class", data?.data.car.class);
-    //formData.append("model", data?.data.car.model);
-    //formData.append("transmission", data?.data.car.transmission);
-    //formData.append("year", data?.data.car.year);
 
-    photos.forEach((photo) => {
-      formData.append(`image`, photo);
-    });
+    //photos.forEach((photo) => {
+    //  carData.append(`image`, photo);
+    //});
 
     try {
-      const createdCar = await CarService.updateCar(carId, formData);
-      console.log("Созданная машина:", createdCar);
+      const createdCar = await CarService.updateCar(carId, carData);
+      console.log("Обновленная машина:", createdCar);
     } catch (error) {
-      console.error("Ошибка при создании машины:", error);
+      console.error("Ошибка при обновлении машины:", error);
     }
   };
 
@@ -61,7 +62,7 @@ export default function Update() {
     setPhotos([]);
   };
 
-  const handleAddCar = () => {
+  const handleUpdateCar = () => {
     setIsFieldPreparing(false);
     if (
       carNumber &&
@@ -69,21 +70,20 @@ export default function Update() {
       carDescription &&
       photos.length
     ) {
-      setAddCarData({
+      setUpdateCarData({
         description: carDescription,
         images: photos,
         price_per_day: carPrice,
       });
       // TODO add it when will be needed
-      //dispatch(setCar(addCarData));
+      //dispatch(setCar(updateCarData));
     }
   };
 
   useEffect(() => {
-    console.log('--------------------------------------')
-    updateCar()
-    console.log('addCarData', addCarData)
-}, [addCarData])
+    updateCar();
+    console.log("updateCarData", updateCarData);
+  }, [updateCarData]);
 
   const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -118,7 +118,17 @@ export default function Update() {
 
   return (
     <div>
-      <h1 className={styles.h1}>Редактирование авто <br/> {data?.data.car.brand} {data?.data.car.model} ({data?.data.car.year}) <span></span> {data?.data.car.class === 'Эконом класс' ? 'Эконом' : data?.data.car.class} <span></span> {data?.data.car.transmission === 'Автоматическая' ? 'Автомат' : data?.data.car.transmission}</h1>
+      <h1 className={styles.h1}>
+        Редактирование авто <br /> {data?.data.car.brand} {data?.data.car.model}{" "}
+        ({data?.data.car.year}) <span></span>{" "}
+        {data?.data.car.class === "Эконом класс"
+          ? "Эконом"
+          : data?.data.car.class}{" "}
+        <span></span>{" "}
+        {data?.data.car.transmission === "Автоматическая"
+          ? "Автомат"
+          : data?.data.car.transmission}
+      </h1>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -257,10 +267,7 @@ export default function Update() {
           </div>
         </div>
 
-        <div
-          className={`flex flex-row flex-wrap items-center gap-4 mb-5 mt-5`}
-        >
-
+        <div className={`flex flex-row flex-wrap items-center gap-4 mb-5 mt-5`}>
           <div className={styles.inputWrap}>
             <label className={styles.labelBottom}>Номерной знак</label>
             <input
@@ -304,7 +311,6 @@ export default function Update() {
           </div>
         </div>
 
-
         <div className={styles.contentText}>
           <label className={styles.labelBottom}>Описание</label>
           <textarea
@@ -330,10 +336,7 @@ export default function Update() {
               Отменить
             </button>
           </Link>
-          <button
-            className={`${styles.blueButton}`}
-            onClick={handleAddCar}
-          >
+          <button className={`${styles.blueButton}`} onClick={handleUpdateCar}>
             Создать
           </button>
         </div>
