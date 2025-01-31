@@ -35,6 +35,12 @@ export default function Update() {
     formData.append("description", carDescription);
     formData.append("price_per_day", carPrice.toString());
 
+    //formData.append("brand", data?.data.car.brand);
+    //formData.append("class", data?.data.car.class);
+    //formData.append("model", data?.data.car.model);
+    //formData.append("transmission", data?.data.car.transmission);
+    //formData.append("year", data?.data.car.year);
+
     photos.forEach((photo) => {
       formData.append(`image`, photo);
     });
@@ -60,8 +66,8 @@ export default function Update() {
     if (
       carNumber &&
       carPrice &&
-      carDescription /*&&
-      photos.length*/
+      carDescription &&
+      photos.length
     ) {
       setAddCarData({
         description: carDescription,
