@@ -35,19 +35,15 @@ export default function Update() {
   const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true);
 
   const updateCar = async () => {
-    const carData = new FormData();
+    const carData = {
+      description: carDescription,
+      price_per_day: carPrice
+    };
 
-    carData.append("description", carDescription);
-    carData.append("price_per_day", carPrice.toString());
-    carData.append("image", '');
-
-
-    //photos.forEach((photo) => {
-    //  carData.append(`image`, photo);
-    //});
+    const carDataJson = JSON.stringify(carData)
 
     try {
-      const createdCar = await CarService.updateCar(carId, carData);
+      const createdCar = await CarService.updateCar(carId, carDataJson);
       console.log("Обновленная машина:", createdCar);
     } catch (error) {
       console.error("Ошибка при обновлении машины:", error);
