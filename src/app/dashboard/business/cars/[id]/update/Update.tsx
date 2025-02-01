@@ -121,7 +121,7 @@ export default function Update() {
           ></textarea>
         </div>
         <div className="flex flex-row gap-6 justify-between m-0 flex-wrap">
-          <Link href={DASHBOARD_PAGES.BUSINESS_CARS}>
+          <Link href={`${DASHBOARD_PAGES.BUSINESS_CARS}/${carId}`}>
             <button
               className={`${styles.whiteButton}`}
               onClick={handleCancelAddCar}

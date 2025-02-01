@@ -6,6 +6,7 @@ import React, { useState } from "react"
 import calendarIcon from '@/images/car_card/buttons/calendar_logo.png'
 import deleteIcon from '@/images/car_card/buttons/bucket_logo.png'
 import Link from 'next/link'
+import { DASHBOARD_PAGES } from "@/config/pages-url.config"
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
@@ -52,8 +53,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
             <span className="font-light text-gray-800">Средний пробег: </span>
             <span className="text-black font-medium">{car.averageMileage} км</span>
           </p>
-          <p>
-            <span className="font-light text-gray-800">Средний расход: </span>
+          <p> <span className="font-light text-gray-800">Средний расход: </span>
             <span className="text-black font-medium">{car.averageConsumption} л</span>
           </p>
           <p>
@@ -79,7 +79,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 font-medium text-sm w-1/3"
           >
-            <Link href={`/${car.id}`}>
+            <Link href={`${DASHBOARD_PAGES.BUSINESS_CARS}/${car.id}`}>
               Подробнее
             </Link>
           </button>
