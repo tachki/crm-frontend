@@ -1,6 +1,5 @@
 import { axiosWithAuth } from "@/api/interceptors";
-import { CarDto } from "@/types/car.type";
-
+import { CarDto, GetCarDto } from "@/types/car.type";
 
 export const CarService = {
 
@@ -20,19 +19,9 @@ export const CarService = {
         throw error;
       }
     },
-
     async getCar(id: string) {
-      try {
-        const response = await axiosWithAuth.get<CarDto>(`/v1/cars/${id}`);
-        return response;
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.error('Ошибка при получении данных автомобиля:', error.message);
-        } else {
-          console.error('Неизвестная ошибка:', error);
-        }
-        throw error;
-      }
+      const response = await axiosWithAuth.get<GetCarDto>(`/v1/cars/${id}`);
+      return response.data;
     },
 
     async createCar(formData: FormData) {
@@ -61,7 +50,7 @@ export const CarService = {
           `/v1/cars/${carId}`
         );
 
-        if (response.status === 200) {
+        if (response.status === 204) {
           console.log('Машина удалена');
           return response.data;
         } else {
@@ -80,9 +69,9 @@ export const CarService = {
           carData
         );
 
-        if (response.status === 200) {
+        if (response.status === 204) {
           console.log('Машина обновлена');
-          return response.data;
+          return 
         } else {
           throw new Error('Не удалось обновить информацию о машине');
         }

@@ -8,7 +8,7 @@ import Image from 'next/image';
 import emptyParkImage from '@/images/main_page_park/empty_park.png';
 import plusIcon from '@/images/main_page_park/plus.png';
 import { DASHBOARD_PAGES } from "@/config/pages-url.config";
-import CarCard from "./card/card";
+import CarCard from "../cars/CarCard";
 
 
 
