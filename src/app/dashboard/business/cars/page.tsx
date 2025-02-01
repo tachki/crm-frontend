@@ -1,7 +1,7 @@
 "use client"
 import { CarService } from "@/services/car.service"
 import { CarDto, mapCarDtoToCar } from "@/types/car.type"
-import { useEffect, useState } from "react"
+import { useCars } from "./hooks/useCars"
 import { getUserStorage } from "@/services/auth-token.service"
 import { TailSpin } from 'react-loader-spinner'
 import Image from 'next/image'
@@ -12,40 +12,14 @@ import CarCard from './CarCard'
 import Link from 'next/link'
 
 
-
 export default function Home() {
-  const [cars, setCars] = useState<CarDto[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [totalCars, setTotalCars] = useState(0)
-
-  // TODO если кто то знает более элегантный способ обработки нуллабельности - ю аре велком
-  let businessId: string = 'default-business-id'
-
   const userStorage = getUserStorage()
-
+  let businessId: string = 'default-business-id'
   if (userStorage && userStorage.business_id !== undefined) {
     businessId = userStorage.business_id
   }
 
-  useEffect(() => {
-    const fetchCars = async () => {
-      setIsLoading(true)
-      setError(null)
-
-      try {
-        const cars = await CarService.getCarsByBusiness(businessId)
-        setCars(cars)
-        setTotalCars(cars.length)
-      } catch (err: any) {
-        setError(err.message || 'Произошла ошибка при загрузке данных')
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchCars()
-  }, [businessId])
+  const { cars, isLoading, error, totalCars } = useCars(businessId);
 
   return (
     <div className="">
