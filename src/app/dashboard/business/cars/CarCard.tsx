@@ -136,7 +136,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
       {isCalendarVisible && (
       <div
         className="absolute z-50 bg-white shadow-lg p-4 rounded-lg"
-        style={{// Календарь выше кнопки
+        style={{
           top: `${calendarPosition.top - 450}px`,
           left: `${calendarPosition.left - 200}px`, 
           width: "590px",
