@@ -14,9 +14,9 @@ export default function Update() {
   const { id } = useParams()
   const carId = Array.isArray(id) ? id.join('') : id || ''
   const {data, isLoading } = useCar(carId)
-  const [carPrice, setCarPrice] = useState(1);
-  const [carDescription, setCarDescription] = useState('!!')
-  const [carYear, setCarYear] = useState(1);
+  const [carPrice, setCarPrice] = useState<number | undefined>(0);
+  const [carDescription, setCarDescription] = useState<string | undefined>("")
+  const [carYear, setCarYear] = useState<string | undefined>("2025");
 
   const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true);
 
@@ -32,7 +32,7 @@ export default function Update() {
     const carData = {
       description: carDescription,
       price_per_day: carPrice,
-      year: carYear.toString()
+      year: carYear?.toString()
     };
 
     const carDataJson = JSON.stringify(carData)
