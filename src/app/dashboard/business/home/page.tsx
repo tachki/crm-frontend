@@ -2,13 +2,13 @@
 import { CarService } from "@/services/car.service";
 import { Car, mapCarDtoToCar } from "@/types/car.type";
 import { useEffect, useState } from "react";
-import CarCard from "@/app/dashboard/business/home/card/card"
 import { getUserStorage } from "@/services/auth-token.service";
 import { TailSpin } from 'react-loader-spinner';
 import Image from 'next/image';
 import emptyParkImage from '@/images/main_page_park/empty_park.png';
 import plusIcon from '@/images/main_page_park/plus.png';
 import { DASHBOARD_PAGES } from "@/config/pages-url.config";
+import CarCard from "./card/card";
 
 
 
@@ -22,7 +22,7 @@ export default function Home() {
   let businessId: string = 'default-business-id'; 
 
   const userStorage = getUserStorage();
-  
+
   if (userStorage && userStorage.business_id !== undefined) {
     businessId = userStorage.business_id;
   }
@@ -52,7 +52,7 @@ export default function Home() {
       {!(cars?.length === 0) && <h1 className="text-2xl font-bold text-center">
         Автомобили ({totalCars}) 
       </h1>}
-  
+
       {isLoading ? (
         <TailSpin
           height="80"
@@ -63,9 +63,9 @@ export default function Home() {
       ) : (
         <p></p>
       )}
-      
+
       {error && <p className="text-red-500">Ошибка: {error}</p>}
-      
+
       {!isLoading && !error && cars?.length === 0 && (
       <div className="flex flex-col items-center justify-center">
         <Image 
@@ -75,16 +75,16 @@ export default function Home() {
         height={350} 
         className="mb-4"
       />
-      
+
         <p className="text-lg font-medium text-black">Добавьте автомобили для их отображения на странице</p>
       </div>
     )}
 
-  
+
       <div className="grid grid-cols-1 gap-4">
       {cars.map((car) => ( 
           <CarCard key={car.id} car={car} />
-          
+
        ))} 
       </div>
 

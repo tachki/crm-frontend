@@ -32,7 +32,7 @@ export default function Car() {
           {/* Галерея */}
         </div>
         <div className='flex-1'>
-          <Calendar />
+          <Calendar carId={carId}/>
         </div>
       </div>
 
