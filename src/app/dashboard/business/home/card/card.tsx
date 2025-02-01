@@ -15,7 +15,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
   //TODO не выносим в сервис, т.к. не совсем дефолт запрос,
   //можно убрать если найдете более удобный вариант получения картинок с минио
-  const minio = "http://localhost:9002/cars/";
+  const minio = "http://localhost:9000/cars/";
 
   return (
     <div className="flex gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
