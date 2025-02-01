@@ -10,13 +10,13 @@
   --grey: rgba(0, 0, 0, 0.5);
   --error-red: #F23434;
   --orange: #F6C61A;
+  --primary: #3B44FF;;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
     --background: #000;
     --foreground: #ededed;
-    --primary-color: #3B44FF;
   }
 }
 
@@ -35,6 +35,12 @@ a {
 .container {
   max-width: 1200px;
   margin: auto;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    width: 95%;
+  }
 }
 
 .h1 {
