@@ -8,8 +8,6 @@ import { carBrandData, carClassData, carTransmissionsData } from "@/utils/consta
 import { useRouter } from 'next/navigation';
 
 export default function Cars() {
-  // TODO add it when will be needed
-  //const dispatch = useAppDispatch();
   const router = useRouter();
   const [carBrand, setCarBrand] = useState("");
   const [carModel, setCarModel] = useState("");
