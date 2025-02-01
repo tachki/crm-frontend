@@ -4,9 +4,8 @@ class DASHBOARD {
   private businessRoot = '/business'
 
   AUTH = `/auth`
-  BUSINESS_CARS = `${this.root}${this.businessRoot}/home`
-  CREATE = `${this.root}${this.businessRoot}/add-car`
-  CAR_DETAILS = `${this.root}${this.businessRoot}/cars/[id]`
+  BUSINESS_CARS = `${this.root}${this.businessRoot}/cars`
+  CREATE = `${this.root}${this.businessRoot}/create`
 }
 
 export const DASHBOARD_PAGES = new DASHBOARD()
