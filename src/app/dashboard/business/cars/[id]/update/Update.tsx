@@ -4,13 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import { CarService } from "@/services/car.service";
 import { DASHBOARD_PAGES } from "@/config/pages-url.config";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 import { useParams } from "next/navigation";
 import { useCar } from "../../hooks/useCar";
 
 export default function Update() {
+  const router = useRouter();
   const { id } = useParams()
   const carId = Array.isArray(id) ? id.join('') : id || ''
-    const { data, isLoading } = useCar(carId)
+  const { data, isLoading } = useCar(carId)
   const [carPrice, setCarPrice] = useState(1);
   const [carDescription, setCarDescription] = useState('!!')
   const [carYear, setCarYear] = useState(1);
@@ -33,6 +35,7 @@ export default function Update() {
     };
 
     const carDataJson = JSON.stringify(carData)
+    router.replace(`${DASHBOARD_PAGES.BUSINESS_CARS}/${id}`);
 
     try {
       const createdCar = await CarService.updateCar(carId, carDataJson);
@@ -54,7 +57,7 @@ export default function Update() {
     if (
       carPrice &&
       carDescription &&
-        carYear
+      carYear
     ) {
         updateCar();
     }
