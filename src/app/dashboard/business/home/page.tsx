@@ -9,76 +9,34 @@ import emptyParkImage from '@/images/main_page_park/empty_park.png';
 import plusIcon from '@/images/main_page_park/plus.png';
 import { DASHBOARD_PAGES } from "@/config/pages-url.config";
 import CarCard from "../cars/CarCard";
+import { useCarsByBusiness } from "./hooks/useCarByBusiness";
 
 
 
 export default function Home() {
-  const [cars, setCars] = useState<Car[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [totalCars, setTotalCars] = useState(0);
+  let businessId = getUserStorage()?.business_id ?? 'default-business-id';
 
-  // TODO если кто то знает более элегантный способ обработки нуллабельности - ю аре велком
-  let businessId: string = 'default-business-id'; 
-
-  const userStorage = getUserStorage();
-
-  if (userStorage && userStorage.business_id !== undefined) {
-    businessId = userStorage.business_id;
-  }
-
-  useEffect(() => {
-    const fetchCars = async () => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const response = await CarService.getCarsByBusiness(businessId);
-        const mappedCars = response.map(mapCarDtoToCar);
-        setCars(mappedCars);
-        setTotalCars(response.length);
-      } catch (err: any) {
-        setError(err.message || 'Произошла ошибка при загрузке данных');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCars();
-  }, [businessId]);
+  const { data: cars = [], isLoading, error } = useCarsByBusiness(businessId);
 
   return (
     <div className="p-4">
-      {!(cars?.length === 0) && (
+      {cars.length > 0 && (
         <h1 className="text-2xl font-bold text-center mb-4">
-          Автомобили ({totalCars})
+          Автомобили ({cars.length})
         </h1>
       )}
 
-      {isLoading ? (
+      {isLoading && (
         <div className="flex justify-center items-center h-64">
-          <TailSpin
-            height="80"
-            width="80"
-            color="#3B44FF"
-            ariaLabel="loading"
-          />
+          <TailSpin height="80" width="80" color="#3B44FF" ariaLabel="loading" />
         </div>
-      ) : (
-        <p></p>
       )}
 
-      {error && <p className="text-red-500 text-center">Ошибка: {error}</p>}
+      {error && <p className="text-red-500 text-center">Ошибка: {error.message}</p>}
 
-      {!isLoading && !error && cars?.length === 0 && (
+      {!isLoading && !error && cars.length === 0 && (
         <div className="flex flex-col items-center justify-center h-96">
-          <Image
-            src={emptyParkImage}
-            alt="Нет автомобилей"
-            width={550}
-            height={350}
-            className="mb-4"
-          />
+          <Image src={emptyParkImage} alt="Нет автомобилей" width={550} height={350} className="mb-4" />
           <p className="text-lg font-medium text-black text-center">
             Добавьте автомобили для их отображения на странице
           </p>
@@ -97,12 +55,7 @@ export default function Home() {
           window.location.href = DASHBOARD_PAGES.CREATE;
         }}
       >
-        <Image
-          src={plusIcon}
-          alt="Plus Icon"
-          width={18}
-          height={18}
-        />
+        <Image src={plusIcon} alt="Plus Icon" width={18} height={18} />
       </button>
     </div>
   );

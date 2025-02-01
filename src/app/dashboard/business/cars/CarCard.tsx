@@ -9,6 +9,8 @@ import { DASHBOARD_PAGES } from "@/config/pages-url.config"
 import Link from 'next/link'
 import { CarService } from "@/services/car.service";
 import ConfirmationModal from "@/components/modal/modal"
+import './CarCard.css';
+
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
@@ -50,7 +52,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
     }
   };
   return (
-    <div className="flex gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
+    <div className="car-card flex gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
       <div className="w-1/2 pt-5 pb-5 ml-5 flex justify-center items-center">
         <img
           src={car.previewImage}
@@ -104,7 +106,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           </p>
         </div>
 
-        <div className="flex gap-2 justify-between pt-2 mb-7">
+        <div className="buttons flex gap-2 justify-between pt-2 mb-7">
           <button
             ref={calendarButtonRef} 
             className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 font-medium text-sm w-1/3"
