@@ -50,7 +50,7 @@ export const CarService = {
           `/v1/cars/${carId}`
         );
 
-        if (response.status === 200) {
+        if (response.status === 204) {
           console.log('Машина удалена');
           return response.data;
         } else {
@@ -69,9 +69,9 @@ export const CarService = {
           carData
         );
 
-        if (response.status === 200) {
+        if (response.status === 204) {
           console.log('Машина обновлена');
-          return response.data;
+          return 
         } else {
           throw new Error('Не удалось обновить информацию о машине');
         }

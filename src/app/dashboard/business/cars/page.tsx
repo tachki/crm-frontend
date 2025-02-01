@@ -1,6 +1,5 @@
 "use client"
-import { CarService } from "@/services/car.service"
-import { CarDto, mapCarDtoToCar } from "@/types/car.type"
+import { mapCarDtoToCar } from "@/types/car.type"
 import { useCars } from "./hooks/useCars"
 import { getUserStorage } from "@/services/auth-token.service"
 import { TailSpin } from 'react-loader-spinner'

@@ -45,7 +45,7 @@ export type CarStatus =
   | "Недоступно";
 
 export interface CarCardProps {
-car: Car;
+  car: Car;
 }
 
 export const statusStyles: Record<CarStatus, string> = {

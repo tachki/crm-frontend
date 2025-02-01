@@ -1,14 +1,15 @@
 "use client";
 import styles from "./Cars.module.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CarService } from "@/services/car.service";
 import { DASHBOARD_PAGES } from "@/config/pages-url.config";
 import Link from "next/link";
 import { carBrandData, carClassData, carTransmissionsData } from "@/utils/constants";
-import { useRouter } from 'next/navigation';
 
 export default function Cars() {
-  const router = useRouter();
+  // TODO add it when will be needed
+  //const dispatch = useAppDispatch();
+
   const [carBrand, setCarBrand] = useState("");
   const [carModel, setCarModel] = useState("");
   const [carNumber, setCarNumber] = useState("");
@@ -19,6 +20,8 @@ export default function Cars() {
   const [carDescription, setCarDescription] = useState("");
   const [photos, setPhotos] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [addCarData, setAddCarData] = useState({});
 
   const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true);
 
@@ -32,24 +35,13 @@ export default function Cars() {
     formData.append("price_per_day", carPrice.toString());
     formData.append("transmission", carTransmission);
     formData.append("year", carYear.toString());
+
     photos.forEach((photo) => {
       formData.append(`image`, photo);
     });
 
-    setIsFieldPreparing(true)
-    setCarBrand(()=>"")
-    setCarModel(()=> "")
-    setCarNumber(()=> "")
-    setCarTransmission(()=> "")
-    setCarClass(()=> "")
-    setCarPrice(()=> 1)
-    setCarYear(()=> 2010)
-    setCarDescription(()=> "")
-    setPhotos(()=> [])
-
     try {
       const createdCar = await CarService.createCar(formData);
-      router.replace(DASHBOARD_PAGES.BUSINESS_CARS);
       console.log("Созданная машина:", createdCar);
     } catch (error) {
       console.error("Ошибка при создании машины:", error);
@@ -82,10 +74,26 @@ export default function Cars() {
       carDescription &&
       photos.length
     ) {
-      createCar();
-
+      setAddCarData({
+        brand: carBrand,
+        class: carClass,
+        description: carDescription,
+        images: photos,
+        model: carModel,
+        price_per_day: carPrice,
+        transmission: carTransmission,
+        year: carYear,
+      });
+      // TODO add it when will be needed
+      //dispatch(setCar(addCarData));
     }
   };
+
+  useEffect(() => {
+    console.log("--------------------------------------");
+    createCar();
+    console.log("addCarData", addCarData);
+  }, [addCarData]);
 
   const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {

@@ -10,15 +10,21 @@ import { CarDto, CarStatus, mapCarDtoToCar, statusStyles } from '@/types/car.typ
 import type { Car } from '@/types/car.type'
 import { CarService } from '@/services/car.service'
 import { useEffect, useState } from 'react'
-
+import { useRouter } from 'next/navigation';
 
 export default function Car() {
   const { id } = useParams()
   const carId = Array.isArray(id) ? id.join('') : id || ''
   const [carDto, setCarDto] = useState<CarDto | null>(null)
+  const router = useRouter();
 
   const deleteCar = () => {
-    CarService.deleteCar(carId)
+    try {
+      CarService.deleteCar(carId)
+      router.replace(DASHBOARD_PAGES.BUSINESS_CARS);
+    } catch (error) {
+      console.log(error)
+    }
   }
   
   const fetchCar = async () => {
@@ -103,15 +109,13 @@ export default function Car() {
             className={'px-28 bg-transparent hover:bg-primary hover:text-white w-full'}
           />
         </Link>
-
-        <Link href='/update' className='lg-max:w-full'>
+        <Link href={`${DASHBOARD_PAGES.CAR_DETAILS.replace('[id]', carId)}/update`}>
           <Button
             children={'Изменить'}
             className={'bg-orangeEdit border-none w-full'}
             icon={'/edit-icon.svg'}
           />
         </Link>
-
         <Button
           children={'Удалить'}
           className={'bg-errorRed border-none text-white lg-max:w-full'}
