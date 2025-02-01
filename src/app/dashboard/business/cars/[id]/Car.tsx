@@ -60,9 +60,6 @@ export default function Car() {
           <span>{car?.status}</span>
         </div>
         <span className='2sm-max:text-base'>Затраты: {car?.totalExpenses}</span>
-
-        {/* TO DO достать ответственное лицо  */}
-        <span className='2sm-max:text-base'>Иванов А.А. (+ 375 33 333-33-33)</span>
       </div>
 
       <div className='flex flex-wrap mt-12 mb-12 gap-24 lg-max:flex-col 2sm-max:mt-4 2sm-max:gap-12'>
