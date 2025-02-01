@@ -1,3 +1,5 @@
+import { STATIC_URL } from "@/config/pages-url.config"
+
 export interface Car {
   id: string;
   brand: string;
@@ -52,8 +54,11 @@ export const statusStyles: Record<CarStatus, string> = {
     "Свободно": "bg-green-500", 
     "Временно недоступно": "bg-yellow-500",
     "Недоступно": "bg-gray-500", 
-  };
-  
+};
+
+export interface GetCarDto {
+  car: CarDto;
+}
   
 export interface CarDto {
   brand: string;
@@ -83,11 +88,11 @@ export function mapCarDtoToCar(dto: CarDto): Car {
     description: dto.description || 'Описание отсутствует', 
     year: dto.year,
     pricePerDay: dto.price_per_day || 0, 
-    previewImage: dto.preview_image || '', 
+    previewImage: STATIC_URL+dto.preview_image || '', 
     status: dto.status as Car['status'], 
     createdAt: new Date(dto.created_at || Date.now()), 
     updatedAt: new Date(dto.updated_at || Date.now()), 
-    images: dto.images || [], 
+    images: dto.images ? dto.images.map((img) => STATIC_URL+img) : [], 
     totalMileage: 0, 
     averageMileage: 0, 
     averageConsumption: 0,

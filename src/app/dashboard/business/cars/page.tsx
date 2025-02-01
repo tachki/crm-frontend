@@ -1,6 +1,6 @@
 "use client"
 import { CarService } from "@/services/car.service"
-import { Car, mapCarDtoToCar } from "@/types/car.type"
+import { CarDto, mapCarDtoToCar } from "@/types/car.type"
 import { useEffect, useState } from "react"
 import { getUserStorage } from "@/services/auth-token.service"
 import { TailSpin } from 'react-loader-spinner'
@@ -14,7 +14,7 @@ import Link from 'next/link'
 
 
 export default function Home() {
-  const [cars, setCars] = useState<Car[]>([])
+  const [cars, setCars] = useState<CarDto[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [totalCars, setTotalCars] = useState(0)
@@ -34,10 +34,9 @@ export default function Home() {
       setError(null)
 
       try {
-        const response = await CarService.getCarsByBusiness(businessId)
-        const mappedCars = response.map(mapCarDtoToCar)
-        setCars(mappedCars)
-        setTotalCars(response.length)
+        const cars = await CarService.getCarsByBusiness(businessId)
+        setCars(cars)
+        setTotalCars(cars.length)
       } catch (err: any) {
         setError(err.message || 'Произошла ошибка при загрузке данных')
       } finally {
@@ -81,11 +80,9 @@ export default function Home() {
         </div>
       )}
 
-
       <div className="grid grid-cols-1 gap-4">
         {cars.map((car) => (
-          <CarCard key={car.id} car={car} />
-
+          <CarCard key={car.id} car={mapCarDtoToCar(car)} />
         ))}
       </div>
 
