@@ -45,13 +45,6 @@ export default function Update() {
     }
   };
 
-  const handleCancelAddCar = () => {
-    setIsFieldPreparing(true);
-    setCarPrice(0);
-    setCarDescription("");
-    setCarYear(2010);
-  };
-
   const handleUpdateCar = () => {
     setIsFieldPreparing(false);
     if (
@@ -117,10 +110,10 @@ export default function Update() {
                   } else if (Number(e.target.value) > 2025) {
                     e.target.value = "2025";
                   }
-                  setCarYear(Number(e.target.value));
+                  setCarYear(e.target.value);
                 }}
                 style={
-                  (isFieldPreparing || carYear) === 1
+                  (isFieldPreparing || Number(carYear)) === 1
                       ? {
                         backgroundColor: "rgba(255,0,0,0.025)",
                         border: "2px solid red",
@@ -151,7 +144,6 @@ export default function Update() {
           <Link href={`${DASHBOARD_PAGES.BUSINESS_CARS}/${carId}`}>
             <button
                 className={`${styles.whiteButton}`}
-                onClick={handleCancelAddCar}
             >
               Отменить
             </button>
