@@ -35,10 +35,10 @@ export default function Update() {
     };
 
     const carDataJson = JSON.stringify(carData)
-    router.replace(`${DASHBOARD_PAGES.BUSINESS_CARS}/${id}`);
 
     try {
       const createdCar = await CarService.updateCar(carId, carDataJson);
+      router.replace(`${DASHBOARD_PAGES.BUSINESS_CARS}/${id}`);
       console.log("Обновленная машина:", createdCar);
     } catch (error) {
       console.error("Ошибка при обновлении машины:", error);
