@@ -1,6 +1,6 @@
-import { useLockCar } from "@/services/reservation.service";
+import { useGetAcceptedReservationsByCarId, useLockCar } from "@/services/reservation.service";
 import React, { useEffect, useState } from "react";
-import { DayPicker } from "react-day-picker";
+import { DayPicker, getDefaultClassNames } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
 
@@ -9,49 +9,40 @@ interface CalendarProps {
 }
 
 
-
 const Calendar: React.FC<CalendarProps> = ({ carId }) => {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
-  const [markedDates, setMarkedDates] = useState<Date[]>([]); // серые дни
-  const [unavailableDates, setUnavailableDates] = useState<Date[]>([]); // недоступные дни
-  const [reservations, setReservations] = useState<any[]>([]); // резервированные дни
-  const [currentMonth, setCurrentMonth] = useState(new Date()); // текущий месяц
-  const [isMarked, setIsMarked] = useState(false); 
+  const [markedDates, setMarkedDates] = useState<Date[]>([]); // Серые дни
+  const [unavailableDates, setUnavailableDates] = useState<Date[]>([]); // Заблокированные дни
+  const [currentMonth, setCurrentMonth] = useState(new Date()); // Текущий месяц
+  const [isMarked, setIsMarked] = useState(false);
   const { mutate: lockCar } = useLockCar(); 
-  
-
+ 
+  const { data: reservations } = useGetAcceptedReservationsByCarId(carId);
+ 
   useEffect(() => {
-    if (reservations.length === 0) return;
+    if (reservations) {
+      const redDays = reservations
+        .map((reservation) => {
+          const startDate = new Date(reservation.start_date);
+          const endDate = new Date(reservation.end_date);
 
-    const redDays = reservations
-      .map((reservation) => {
-        const startDate = new Date(reservation.start_date);
-        const endDate = new Date(reservation.end_date);
+          const days = [];
+          for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+            days.push(new Date(d));
+          }
+          return days;
+        })
+        .flat();
 
-        const days = [];
-        for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-          days.push(new Date(d));
-        }
-        return days;
-      })
-      .flat();
-
-    setUnavailableDates(redDays);
+      setUnavailableDates(redDays); 
+    }
   }, [reservations]);
 
   const handleMarkDate = () => {
     if (!selectedDates.length) return;
 
-    // Проверка на количество выбранных дней (не больше 3 подряд)
-    if (selectedDates.length > 3) {
-      alert("Нельзя отмечать более 3 дней подряд");
-      return;
-    }
-
-    // Сортировка дат
     const sortedDates = [...selectedDates].sort((a, b) => a.getTime() - b.getTime());
 
-    // Проверка, что даты идут подряд
     for (let i = 1; i < sortedDates.length; i++) {
       const prevDate = new Date(sortedDates[i - 1]);
       prevDate.setDate(prevDate.getDate() + 1);
@@ -62,24 +53,22 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
     }
 
     const formatDate = (date: Date) => {
-      const day = String(date.getDate()).padStart(2, '0'); // День (с добавлением 0, если одноцифровой)
-      const month = String(date.getMonth() + 1).padStart(2, '0'); // Месяц (прибавляем 1, так как getMonth() возвращает 0-11)
-      const year = date.getFullYear(); // Год
-    
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
       return `${day}.${month}.${year}`;
     };
-    
+
     const startDate = formatDate(sortedDates[0]);
     const endDate = formatDate(sortedDates[sortedDates.length - 1]);
-    
 
     lockCar(
       { carId, startDate, endDate },
       {
         onSuccess: () => {
-          setIsMarked(true); 
-          setMarkedDates((prev) => [...prev, ...sortedDates]); 
-          setSelectedDates([]); 
+          setIsMarked(true);
+          setMarkedDates((prev) => [...prev, ...sortedDates]);
+          setSelectedDates([]);
         },
         onError: (error) => {
           console.error("Ошибка при отправке данных:", error);
@@ -155,18 +144,19 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
           onSelect={setSelectedDates}
           modifiers={{
             marked: markedDates,
-            unavailable: unavailableDates,
+            unavailable: unavailableDates, 
             today: new Date(),
           }}
           modifiersClassNames={{
             marked: "bg-gray-400 text-white rounded-full",
             unavailable: "bg-red-500 text-white rounded-full",
-            today: "border border-blue-500 text-blue-500 font-normal rounded-full",
+            today: "border-2 border-blue-500 rounded-full",
           }}
           classNames={{
             day: "text-center text-gray-700 font-normal m-1",
             cell: "w-10 h-10",
             month_caption: "hidden",
+          
           }}
           month={currentMonth}
           onMonthChange={setCurrentMonth}
@@ -210,3 +200,5 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
 };
 
 export default Calendar;
+
+

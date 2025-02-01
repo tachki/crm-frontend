@@ -48,59 +48,62 @@ export default function Home() {
   }, [businessId]);
 
   return (
-    <div className="">
-      {!(cars?.length === 0) && <h1 className="text-2xl font-bold text-center">
-        Автомобили ({totalCars}) 
-      </h1>}
+    <div className="p-4">
+      {!(cars?.length === 0) && (
+        <h1 className="text-2xl font-bold text-center mb-4">
+          Автомобили ({totalCars})
+        </h1>
+      )}
 
       {isLoading ? (
-        <TailSpin
-          height="80"
-          width="80"
-          color="#3B44FF" 
-          ariaLabel="loading"
-        />
+        <div className="flex justify-center items-center h-64">
+          <TailSpin
+            height="80"
+            width="80"
+            color="#3B44FF"
+            ariaLabel="loading"
+          />
+        </div>
       ) : (
         <p></p>
       )}
 
-      {error && <p className="text-red-500">Ошибка: {error}</p>}
+      {error && <p className="text-red-500 text-center">Ошибка: {error}</p>}
 
       {!isLoading && !error && cars?.length === 0 && (
-      <div className="flex flex-col items-center justify-center">
-        <Image 
-        src={emptyParkImage}
-        alt="Нет автомобилей"
-        width={550} 
-        height={350} 
-        className="mb-4"
-      />
+        <div className="flex flex-col items-center justify-center h-96">
+          <Image
+            src={emptyParkImage}
+            alt="Нет автомобилей"
+            width={550}
+            height={350}
+            className="mb-4"
+          />
+          <p className="text-lg font-medium text-black text-center">
+            Добавьте автомобили для их отображения на странице
+          </p>
+        </div>
+      )}
 
-        <p className="text-lg font-medium text-black">Добавьте автомобили для их отображения на странице</p>
-      </div>
-    )}
-
-
-      <div className="grid grid-cols-1 gap-4">
-      {cars.map((car) => ( 
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {cars.map((car) => (
           <CarCard key={car.id} car={car} />
-
-       ))} 
+        ))}
       </div>
 
       <button
-      className="fixed bottom-10 right-10 bg-yellow-500 rounded-full w-16 h-16 flex items-center justify-center shadow-lg"
-      onClick={() => {
-        window.location.href = DASHBOARD_PAGES.CREATE; 
-      }}
-    >
-      <Image
-        src={plusIcon}
-        alt="Plus Icon"
-        width={18}
-        height={18}
-      />
-    </button>
+        className="fixed bottom-10 right-10 bg-yellow-500 rounded-full w-16 h-16 flex items-center justify-center shadow-lg hover:bg-yellow-600 transition-colors"
+        onClick={() => {
+          window.location.href = DASHBOARD_PAGES.CREATE;
+        }}
+      >
+        <Image
+          src={plusIcon}
+          alt="Plus Icon"
+          width={18}
+          height={18}
+        />
+      </button>
     </div>
   );
 }

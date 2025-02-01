@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { ReservationsResponseDto } from "@/types/reservation.type";
+import { Reservation, ReservationsResponseDto } from "@/types/reservation.type";
 import { axiosWithAuth } from "@/api/interceptors";
 
 export const useGetReservationsByCar = (carId: string) => {
@@ -24,6 +24,7 @@ export const useGetReservationsByCar = (carId: string) => {
       },
     });
   };
+
   export const useReserveCar = () => {
     return useMutation({
       mutationFn: async ({ carId, startDate, endDate }: { carId: string; startDate: string; endDate: string }) => {
@@ -38,7 +39,7 @@ export const useGetReservationsByCar = (carId: string) => {
 
   
   export const useGetAcceptedReservationsByCarId = (carId: string) => {
-    return useQuery({
+    return useQuery<Reservation[]>({
       queryKey: ["acceptedReservations", carId],
       queryFn: async () => {
         const response = await axiosWithAuth.get(`/v1/cars/${carId}/accepted`);
