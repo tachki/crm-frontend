@@ -9,4 +9,6 @@ class DASHBOARD {
   CAR_DETAILS = `${this.BUSINESS_CARS}/[id]`
 }
 
+export const STATIC_URL = "http://localhost:9000/cars/"
+
 export const DASHBOARD_PAGES = new DASHBOARD()

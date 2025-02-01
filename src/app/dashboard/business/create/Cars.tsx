@@ -49,7 +49,7 @@ export default function Cars() {
 
     try {
       const createdCar = await CarService.createCar(formData);
-    router.replace(DASHBOARD_PAGES.BUSINESS_CARS);
+      router.replace(DASHBOARD_PAGES.BUSINESS_CARS);
       console.log("Созданная машина:", createdCar);
     } catch (error) {
       console.error("Ошибка при создании машины:", error);

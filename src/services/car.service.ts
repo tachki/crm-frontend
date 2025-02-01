@@ -1,5 +1,5 @@
 import { axiosWithAuth } from "@/api/interceptors";
-import { CarDto, ICar } from "@/types/car.type";
+import { CarDto, GetCarDto } from "@/types/car.type";
 
 export const CarService = {
 
@@ -20,8 +20,8 @@ export const CarService = {
       }
     },
     async getCar(id: string) {
-      const response = await axiosWithAuth.get<CarDto>(`/v1/cars/${id}`);
-      return response;
+      const response = await axiosWithAuth.get<GetCarDto>(`/v1/cars/${id}`);
+      return response.data;
     },
 
     async createCar(formData: FormData) {
@@ -50,7 +50,7 @@ export const CarService = {
           `/v1/cars/${carId}`
         );
 
-        if (response.status === 200) {
+        if (response.status === 204) {
           console.log('Машина удалена');
           return response.data;
         } else {

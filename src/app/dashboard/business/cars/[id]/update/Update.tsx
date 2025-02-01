@@ -22,9 +22,9 @@ export default function Update() {
 
   useEffect(()=> {
       if(!isLoading) {
-          setCarPrice(()=>data?.data.car.price_per_day)
-          setCarYear(()=>data?.data.car.year)
-          setCarDescription(()=>data?.data.car.description)
+          setCarPrice(()=>data?.car.price_per_day)
+          setCarYear(()=>data?.car.year)
+          setCarDescription(()=>data?.car.description)
       }
   }, [isLoading])
 
@@ -66,15 +66,15 @@ export default function Update() {
   return (
     <div>
       <h1 className={styles.h1}>
-        Редактирование авто <br /> {data?.data.car.brand} {data?.data.car.model}{" "}
-        ({data?.data.car.year}) <span></span>{" "}
-        {data?.data.car.class === "Эконом класс"
+        Редактирование авто <br /> {data?.car.brand} {data?.car.model}{" "}
+        ({data?.car.year}) <span></span>{" "}
+        {data?.car.class === "Эконом класс"
           ? "Эконом"
-          : data?.data.car.class}{" "}
+          : data?.car.class}{" "}
         <span></span>{" "}
-        {data?.data.car.transmission === "Автоматическая"
+        {data?.car.transmission === "Автоматическая"
           ? "Автомат"
-          : data?.data.car.transmission}
+          : data?.car.transmission}
       </h1>
       <form
           onSubmit={(e) => {
