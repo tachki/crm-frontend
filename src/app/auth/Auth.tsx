@@ -12,13 +12,13 @@ import { Button } from '@/components/buttons/Button'
 export default function Auth() {
 	const [isLoginForm, setIsLoginForm] = useState(true)
 
-	const { register, handleSubmit, reset, formState: { errors } } = useForm<IAuthForm>({
+    const { register, handleSubmit, reset, formState: { errors }, clearErrors } = useForm<IAuthForm>({
 		mode: 'onChange'
 	})
 
 	const dispatch = useAppDispatch()
 
-	const { authMutate, isError, errorMessage, reset: resetForm } = useAuth(isLoginForm, setIsLoginForm)
+    const { authMutate, isError, errorMessage } = useAuth(isLoginForm, setIsLoginForm)
 
 	const onSubmit: SubmitHandler<IAuthForm> = data => {
 		reset()
@@ -35,6 +35,7 @@ export default function Auth() {
 	const toggleForm = () => {
 		setIsLoginForm(prevState => !prevState)
 		reset()
+        clearErrors()
 	}
 
 	return (
@@ -65,7 +66,7 @@ export default function Auth() {
 							required: 'Необходимо ввести логин'
 						})}
 					/>
-					{errors.email && (
+					{errors.email?.message && (
 						<p
 							role='alert'
 							className='text-xs text-red-500 font-medium pt-1.5'
@@ -83,12 +84,12 @@ export default function Auth() {
 							required: 'Необходимо ввести пароль',
 							minLength: {
 								value: 4,
-								message: 'Пароль должен содержать не менее 8 символов',
+								message: 'Пароль должен содержать не менее 4 символов',
 							},
 						})}
 						extra=''
 					/>
-					{errors.password && (
+					{errors.password?.message && (
 						<p
 							role='alert'
 							className='text-xs text-red-500 font-medium pt-1.5'
