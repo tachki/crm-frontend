@@ -7,23 +7,28 @@ import calendarIcon from '@/images/car_card/buttons/calendar_logo.png'
 import deleteIcon from '@/images/car_card/buttons/bucket_logo.png'
 import { DASHBOARD_PAGES } from "@/config/pages-url.config"
 import Link from 'next/link'
+import { CarService } from "@/services/car.service";
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
-
   const toggleCalendarVisibility = () => {
     setIsCalendarVisible(!isCalendarVisible)
   }
 
-  //TODO не выносим в сервис, т.к. не совсем дефолт запрос,
-  //можно убрать если найдете более удобный вариант получения картинок с минио
-  const minio = "http://localhost:9002/cars/"
+  const deleteCar = (carId: string) => {
+    try {
+      CarService.deleteCar(carId)
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="flex gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
       <div className="w-1/2 pt-5 pb-5 ml-5 flex justify-center items-center">
         <img
-          src={minio + car.previewImage}
+          src={car.previewImage}
           alt={`${car.brand} ${car.model}`}
           className="object-cover w-full h-full rounded-2xl"
         />
@@ -53,8 +58,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
             <span className="font-light text-gray-800">Средний пробег: </span>
             <span className="text-black font-medium">{car.averageMileage} км</span>
           </p>
-          <p>
-            <span className="font-light text-gray-800">Средний расход: </span>
+          <p> <span className="font-light text-gray-800">Средний расход: </span>
             <span className="text-black font-medium">{car.averageConsumption} л</span>
           </p>
           <p>
@@ -80,7 +84,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 font-medium text-sm w-1/3"
           >
-            <Link href={`/${car.id}`}>
+            <Link href={`${DASHBOARD_PAGES.BUSINESS_CARS}/${car.id}`}>
               Подробнее
             </Link>
           </button>
@@ -91,7 +95,10 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
             <img src={calendarIcon.src} alt="Календарь" className="w-5 h-5" />
             Календарь
           </button>
-          <button className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 font-medium text-sm w-1/3 flex items-center justify-center gap-2">
+          <button
+            className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 font-medium text-sm w-1/3 flex items-center justify-center gap-2"
+            onClick={() => deleteCar(car.id)}
+            >
             <img src={deleteIcon.src} alt="Удалить" className="w-5 h-5" />
             Удалить
           </button>

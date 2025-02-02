@@ -27,9 +27,14 @@ export function useAuth(
         ? authService.login(data)
         : authService.registration(data);
     },
-    onSuccess: () => {
-      if (isLoginForm) push(DASHBOARD_PAGES.BUSINESS_CARS)
-      else setIsLoginForm(true)
+    onSuccess: (_, variables) => {
+      if (isLoginForm) {
+        push(DASHBOARD_PAGES.BUSINESS_CARS)
+      } else {
+        authService.login(variables).then(() => {
+          push(DASHBOARD_PAGES.BUSINESS_CARS) 
+        })
+      }
     },
     onError: (error) => {
       console.log('error: ', error)

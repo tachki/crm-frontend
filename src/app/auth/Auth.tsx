@@ -102,7 +102,7 @@ export default function Auth() {
 					)}
 
 					<Button className='mt-6 mb-8 w-full bg-primary text-white'>
-						{isLoginForm ? "Войти" : "Зарегестрироваться"}
+						{isLoginForm ? "Войти" : "Зарегестрироваться"}	
 					</Button>
 
 					<div className='justify-center flex items-center font-medium'>
@@ -111,7 +111,7 @@ export default function Auth() {
 							className='text-primary underline pl-2'
 							onClick={toggleForm}
 						>
-							{isLoginForm ? "Зарегестрироваться" : "Войти"}
+							{isLoginForm ? "Зарегистрироваться" : "Войти"}
 						</button>
 					</div>
 				</form>
