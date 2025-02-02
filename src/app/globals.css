@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
+  --background: #F7F8FF;
   --foreground: #000;
   --regular-text-size: 18px;
   --grey: rgba(0, 0, 0, 0.5);
@@ -35,7 +35,14 @@ a {
 .container {
   max-width: 1200px;
   margin: auto;
+ 
 }
+
+.backgContainer {
+  background-color: #F7F8FF;
+}
+
+
 
 @media (max-width: 1200px) {
   .container {

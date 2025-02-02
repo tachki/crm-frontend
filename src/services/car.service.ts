@@ -19,6 +19,8 @@ export const CarService = {
         throw error;
       }
     },
+
+
     async getCar(id: string) {
       const response = await axiosWithAuth.get<GetCarDto>(`/v1/cars/${id}`);
       return response.data;
@@ -80,4 +82,20 @@ export const CarService = {
         throw error;
       }
     },
+
+
+    async getCars(params: {
+      class?: string;
+      brand?: string;
+      start_date?: string;
+      end_date?: string;
+      sort?: 'prc.d' | 'prc.a';
+      limit?: number;
+      offset?: number;
+    }) {
+      const response = await axiosWithAuth.get<GetCarDto[]>('/v1/cars', { params });
+      return response.data.map((item) => item.car);
+    }
+    
+
   }

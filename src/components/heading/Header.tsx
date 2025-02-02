@@ -46,7 +46,7 @@ export default function Header() {
 					</>
 				) : user?.user_type === 'customer' ? (
 					<>
-
+						
 					</>
 				) : user?.user_type === 'superuser' ? (
 					<>
