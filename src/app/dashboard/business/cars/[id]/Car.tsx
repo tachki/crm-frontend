@@ -110,7 +110,7 @@ export default function Car() {
           />
         </Link>
 
-        <Link href='/update' className='lg-max:w-full'>
+        <Link href={DASHBOARD_PAGES.UPDATE} className='lg-max:w-full'>
           <Button
             children={'Изменить'}
             className={'bg-orangeEdit border-none w-full'}
