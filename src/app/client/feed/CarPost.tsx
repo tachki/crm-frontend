@@ -1,5 +1,6 @@
 import React from "react";
-
+import classIcon from '../../../images/client/car_post_icons/class_icon.png';
+import typeIcon from '../../../images/client/car_post_icons/type_icon.png';
 interface CarCardProps {
   car: {
     id: string;
@@ -13,6 +14,8 @@ interface CarCardProps {
   };
 }
 
+
+
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   return (
     <div key={car.id} className="bg-white shadow-md rounded-2xl p-4">
@@ -20,8 +23,25 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
         {car.brand} {car.model} ({car.year})
       </h2>
       <div className="flex items-center text-gray-400 text-sm mt-1 space-x-4 font-light">
-        <span>🚗 {car.class}</span>
-        <span>⚙️ {car.transmission}</span>
+     
+        <div className="flex items-center">
+          <img
+            src={classIcon.src} 
+            alt="Car Class"
+            className="w-3 h-3 mr-2"
+          />
+          {car.class}
+        </div>
+
+
+        <div className="flex items-center">
+          <img
+            src={typeIcon.src}  
+            alt="Transmission"
+            className="w-3 h-3 mr-2"
+          />
+          {car.transmission}
+        </div>
       </div>
       <img
         src={car.preview_image}

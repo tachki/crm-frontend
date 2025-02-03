@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CarDto } from "@/types/car.type";
 import Filters from "./filters";
 import CarCard from "./CarPost";
+import { useCars } from "./hooks/useGetCar";
 
 const mockCars: CarDto[] = [
     {
@@ -71,7 +72,7 @@ const mockCars: CarDto[] = [
       year: "2019",
     },
     {
-        id: "4",
+        id: "5",
         brand: "Ford",
         business_id: "business_4",
         class: "Coupe",
@@ -87,7 +88,7 @@ const mockCars: CarDto[] = [
         year: "2019",
       },
       {
-        id: "4",
+        id: "6",
         brand: "Ford",
         business_id: "business_4",
         class: "Coupe",
@@ -103,7 +104,7 @@ const mockCars: CarDto[] = [
         year: "2019",
       },
       {
-        id: "4",
+        id: "7",
         brand: "Ford",
         business_id: "business_4",
         class: "Coupe",
@@ -119,7 +120,7 @@ const mockCars: CarDto[] = [
         year: "2019",
       },
       {
-        id: "4",
+        id: "8",
         brand: "Ford",
         business_id: "business_4",
         class: "Coupe",
@@ -135,7 +136,7 @@ const mockCars: CarDto[] = [
         year: "2019",
       },
       {
-        id: "4",
+        id: "9",
         brand: "Ford",
         business_id: "business_4",
         class: "Coupe",
@@ -151,7 +152,7 @@ const mockCars: CarDto[] = [
         year: "2019",
       },
       {
-        id: "4",
+        id: "10",
         brand: "Ford",
         business_id: "business_4",
         class: "Coupe",
@@ -169,40 +170,30 @@ const mockCars: CarDto[] = [
   ];
 
 
-
-export default function Feed() {
-    const [cars, setCars] = useState<CarDto[]>(mockCars);
-    const [sortCriteria, setSortCriteria] = useState<"prc.d" | "prc.a" | undefined>();
+  export default function Feed() {
+    const [filters, setFilters] = useState<{
+      class?: string;
+      brand?: string;
+      start_date?: string;
+      end_date?: string;
+      sort?: "prc.d" | "prc.a";
+    }>({});
   
-    useEffect(() => {
-      const fetchCars = async () => {
-        try {
-          setCars(mockCars); // Здесь можно добавить логику для запроса данных
-        } catch (e) {
-          console.error("Ошибка при загрузке автомобилей:", e);
-        }
-      };
-  
-      fetchCars();
-    }, [sortCriteria]);
+    const { data: cars = [], isLoading, error } = useCars(filters);
   
     return (
       <div className="mx-auto">
         <div className="flex flex-col md:flex-row gap-6 justify-between items-start mb-6">
-          <div className="w-full md:w-1/4 bg-white p-4 shadow-md rounded-lg h-auto ">
-            <Filters />
+          <div className="w-full md:w-1/4 bg-white p-4 shadow-md rounded-lg h-auto">
+            <Filters setFilters={setFilters} />
           </div>
   
-          
           <div className="flex-1 flex flex-col">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6">
-              {cars.length === 0 ? (
-                <h1 className="text-center text-lg font-medium col-span-full">
-                  Кажется, здесь пока что пусто...
-                </h1>
+              {mockCars.length === 0 ? (
+                <h1 className="text-center text-lg font-medium col-span-full">Кажется, здесь пока что пусто...</h1>
               ) : (
-                cars.map((car) => <CarCard key={car.id} car={car} />)
-                
+                mockCars.map((car) => <CarCard key={car.id} car={car} />)
               )}
             </div>
           </div>
@@ -210,5 +201,4 @@ export default function Feed() {
       </div>
     );
   }
-  
   
