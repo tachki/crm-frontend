@@ -1,5 +1,9 @@
 import { axiosWithAuth } from "@/api/interceptors";
-import { CarDto, GetCarDto } from "@/types/car.type";
+import { CarDto, GetCarDto, mapCarDtoToCar } from "@/types/car.type";
+import { useQuery } from "@tanstack/react-query";
+
+
+
 
 export const CarService = {
 
