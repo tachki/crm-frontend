@@ -28,8 +28,7 @@ export function useAuth(
         : authService.registration(data);
     },
     onSuccess: (data) => {
-      // Проверяем тип данных и обрабатываем их соответственно
-      if ('user' in data.data) { // Если это IAuthLoginResponse
+      if ('user' in data.data) { 
         const userData = data.data.user
 
         if (isLoginForm) {
@@ -39,7 +38,7 @@ export function useAuth(
             push(DASHBOARD_PAGES.FEED)
           }
         } else {
-          setIsLoginForm(true) // Если это регистрация, меняем состояние на форму логина
+          setIsLoginForm(true) 
         }
       }
     },
