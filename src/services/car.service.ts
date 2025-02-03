@@ -3,8 +3,6 @@ import { CarDto, GetCarDto, mapCarDtoToCar } from "@/types/car.type";
 import { useQuery } from "@tanstack/react-query";
 
 
-
-
 export const CarService = {
 
     async getCarsByBusiness(businessId: string) {

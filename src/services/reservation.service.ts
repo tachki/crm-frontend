@@ -42,8 +42,8 @@ export const useGetReservationsByCar = (carId: string) => {
     return useQuery<Reservation[]>({
       queryKey: ["acceptedReservations", carId],
       queryFn: async () => {
-        const response = await axiosWithAuth.get(`/v1/cars/${carId}/accepted`);
-        return response.data;
+        const response = await axiosWithAuth.get(`/v1/cars/${carId}/reservations/accepted`);
+        return response.data.reservations;
       },
     });
   };
@@ -52,8 +52,8 @@ export const useGetReservationsByCar = (carId: string) => {
     return useQuery({
       queryKey: ["pendingReservations", carId],
       queryFn: async () => {
-        const response = await axiosWithAuth.get(`/v1/cars/${carId}/pending`);
-        return response.data;
+        const response = await axiosWithAuth.get(`/v1/cars/${carId}/reservations/pending`);
+        return response.data.reservations;
       },
     });
   };
