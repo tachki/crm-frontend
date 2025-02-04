@@ -1,0 +1,44 @@
+@media (max-width: 816px) {
+    .car-card .buttons button {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .car-card {
+      flex-direction: column;
+      height: auto;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .car-card .buttons {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .car-card .buttons button {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 580px) {
+    .car-card .buttons button {
+      font-size: 1.125rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .car-card {
+      padding: 0.5rem;
+    }
+    
+    .car-card h2 {
+      font-size: 1.125rem;
+    }
+    
+    .car-card p {
+      font-size: 1rem;
+    }
+  }
+  

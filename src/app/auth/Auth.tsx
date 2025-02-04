@@ -12,7 +12,8 @@ import { Button } from '@/components/buttons/Button'
 export default function Auth() {
 	const [isLoginForm, setIsLoginForm] = useState(true)
 
-	const { register, handleSubmit, reset, formState: { errors }, clearErrors } = useForm<IAuthForm>({
+
+  const { register, handleSubmit, reset, formState: { errors }, clearErrors } = useForm<IAuthForm>({
 		mode: 'onChange'
 	})
 
@@ -66,12 +67,16 @@ export default function Auth() {
 							required: true
 						})}
 					/>
+          
 					{errors.email?.message && (
-						<p role="alert" className="text-xs text-red-500 font-medium pt-1.5">
+
+						<p
+							role='alert'
+							className='text-xs text-red-500 font-medium pt-1.5'
+						>
 							{errors.email.message}
 						</p>
 					)}
-
 
 					<Field
 						id='password'
@@ -85,12 +90,13 @@ export default function Auth() {
 						extra=''
 					/>
 					{errors.password?.message && (
-						<p role="alert" className="text-xs text-red-500 font-medium pt-1.5">
+						<p
+							role='alert'
+							className='text-xs text-red-500 font-medium pt-1.5'
+						>
 							{errors.password.message}
 						</p>
 					)}
-
-
 
 					{isError && (
 						<p

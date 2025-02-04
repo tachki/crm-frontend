@@ -1,64 +1,72 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Reservation, ReservationsResponseDto } from "@/types/reservation.type";
 import { axiosWithAuth } from "@/api/interceptors";
-import { ReservationsResponseDto } from "@/types/reservation.type";
 
-
-export const ReservationService = {
-
-    async getReservationsByCar(carId: string) {
-        try {
-          const response = await axiosWithAuth.get<ReservationsResponseDto>(
-            `/v1/cars/${carId}/reservations`
-          );
-
-          if (response.status === 200 && response.data.reservations) {
-            return response.data;
-          } else {
-            throw new Error('Не удалось получить список резерваций');
-          }
-        } catch (error) {
-          console.error('Ошибка при получении резерваций:', error);
-          throw error;
-        }
+export const useGetReservationsByCar = (carId: string) => {
+    return useQuery({
+      queryKey: ["reservations", carId],
+      queryFn: async () => {
+        const response = await axiosWithAuth.get<ReservationsResponseDto>(
+          `/v1/cars/${carId}/reservations`
+        );
+        return response.data;
       },
+    });
+  };
 
-      async updateReservationStatus(reservationId: string, status: string) {
-        try {
-          const response = await axiosWithAuth.put(
-            `/v1/cars/reservations/${reservationId}`,
-            { status }
-          );
-
-          if (response.status === 200) {
-            console.log('Статус бронирования обновлен');
-            return response.data;
-          } else {
-            throw new Error('Не удалось обновить статус бронирования');
-          }
-        } catch (error) {
-          console.error('Ошибка при обновлении статуса бронирования:', error);
-          throw error;
-        }
+  export const useUpdateReservationStatus = () => {
+    return useMutation({
+      mutationFn: async ({ reservationId, status }: { reservationId: string; status: string }) => {
+        const response = await axiosWithAuth.put(`/v1/cars/reservations/${reservationId}`, {
+          status,
+        });
+        return response.data;
       },
+    });
+  };
 
-      async reserveCar(carId: string, startDate: string, endDate: string) {
-        try {
-          const response = await axiosWithAuth.post(
-            `/v1/cars/${carId}/reserve`,
-            {
-              start_date: startDate,
-              end_date: endDate,
-            }
-          );
-
-          if (response.status === 200) {
-            console.log('Машина успешно зарезервирована');
-            return response.data;
-          } else {
-            throw new Error('Не удалось забронировать машину');
-          }
-        } catch (error) {
-          console.error('Ошибка при бронировании машины:', error);
-          throw error;
-        }
+  export const useReserveCar = () => {
+    return useMutation({
+      mutationFn: async ({ carId, startDate, endDate }: { carId: string; startDate: string; endDate: string }) => {
+        const response = await axiosWithAuth.post(`/v1/cars/${carId}/reserve`, {
+          start_date: startDate,
+          end_date: endDate,
+        });
+        return response.data;
       },
-}
+    });
+  };
+
+  
+  export const useGetAcceptedReservationsByCarId = (carId: string) => {
+    return useQuery<Reservation[]>({
+      queryKey: ["acceptedReservations", carId],
+      queryFn: async () => {
+        const response = await axiosWithAuth.get(`/v1/cars/${carId}/reservations/accepted`);
+        return response.data.reservations;
+      },
+    });
+  };
+  
+  export const useGetPendingReservationsByCarId = (carId: string) => {
+    return useQuery({
+      queryKey: ["pendingReservations", carId],
+      queryFn: async () => {
+        const response = await axiosWithAuth.get(`/v1/cars/${carId}/reservations/pending`);
+        return response.data.reservations;
+      },
+    });
+  };
+  
+  export const useLockCar = () => {
+    return useMutation({
+      mutationFn: async ({ carId, startDate, endDate }: { carId: string; startDate: string; endDate: string }) => {
+        const response = await axiosWithAuth.post(`/v1/cars/${carId}/lock`, {
+          start_date: startDate,
+          end_date: endDate,
+        });
+        return response.data;
+      },
+    });
+  };
+  
