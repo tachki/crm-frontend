@@ -10,7 +10,7 @@ export interface IUser {
   is_verified: boolean;
   login: string;
   updated_at: string;
-  user_type: string;
+  user_type: 'worker' | 'admin' | 'customer' | 'superuser'
 }
 
 // export type TypeNoteListFormState = Partial<Omit<IUser, 'id' | 'updatedAt' | 'createdAt'>>

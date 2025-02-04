@@ -16,7 +16,6 @@ export default function Header() {
 
 	useEffect(() => {
 		const userData = getUserStorage()
-		console.log("Данные пользователя из cookies:", userData)
 		setUser(userData)
 	}, [])
 

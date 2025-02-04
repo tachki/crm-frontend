@@ -1,6 +1,6 @@
 import { axiosWithAuth } from '@/api/interceptors'
 import { getRefreshToken, getUserStorage, removeFromStorage, saveTokenStorage, saveUserStorage } from './auth-token.service'
-import { IAuthForm, IAuthLoginResponse, IAuthRefreshResponse, IAuthRegisterResponse } from '@/types/auth.type'
+import { IAuthForm, IAuthLoginResponse, IAuthRefreshResponse, IAuthRegisterResponse, IUser } from '@/types/auth.type'
 
 export const authService = {
 
@@ -14,9 +14,22 @@ export const authService = {
 			saveTokenStorage(response.data.access_token, response.data.refresh_token)
 		}
 
+		const fakeUser: IUser = {
+			business_id: '1',
+  		created_at: '01.01.2025',
+  		id: '1',
+			is_verified: false,
+			login: 'test@test.com',
+			updated_at: '01.01.2025',
+			user_type: 'worker',
+		}
+
 		if(response.data.user) {
 			saveUserStorage(response.data.user)
-			console.log(getUserStorage())
+			// TODO раскомментить когда нужно зайти с аккаунта бизнес админки
+			// saveUserStorage(fakeUser)
+			
+			// Оставила фейк юзера, чтобы можно было с кастомера перейти на бизнес админку
 		}
 
 		return response

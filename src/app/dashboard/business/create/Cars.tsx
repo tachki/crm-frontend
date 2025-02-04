@@ -1,26 +1,14 @@
 "use client";
 import styles from "./Cars.module.css";
-<<<<<<< HEAD
-import { useEffect, useRef, useState } from "react";
-=======
 import { useRef, useState } from "react";
->>>>>>> 15-business-app
 import { CarService } from "@/services/car.service";
 import { DASHBOARD_PAGES } from "@/config/pages-url.config";
 import Link from "next/link";
 import { carBrandData, carClassData, carTransmissionsData } from "@/utils/constants";
-<<<<<<< HEAD
-
-export default function Cars() {
-  // TODO add it when will be needed
-  //const dispatch = useAppDispatch();
-
-=======
 import { useRouter } from 'next/navigation';
 
 export default function Cars() {
   const router = useRouter();
->>>>>>> 15-business-app
   const [carBrand, setCarBrand] = useState("");
   const [carModel, setCarModel] = useState("");
   const [carNumber, setCarNumber] = useState("");
@@ -31,12 +19,6 @@ export default function Cars() {
   const [carDescription, setCarDescription] = useState("");
   const [photos, setPhotos] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-<<<<<<< HEAD
-  const [addCarData, setAddCarData] = useState({});
-
-=======
->>>>>>> 15-business-app
   const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true);
 
   const createCar = async () => {
@@ -49,18 +31,10 @@ export default function Cars() {
     formData.append("price_per_day", carPrice.toString());
     formData.append("transmission", carTransmission);
     formData.append("year", carYear.toString());
-<<<<<<< HEAD
-
-=======
->>>>>>> 15-business-app
     photos.forEach((photo) => {
       formData.append(`image`, photo);
     });
 
-<<<<<<< HEAD
-    try {
-      const createdCar = await CarService.createCar(formData);
-=======
     setIsFieldPreparing(true)
     setCarBrand(()=>"")
     setCarModel(()=> "")
@@ -75,7 +49,6 @@ export default function Cars() {
     try {
       const createdCar = await CarService.createCar(formData);
       router.replace(DASHBOARD_PAGES.BUSINESS_CARS);
->>>>>>> 15-business-app
       console.log("Созданная машина:", createdCar);
     } catch (error) {
       console.error("Ошибка при создании машины:", error);
@@ -108,35 +81,11 @@ export default function Cars() {
       carDescription &&
       photos.length
     ) {
-<<<<<<< HEAD
-      setAddCarData({
-        brand: carBrand,
-        class: carClass,
-        description: carDescription,
-        images: photos,
-        model: carModel,
-        price_per_day: carPrice,
-        transmission: carTransmission,
-        year: carYear,
-      });
-      // TODO add it when will be needed
-      //dispatch(setCar(addCarData));
-    }
-  };
-
-  useEffect(() => {
-    console.log("--------------------------------------");
-    createCar();
-    console.log("addCarData", addCarData);
-  }, [addCarData]);
-
-=======
       createCar();
 
     }
   };
 
->>>>>>> 15-business-app
   const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newPhotos = [...photos, ...Array.from(event.target.files)];
@@ -521,8 +470,4 @@ export default function Cars() {
       </form>
     </div>
   );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 15-business-app

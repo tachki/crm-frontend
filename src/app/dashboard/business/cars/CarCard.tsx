@@ -1,16 +1,19 @@
 "use client"
 
 import Calendar from "@/components/calendar/Calendar"
-import { CarCardProps, statusStyles } from "@/types/car.type"
+import { CarCardProps, CarStatus, statusStyles } from "@/types/car.type"
 import React, { useState } from "react"
 import calendarIcon from '@/images/car_card/buttons/calendar_logo.png'
 import deleteIcon from '@/images/car_card/buttons/bucket_logo.png'
 import { DASHBOARD_PAGES } from "@/config/pages-url.config"
 import Link from 'next/link'
-import { CarService } from "@/services/car.service";
+import { CarService } from "@/services/car.service"
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
+  const [isDropdownMenuVisible, setIsDropdownMenuVisible] = useState(false)
+  const [carStatus, setCarStatus] = useState<CarStatus>(car.status as CarStatus)
+
   const toggleCalendarVisibility = () => {
     setIsCalendarVisible(!isCalendarVisible)
   }
@@ -19,6 +22,16 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
     try {
       CarService.deleteCar(carId)
       window.location.reload()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const updateCarStatus = (carId: string, carData: CarStatus) => {
+    try {
+      CarService.updateCar(carId, { carData })
+      setCarStatus(carData)
+      setIsDropdownMenuVisible(false)
     } catch (error) {
       console.log(error)
     }
@@ -39,10 +52,30 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           <h2 className="text-xl font-extrabold text-black">
             {car.brand} {car.model} ({car.year})
           </h2>
-          <p className="text-black font-medium px-2 py-1 rounded inline-flex items-center">
-            {car.status}
-            <span className={`ml-2 w-3 h-3 rounded-full ${statusStyles[car.status]}`}></span>
-          </p>
+          <div
+            className='relative'
+          >
+            <button
+              className='text-black font-medium px-2 py-1 rounded inline-flex items-center'
+              onClick={() => setIsDropdownMenuVisible(!isDropdownMenuVisible)}
+            >
+              {carStatus}
+              <span className={`ml-2 w-3 h-3 rounded-full ${statusStyles[carStatus]}`}></span>
+            </button>
+            {isDropdownMenuVisible && (
+              <div className='absolute w-60 right-0 shadow-xl rounded-lg'>
+                {["Бронь", "Арендовано", "Свободно", "Временно недоступно", "Недоступно"].map((status) => (
+                  <button
+                    key={status}
+                    className="block w-full text-left px-3 py-2 hover:bg-gray-100 text-black font-medium"
+                    onClick={() => updateCarStatus(car.id, status as CarStatus)}
+                  >
+                    {status}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <p className="text-black text-lg font-medium mb-2">
@@ -98,7 +131,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           <button
             className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 font-medium text-sm w-1/3 flex items-center justify-center gap-2"
             onClick={() => deleteCar(car.id)}
-            >
+          >
             <img src={deleteIcon.src} alt="Удалить" className="w-5 h-5" />
             Удалить
           </button>
