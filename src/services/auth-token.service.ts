@@ -31,7 +31,6 @@ export const saveTokenStorage = (accessToken: string, refreshToken: string) => {
 
 export const saveUserStorage = (user: IUser) => {
 	const userJson = JSON.stringify(user);
-
 	Cookies.set('userData', userJson, {
 		domain: 'localhost',
 		expires: 1

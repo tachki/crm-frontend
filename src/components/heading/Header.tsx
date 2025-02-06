@@ -1,4 +1,5 @@
 'use client'
+
 import { getUserStorage, removeFromStorage } from '@/services/auth-token.service'
 import { useRouter } from 'next/navigation'
 import { IUser } from '@/types/auth.type'
@@ -7,7 +8,6 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Loader from '../Loader'
 import { LogOut } from 'lucide-react'
-
 
 export default function Header() {
 	const router = useRouter()
@@ -28,7 +28,6 @@ export default function Header() {
 
 	return (
 		<div className='h-20 flex justify-between items-center'>
-
 			<div>
 				<img
 					className='m-auto 2sm-max:w-20'
@@ -36,8 +35,6 @@ export default function Header() {
 					alt="logo"
 				/>
 			</div>
-
-
 			<nav className='font-medium flex gap-4'>
 				{user?.user_type === 'admin' || user?.user_type === 'worker' ? (
 					<>
@@ -62,7 +59,6 @@ export default function Header() {
 			>
 				Выйти
 			</button>
-
 			<div className='2sm-max:block hidden'>
 				<LogOut
 					className='text-errorRed w-8 h-8 cursor-pointer'
@@ -72,4 +68,3 @@ export default function Header() {
 		</div>
 	)
 }
-
