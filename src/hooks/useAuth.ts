@@ -27,9 +27,20 @@ export function useAuth(
         ? authService.login(data)
         : authService.registration(data);
     },
-    onSuccess: () => {
-      if (isLoginForm) push(DASHBOARD_PAGES.HOME)
-      else setIsLoginForm(true)
+    onSuccess: (data) => {
+      if ('user' in data.data) { 
+        const userData = data.data.user
+
+        if (isLoginForm) {
+          if (userData?.user_type === 'admin' || userData?.user_type === 'worker') {
+            push(DASHBOARD_PAGES.BUSINESS_CARS)
+          } else if (userData?.user_type === 'customer') {
+            push(DASHBOARD_PAGES.FEED)
+          }
+        } else {
+          setIsLoginForm(true) 
+        }
+      }
     },
     onError: (error) => {
       console.log('error: ', error)

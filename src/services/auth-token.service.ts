@@ -1,3 +1,4 @@
+import { IUser } from '@/types/auth.type'
 import Cookies from 'js-cookie'
 
 export enum EnumTokens {
@@ -7,13 +8,12 @@ export enum EnumTokens {
 
 export const getAccessToken = () => {
 	const accessToken = Cookies.get(EnumTokens.ACCESS_TOKEN)
-	// const accessToken = localStorage.getItem(EnumTokens.ACCESS_TOKEN)
 	return accessToken || null
 }
 
 export const getRefreshToken = () => {
 	const refreshToken = Cookies.get(EnumTokens.REFRESH_TOKEN)
-	// const refreshToken = localStorage.getItem(EnumTokens.REFRESH_TOKEN)
+	console.log('Retrieved refresh token:', refreshToken);
 	return refreshToken || null
 }
 
@@ -27,15 +27,35 @@ export const saveTokenStorage = (accessToken: string, refreshToken: string) => {
 		domain: 'localhost',
 		expires: 1
 	})
-
-	// localStorage.setItem(EnumTokens.ACCESS_TOKEN, accessToken)
-	// localStorage.setItem(EnumTokens.REFRESH_TOKEN, refreshToken)
 }
+
+export const saveUserStorage = (user: IUser) => {
+	const userJson = JSON.stringify(user);
+
+	Cookies.set('userData', userJson, {
+		domain: 'localhost',
+		expires: 1
+	})
+}
+
+export const getUserStorage = (): IUser | null => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  const userJson = Cookies.get('userData');
+  if (userJson) {
+    try {
+      return JSON.parse(userJson);
+    } catch (error) {
+      console.error('Ошибка при парсинге куки: ', error);
+    }
+  }
+  return null;
+};
+
 
 export const removeFromStorage = () => {
 	Cookies.remove(EnumTokens.ACCESS_TOKEN)
 	Cookies.remove(EnumTokens.REFRESH_TOKEN)
-
-	// localStorage.removeItem(EnumTokens.ACCESS_TOKEN)
-	// localStorage.removeItem(EnumTokens.REFRESH_TOKEN)
+	Cookies.remove('userData')
 }
