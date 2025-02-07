@@ -10,7 +10,6 @@ import { CarService } from "@/services/car.service";
 import ConfirmationModal from "@/components/modal/modal"
 import './CarCard.css';
 import { carStatusData } from '@/utils/constants'
-import Image from 'next/image';
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
@@ -65,14 +64,15 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
   }
 
   return (
-    <div className="car-card flex gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
-      <div className="w-1/2 pt-5 pb-5 ml-5 flex justify-center items-center">
-        <Image
-          src={car.previewImage}
-          alt={`${car.brand} ${car.model}`}
-          className="object-cover w-full h-full rounded-2xl"
-        />
-      </div>
+    <div className="car-card flex  gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
+      <div className="relative w-1/2 pt-10 pb-10 ml-5 flex justify-center items-center">
+      <img
+        src={car.previewImage}
+        alt={`${car.brand} ${car.model}`}
+        className="object-cover rounded-2xl"
+      />
+    </div>
+
 
       <div className="w-1/2 p-2 flex mt-4 flex-col justify-between h-full">
         <div className="flex justify-between items-center mb-2">
@@ -153,14 +153,22 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
             onClick={toggleCalendarVisibility}
             className="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 font-medium text-sm w-1/3 flex items-center justify-center gap-2"
           >
-            <Image src={calendarIcon.src} alt="Календарь" className="w-5 h-5" />
+            <img
+            src={calendarIcon.src} 
+            alt="Календарь" 
+            className="w-5 h-5"
+            />
             Календарь
           </button>
           <button
             className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 font-medium text-sm w-1/3 flex items-center justify-center gap-2"
             onClick={openDeleteModal}
           >
-            <Image src={deleteIcon.src} alt="Удалить" className="w-5 h-5" />
+            <img 
+            src={deleteIcon.src} 
+            alt="Удалить" 
+            className="w-5 h-5"/>
+    
             Удалить
           </button>
         </div>

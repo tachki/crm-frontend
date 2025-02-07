@@ -37,7 +37,7 @@ const Slider: React.FC<ImageGalleryProps> = ({ images }) => {
   return (
     <div className={styles.slider}>
       <div className={styles.currentImage}>
-        <Image src={images[currentImageIndex]} alt="Slider Image" />
+        <img src={images[currentImageIndex]} alt="Slider Image" />
       </div>
 
       <div
@@ -49,7 +49,7 @@ const Slider: React.FC<ImageGalleryProps> = ({ images }) => {
         onMouseUp={handleMouseUp}
       >
         {images.map((image, index) => (
-          <Image
+          <img
             src={image}
             alt="slider thumb image"
             key={index}
