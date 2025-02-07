@@ -11,22 +11,34 @@ import type { Car } from '@/types/car.type'
 import { CarService } from '@/services/car.service'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
+import ConfirmationModal from '@/components/modal/modal'
 
 export default function Car() {
   const { id } = useParams()
   const carId = Array.isArray(id) ? id.join('') : id || ''
   const [carDto, setCarDto] = useState<CarDto | null>(null)
   const router = useRouter();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const deleteCar = () => {
-    try {
-      CarService.deleteCar(carId)
-      router.replace(DASHBOARD_PAGES.BUSINESS_CARS);
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const handleDeleteCar = async () => {
+      try {
+        await CarService.deleteCar(carId);
+        router.replace(DASHBOARD_PAGES.BUSINESS_CARS)
+      } catch (error) {
+        console.log(error);
+      } finally {
+        closeDeleteModal();
+      }
+    };
+
   const fetchCar = async () => {
     try {
       const resp = await CarService.getCar(carId)
@@ -116,12 +128,22 @@ export default function Car() {
             icon={'/edit-icon.svg'}
           />
         </Link>
+        
         <Button
           children={'Удалить'}
           className={'bg-errorRed border-none text-white lg-max:w-full'}
           icon={'/delete-icon.svg'}
-          onClick={deleteCar}
+          onClick={openDeleteModal}
         />
+
+        <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={closeDeleteModal}
+        onConfirm={handleDeleteCar}
+        title="Удаление автомобиля"
+        message="Вы уверены, что хотите удалить этот автомобиль? Это действие нельзя отменить."
+      />
+    
       </div>
     </div>
   )

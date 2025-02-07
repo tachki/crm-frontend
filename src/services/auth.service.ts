@@ -16,7 +16,6 @@ export const authService = {
 
 		if(response.data.user) {
 			saveUserStorage(response.data.user)
-			console.log(getUserStorage())
 		}
 
 		return response

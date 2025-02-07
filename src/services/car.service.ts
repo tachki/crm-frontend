@@ -1,5 +1,7 @@
 import { axiosWithAuth } from "@/api/interceptors";
-import { CarDto, GetCarDto } from "@/types/car.type";
+import { CarDto, GetCarDto, mapCarDtoToCar } from "@/types/car.type";
+import { useQuery } from "@tanstack/react-query";
+
 
 export const CarService = {
 
@@ -62,11 +64,15 @@ export const CarService = {
       }
     },
 
-    async updateCar(carId: string, carData: any) {
+    async updateCar(carId: string, status: string) {
       try {
+        const data = JSON.stringify({
+            status: status
+        })
+
         const response = await axiosWithAuth.patch(
           `/v1/cars/${carId}`,
-          carData
+          data,
         );
 
         if (response.status === 204) {
