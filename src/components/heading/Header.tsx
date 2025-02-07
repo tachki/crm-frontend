@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Loader from '../Loader'
 import { LogOut } from 'lucide-react'
-
+import Image from 'next/image';
 
 export default function Header() {
 	const router = useRouter()
@@ -30,7 +30,7 @@ export default function Header() {
 		<div className='h-20 flex justify-between items-center'>
 
 			<div>
-				<img
+				<Image
 					className='m-auto 2sm-max:w-20'
 					src="/logo_tachki.svg"
 					alt="logo"

@@ -1,6 +1,7 @@
 import React, { useRef, useState, MouseEvent } from "react";
 import styles from "./Slider.module.css";
 import clsx from "clsx";
+import Image from 'next/image';
 
 interface ImageGalleryProps {
   images: string[];
@@ -36,7 +37,7 @@ const Slider: React.FC<ImageGalleryProps> = ({ images }) => {
   return (
     <div className={styles.slider}>
       <div className={styles.currentImage}>
-        <img src={images[currentImageIndex]} alt="Slider Image" />
+        <Image src={images[currentImageIndex]} alt="Slider Image" />
       </div>
 
       <div
@@ -48,7 +49,7 @@ const Slider: React.FC<ImageGalleryProps> = ({ images }) => {
         onMouseUp={handleMouseUp}
       >
         {images.map((image, index) => (
-          <img
+          <Image
             src={image}
             alt="slider thumb image"
             key={index}

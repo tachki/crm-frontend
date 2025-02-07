@@ -8,6 +8,7 @@ import { useAppDispatch } from '@/hooks/redux'
 import { setAuth } from '@/store/slice/isAuthSlice'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/buttons/Button'
+import Image from 'next/image';
 
 export default function Auth() {
 	const [isLoginForm, setIsLoginForm] = useState(true)
@@ -18,7 +19,7 @@ export default function Auth() {
 
 	const dispatch = useAppDispatch()
 
-	const { authMutate, isError, errorMessage, reset: resetForm } = useAuth(isLoginForm, setIsLoginForm)
+	const { authMutate, isError, errorMessage } = useAuth(isLoginForm, setIsLoginForm)
 
 	const onSubmit: SubmitHandler<IAuthForm> = data => {
 		reset()
@@ -40,7 +41,7 @@ export default function Auth() {
 	return (
 		<div className="align-center w-96 m-auto flex flex-col justify-center items-center h-screen space-y-12">
 			<div>
-				<img
+				<Image
 					className='m-auto'
 					src="logo.svg"
 					alt="logo"

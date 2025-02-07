@@ -5,6 +5,7 @@ import { CarService } from "@/services/car.service";
 import { DASHBOARD_PAGES } from "@/config/pages-url.config";
 import Link from "next/link";
 import { carBrandData, carClassData, carTransmissionsData } from "@/utils/constants";
+import Image from 'next/image';
 
 export default function Cars() {
   // TODO add it when will be needed
@@ -21,7 +22,7 @@ export default function Cars() {
   const [photos, setPhotos] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [addCarData, setAddCarData] = useState({});
+  const [ _, setAddCarData] = useState({});
 
   const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true);
 
@@ -89,11 +90,6 @@ export default function Cars() {
     }
   };
 
-  useEffect(() => {
-    console.log("--------------------------------------");
-    createCar();
-    console.log("addCarData", addCarData);
-  }, [addCarData]);
 
   const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -387,7 +383,7 @@ export default function Cars() {
             <div className={styles.photosWrapper}>
               {photos.map((photo, index) => (
                 <div key={index} className={styles.photoContainer}>
-                  <img
+                  <Image
                     src={URL.createObjectURL(photo)}
                     alt={`Фото ${index + 1}`}
                   />

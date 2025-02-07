@@ -8,13 +8,6 @@ interface CalendarProps {
 }
 
 
-//TODO временная заглушка пока нет основного сервиса и доки по резервации
-// const fetchReservations = async () => {
-//   const response = await fetch("http://localhost:8081/v1/cars/reservations/1");
-//   const data = await response.json();
-//   return data.reservations || [];
-// };
-
 const Calendar: React.FC<CalendarProps> = ({ carId }) => {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [markedDates, setMarkedDates] = useState<Date[]>([]); // серые дни
@@ -125,7 +118,6 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
           </button>
         </div>
 
-        {/* Календарь */}
         <DayPicker
           mode="multiple"
           selected={selectedDates}
