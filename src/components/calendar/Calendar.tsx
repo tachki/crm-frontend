@@ -12,7 +12,7 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
   const [markedDates, setMarkedDates] = useState<Date[]>([]); // Серые дни
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]); // Заблокированные дни
   const [currentMonth, setCurrentMonth] = useState(new Date()); // Текущий месяц
-  const [isMarked, setIsMarked] = useState(false);
+  const [isMarked] = useState(false);
  
   const { data: reservations } = useGetAcceptedReservationsByCarId(carId);
  
