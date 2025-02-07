@@ -20,7 +20,8 @@ export default function Auth() {
 
 	const dispatch = useAppDispatch()
 
-	const { authMutate, isError, errorMessage } = useAuth(isLoginForm, setIsLoginForm)
+	const { authMutate, isError, errorMessage } = useAuth(isLoginForm);
+
 
 	const onSubmit: SubmitHandler<IAuthForm> = data => {
 		reset()
