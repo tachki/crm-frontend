@@ -37,6 +37,10 @@ export async function middleware(
   const isAuthPage = url.includes('/auth')
   const isDashboardPage = nextUrl.pathname.startsWith("/dashboard");
 
+  if (nextUrl.pathname === '/') {
+    return NextResponse.redirect(new URL('/auth', request.url));
+  }
+
   if (isAuthPage && refreshToken) {
     return redirectToUserDashboard(userType, request)
   }
@@ -61,5 +65,5 @@ export async function middleware(
 }
 
 export const config = {
-  matcher: ['/auth/:path*', '/dashboard/:path*']
+  matcher: ['/', '/auth/:path*', '/dashboard/:path*'],
 }
