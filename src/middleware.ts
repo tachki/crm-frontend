@@ -3,7 +3,7 @@ import { EnumTokens } from "./services/auth-token.service";
 import { DASHBOARD_PAGES } from "./config/pages-url.config";
 
 function redirectToUserDashboard(userType: string, request: NextRequest) {
-  let redirectUrl = '/auth'
+  let redirectUrl = ''
 
   if (userType === 'worker' || userType === 'admin') {
     redirectUrl = DASHBOARD_PAGES.BUSINESS_CARS
@@ -12,13 +12,14 @@ function redirectToUserDashboard(userType: string, request: NextRequest) {
   } else if (userType === 'superuser') {
     redirectUrl = DASHBOARD_PAGES.SUPER_BUSINESS
   }
-  
+  console.log('USER TYPE: ', userType, 'REDIRECT TO: ', redirectUrl)
   return NextResponse.redirect(new URL(redirectUrl, request.url))
 }
 
 function matchRoute(pathname: string, allowedRoutes: string[]): boolean {
   return allowedRoutes.some((route) => {
     const pattern = new RegExp("^" + route.replace("*", ".*") + "$");
+    console.log("MATCH PATHNAME: ", pathname)
     return pattern.test(pathname);
   })
 }

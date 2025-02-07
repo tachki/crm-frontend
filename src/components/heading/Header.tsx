@@ -22,7 +22,7 @@ export default function Header() {
 
 	const logout = () => {
 		removeFromStorage()
-		router.replace('/')
+		router.replace('/auth')
 	}
 
 	return (
