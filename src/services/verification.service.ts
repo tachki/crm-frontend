@@ -4,7 +4,7 @@ export const VerificationService = {
 
     async makeVerification(formData: FormData) {
       try {
-        const response = await axiosWithAuth.post('/v1/users/verify/', formData, {
+        const response = await axiosWithAuth.post('/v1/users/verify', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
