@@ -2,7 +2,6 @@ import { axiosWithAuth } from "@/api/interceptors";
 import { CarDto, GetCarDto } from "@/types/car.type";
 
 
-
 export const CarService = {
 
     async getCarsByBusiness(businessId: string) {

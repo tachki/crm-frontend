@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Loader from '../Loader'
 import { LogOut } from 'lucide-react'
-import Image from 'next/image';
 
 export default function Header() {
 	const router = useRouter()
@@ -33,7 +32,6 @@ export default function Header() {
 					className='m-auto 2sm-max:w-20'
 					src="/logo_tachki.svg"
 					alt="logo"
-					
 				/>
 			</div>
 
@@ -42,7 +40,7 @@ export default function Header() {
 				{user?.user_type === 'admin' || user?.user_type === 'worker' ? (
 					<>
 						<Link href={DASHBOARD_PAGES.BUSINESS_CARS}>Автопарк</Link>
-						<Link href='#'>Запросы на аренду</Link>
+						<Link href={DASHBOARD_PAGES.CARS_RESERVATIONS}>Запросы на аренду</Link>
 					</>
 				) : user?.user_type === 'customer' ? (
 					<>

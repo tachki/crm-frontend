@@ -7,6 +7,7 @@ class DASHBOARD {
   AUTH = `/auth`
   BUSINESS_CARS = `${this.root}${this.businessRoot}/cars`
   CREATE = `${this.root}${this.businessRoot}/create`
+  CARS_RESERVATIONS = `${this.root}${this.businessRoot}/reservations`
   CAR_DETAILS = `${this.BUSINESS_CARS}/[id]`
   CUSTOMER_FEED = `${this.root}/feed`
   SUPER_BUSINESS = `${this.root}${this.superRoot}/businesses`
