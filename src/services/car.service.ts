@@ -64,11 +64,15 @@ export const CarService = {
       }
     },
 
-    async updateCar(carId: string, carData: any) {
+    async updateCar(carId: string, status: string) {
       try {
+        const data = JSON.stringify({
+            status: status
+        })
+
         const response = await axiosWithAuth.patch(
           `/v1/cars/${carId}`,
-          carData
+          data,
         );
 
         if (response.status === 204) {

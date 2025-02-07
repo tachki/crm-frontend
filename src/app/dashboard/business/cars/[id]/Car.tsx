@@ -39,7 +39,6 @@ export default function Car() {
       }
     };
 
-
   const fetchCar = async () => {
     try {
       const resp = await CarService.getCar(carId)
@@ -129,6 +128,7 @@ export default function Car() {
             icon={'/edit-icon.svg'}
           />
         </Link>
+        
         <Button
           children={'Удалить'}
           className={'bg-errorRed border-none text-white lg-max:w-full'}
