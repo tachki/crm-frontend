@@ -12,21 +12,20 @@ function redirectToUserDashboard(userType: string, request: NextRequest) {
   } else if (userType === 'superuser') {
     redirectUrl = DASHBOARD_PAGES.SUPER_BUSINESS
   }
-  console.log('USER TYPE: ', userType, 'REDIRECT TO: ', redirectUrl)
+
   return NextResponse.redirect(new URL(redirectUrl, request.url))
 }
 
 function matchRoute(pathname: string, allowedRoutes: string[]): boolean {
   return allowedRoutes.some((route) => {
     const pattern = new RegExp("^" + route.replace("*", ".*") + "$");
-    console.log("MATCH PATHNAME: ", pathname)
+
     return pattern.test(pathname);
   })
 }
 
 export async function middleware(
   request: NextRequest,
-  response: NextResponse
 ) {
   const { url, cookies, nextUrl } = request
 

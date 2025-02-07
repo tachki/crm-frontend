@@ -1,6 +1,7 @@
 import React, { useRef, useState, MouseEvent } from "react";
 import styles from "./Slider.module.css";
 import clsx from "clsx";
+import Image from 'next/image';
 
 interface ImageGalleryProps {
   images: string[];

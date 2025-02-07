@@ -1,10 +1,9 @@
 "use client"
 
-import { CarDto, mapCarDtoToCar } from "@/types/car.type"
+import { mapCarDtoToCar } from "@/types/car.type"
 import { useCars } from "./hooks/useCars"
 import { getUserStorage } from "@/services/auth-token.service"
 import { TailSpin } from 'react-loader-spinner'
-import Image from 'next/image'
 import emptyParkImage from '@/images/main_page_park/empty_park.png'
 import plusIcon from '@/images/main_page_park/plus.png'
 import { DASHBOARD_PAGES } from "@/config/pages-url.config"
@@ -42,12 +41,13 @@ export default function Home() {
 
       {!isLoading && !error && cars?.length === 0 && (
         <div className="flex flex-col items-center justify-center">
-          <Image
-            src={emptyParkImage}
+          <img
+            src={emptyParkImage.src}
             alt="Нет автомобилей"
             width={550}
             height={350}
             className="mb-4"
+            
           />
 
           <p className="text-lg font-medium text-black">Добавьте автомобили для их отображения на странице</p>
@@ -64,8 +64,8 @@ export default function Home() {
         <div
           className="fixed bottom-10 right-10 bg-yellow-500 rounded-full w-16 h-16 flex items-center justify-center shadow-lg"
         >
-          <Image
-            src={plusIcon}
+          <img
+            src={plusIcon.src}
             alt="Plus Icon"
             width={18}
             height={18}

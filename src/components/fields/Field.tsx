@@ -14,7 +14,7 @@ interface InputFieldProps {
 
 export const Field = forwardRef<HTMLInputElement, InputFieldProps>(
   (
-    { label, id, extra, type, placeholder, state, disabled, isNumber, ...rest },
+    { label, id, type, placeholder, state, disabled, isNumber, ...rest },
     ref
   ) => {
     return (

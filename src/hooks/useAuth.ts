@@ -7,7 +7,6 @@ import { useState } from "react"
 
 export function useAuth(
   isLoginForm: boolean,
-  setIsLoginForm: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   type AuthResponse = IAuthLoginResponse | IAuthRegisterResponse
 
@@ -16,7 +15,7 @@ export function useAuth(
 
   const { mutate: authMutate, isError, reset } = useMutation<
     AxiosResponse<AuthResponse>,
-    AxiosError<any>,
+    AxiosError<unknown>,
     IAuthForm
   >({
     mutationKey: ['auth'],

@@ -9,6 +9,7 @@ import { setAuth } from '@/store/slice/isAuthSlice'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/buttons/Button'
 
+
 export default function Auth() {
 	const [isLoginForm, setIsLoginForm] = useState(true)
 
@@ -19,7 +20,7 @@ export default function Auth() {
 
 	const dispatch = useAppDispatch()
 
-	const { authMutate, isError, errorMessage } = useAuth(isLoginForm, setIsLoginForm)
+	const { authMutate, isError, errorMessage } = useAuth(isLoginForm);
 
 	const onSubmit: SubmitHandler<IAuthForm> = data => {
 		reset()

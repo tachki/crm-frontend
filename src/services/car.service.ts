@@ -1,6 +1,6 @@
 import { axiosWithAuth } from "@/api/interceptors";
-import { CarDto, GetCarDto, mapCarDtoToCar } from "@/types/car.type";
-import { useQuery } from "@tanstack/react-query";
+import { CarDto, GetCarDto } from "@/types/car.type";
+
 
 
 export const CarService = {
@@ -21,6 +21,7 @@ export const CarService = {
         throw error;
       }
     },
+
     async getCar(id: string) {
       const response = await axiosWithAuth.get<GetCarDto>(`/v1/cars/${id}`);
       return response.data;
@@ -64,11 +65,15 @@ export const CarService = {
       }
     },
 
-    async updateCar(carId: string, carData: any) {
+    async updateCar(carId: string, status: string) {
       try {
+        const data = JSON.stringify({
+            status: status
+        })
+
         const response = await axiosWithAuth.patch(
           `/v1/cars/${carId}`,
-          carData
+          data,
         );
 
         if (response.status === 204) {

@@ -20,13 +20,13 @@ export default function Update() {
 
   const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true);
 
-  useEffect(()=> {
-      if(!isLoading) {
-          setCarPrice(()=>data?.car.price_per_day)
-          setCarYear(()=>data?.car.year)
-          setCarDescription(()=>data?.car.description)
-      }
-  }, [isLoading])
+  useEffect(() => {
+    if (!isLoading) {
+        setCarPrice(data?.car.price_per_day);
+        setCarYear(data?.car.year);
+        setCarDescription(data?.car.description);
+    }
+  }, [isLoading, data?.car.description, data?.car.price_per_day, data?.car.year]);
 
   const updateCar = async () => {
     const carData = {
