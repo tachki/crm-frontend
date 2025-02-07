@@ -1,7 +1,5 @@
 "use client"
-import { CarService } from "@/services/car.service";
-import { Car, mapCarDtoToCar } from "@/types/car.type";
-import { useEffect, useState } from "react";
+
 import { getUserStorage } from "@/services/auth-token.service";
 import { TailSpin } from 'react-loader-spinner';
 import Image from 'next/image';
@@ -14,7 +12,7 @@ import { useCarsByBusiness } from "./hooks/useCarByBusiness";
 
 
 export default function Home() {
-  let businessId = getUserStorage()?.business_id ?? 'default-business-id';
+  const businessId = getUserStorage()?.business_id ?? 'default-business-id';
 
   const { data: cars = [], isLoading, error } = useCarsByBusiness(businessId);
 

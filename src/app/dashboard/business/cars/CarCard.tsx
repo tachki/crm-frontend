@@ -1,5 +1,4 @@
 "use client"
-
 import Calendar from "@/components/calendar/Calendar"
 import { CarCardProps, CarStatus, statusStyles } from "@/types/car.type"
 import React, { useEffect, useRef, useState } from "react"
@@ -11,6 +10,7 @@ import { CarService } from "@/services/car.service";
 import ConfirmationModal from "@/components/modal/modal"
 import './CarCard.css';
 import { carStatusData } from '@/utils/constants'
+import Image from 'next/image';
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
@@ -160,7 +160,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
             className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 font-medium text-sm w-1/3 flex items-center justify-center gap-2"
             onClick={openDeleteModal}
           >
-            <img src={deleteIcon.src} alt="Удалить" className="w-5 h-5" />
+            <Image src={deleteIcon.src} alt="Удалить" className="w-5 h-5" />
             Удалить
           </button>
         </div>
