@@ -1,13 +1,11 @@
-import { useGetAcceptedReservationsByCarId, useLockCar } from "@/services/reservation.service";
+import { useGetAcceptedReservationsByCarId } from "@/services/reservation.service";
 import React, { useEffect, useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
-
 interface CalendarProps {
   carId: string;
 }
-
 
 const Calendar: React.FC<CalendarProps> = ({ carId }) => {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
@@ -15,7 +13,6 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]); // Заблокированные дни
   const [currentMonth, setCurrentMonth] = useState(new Date()); // Текущий месяц
   const [isMarked, setIsMarked] = useState(false);
-  const { mutate: lockCar } = useLockCar(); 
  
   const { data: reservations } = useGetAcceptedReservationsByCarId(carId);
  
@@ -59,25 +56,10 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
       return `${day}.${month}.${year}`;
     };
 
-    const startDate = formatDate(sortedDates[0]);
-    const endDate = formatDate(sortedDates[sortedDates.length - 1]);
-
-    lockCar(
-      { carId, startDate, endDate },
-      {
-        onSuccess: () => {
-          setIsMarked(true);
-          setMarkedDates((prev) => [...prev, ...sortedDates]);
-          setSelectedDates([]);
-        },
-        onError: (error) => {
-          console.error("Ошибка при отправке данных:", error);
-          alert("Произошла ошибка при отправке данных");
-        },
-      }
-    );
-  };
-
+    formatDate(sortedDates[0]);
+    formatDate(sortedDates[sortedDates.length - 1]);
+  }
+  
   const handleRemoveMark = () => {
     if (!selectedDates.length) return;
     setMarkedDates((prev) =>
@@ -200,5 +182,3 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
 };
 
 export default Calendar;
-
-
