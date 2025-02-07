@@ -7,6 +7,11 @@ interface CalendarProps {
   carId: string;
 }
 
+function stringToDate(dateString: string) {
+  const [day, month, year] = dateString.split(".").map(Number);
+  return new Date(year, month - 1, day);
+}
+
 const Calendar: React.FC<CalendarProps> = ({ carId }) => {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [markedDates, setMarkedDates] = useState<Date[]>([]); // Серые дни
@@ -20,8 +25,10 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
     if (reservations) {
       const redDays = reservations
         .map((reservation) => {
-          const startDate = new Date(reservation.start_date);
-          const endDate = new Date(reservation.end_date);
+          const startDate = stringToDate(reservation.start_date);
+          console.log(reservation.start_date, startDate)
+          const endDate = stringToDate(reservation.end_date);
+          console.log(endDate, reservation.end_date)
 
           const days = [];
           for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
@@ -31,6 +38,7 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
         })
         .flat();
 
+        console.log(redDays);
       setUnavailableDates(redDays); 
     }
   }, [reservations]);

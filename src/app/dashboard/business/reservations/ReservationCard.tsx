@@ -11,6 +11,9 @@ interface ReservationProps {
     end_date: string;
     price: number;
     status: string;
+    login: string;
+    brand: string;
+    model: string;
   };
 }
 
@@ -29,8 +32,8 @@ export default function ReservationCard({ reservation }: ReservationProps) {
 
   return (
     <div className="border p-4 rounded-lg shadow-lg bg-white">
-      <h2>{reservation.user_id}</h2>
-      <h2>{reservation.car_id}</h2>
+      <h2>{reservation.login}</h2>
+      <h2>{reservation.brand} {reservation.model}</h2>
       <h3 className="font-bold">{reservation.start_date} - {reservation.end_date}</h3>
       <p className="text-gray-600">Цена: <strong>{reservation.price} BYN</strong></p>
 
