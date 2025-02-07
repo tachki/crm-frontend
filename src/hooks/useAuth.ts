@@ -7,7 +7,7 @@ import { DASHBOARD_PAGES } from "@/config/pages-url.config"
 import { useState } from "react"
 
 export function useAuth(
-  isLoginForm: boolean,
+isLoginForm: boolean, setIsLoginForm: unknown,
 ) {
   type AuthResponse = IAuthLoginResponse | IAuthRegisterResponse
 
