@@ -54,10 +54,10 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
     }
   }
 
-  const updateCarStatus = (carId: string, carData: CarStatus) => {
+  const updateCarStatus = (carId: string, status: CarStatus) => {
     try {
-      CarService.updateCar(carId, { carData })
-      setCarStatus(carData)
+      CarService.updateCar(carId, status)
+      setCarStatus(status)
       setIsDropdownMenuVisible(false)
     } catch (error) {
       console.log(error)
