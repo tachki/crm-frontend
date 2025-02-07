@@ -14,22 +14,8 @@ export const authService = {
 			saveTokenStorage(response.data.access_token, response.data.refresh_token)
 		}
 
-		const fakeUser: IUser = {
-			business_id: '1',
-  		created_at: '01.01.2025',
-  		id: '1',
-			is_verified: false,
-			login: 'test@test.com',
-			updated_at: '01.01.2025',
-			user_type: 'worker',
-		}
-
 		if(response.data.user) {
 			saveUserStorage(response.data.user)
-			// TODO раскомментить когда нужно зайти с аккаунта бизнес админки
-			// saveUserStorage(fakeUser)
-			
-			// Оставила фейк юзера, чтобы можно было с кастомера перейти на бизнес админку
 		}
 
 		return response

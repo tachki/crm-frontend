@@ -64,7 +64,7 @@ export default function Auth() {
 						type='text'
 						extra=''
 						{...register('email', {
-							required: true
+							required: 'Необходимо ввести логин'
 						})}
 					/>
           
@@ -84,8 +84,11 @@ export default function Auth() {
 						placeholder='Пароль'
 						type='password'
 						{...register('password', {
-							required: true,
-							minLength: 4,
+							required: 'Необходимо ввести пароль',
+							minLength: {
+								value: 4,
+								message: 'Пароль должен содержать не менее 8 символов',
+							},
 						})}
 						extra=''
 					/>
@@ -117,7 +120,7 @@ export default function Auth() {
 							className='text-primary underline pl-2'
 							onClick={toggleForm}
 						>
-							{isLoginForm ? "Зарегистрироваться" : "Войти"}
+							{isLoginForm ? "Зарегестрироваться" : "Войти"}
 						</button>
 					</div>
 				</form>

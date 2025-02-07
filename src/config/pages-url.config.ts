@@ -11,18 +11,11 @@ class DASHBOARD {
   CUSTOMER_FEED = `${this.root}/feed`
   SUPER_BUSINESS = `${this.root}${this.superRoot}/businesses`
 
-  accessURLs: Record<string, RegExp[]> = {
-    worker: [/^\/dashboard\/business/, /^\/dashboard/],
-    admin: [/^\/dashboard\/business/, /^\/dashboard/],
-    superuser: [/^\/dashboard\/super/, /^\/dashboard/],
-    customer: [
-      /^\/dashboard\/feed$/,
-      /^\/dashboard\/cars\/\d+$/,
-      /^\/dashboard\/cars\/\d+\/reservation$/,
-      /^\/dashboard\/verification$/,
-      /^\/dashboard\/reservations$/,
-      /^\/dashboard\/reservations\/\d+$/
-    ]
+  ACCESS_URL: Record<'worker' | 'admin' | 'customer' | 'superuser', string[]> = {
+    'worker': ['/business/*'],
+    'admin': ['/business/*'],
+    'customer': ['/feed', '/cars/:id', '/сars/:id/reservation', '/verification', '/reservations', '/reservations/:id'],
+    'superuser': ['/super/*']
   }
 }
 

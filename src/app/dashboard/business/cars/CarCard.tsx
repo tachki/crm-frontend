@@ -2,7 +2,7 @@
 
 import Calendar from "@/components/calendar/Calendar"
 import { CarCardProps, CarStatus, statusStyles } from "@/types/car.type"
-import React, { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import calendarIcon from '@/images/car_card/buttons/calendar_logo.png'
 import deleteIcon from '@/images/car_card/buttons/bucket_logo.png'
 import { DASHBOARD_PAGES } from "@/config/pages-url.config"
@@ -10,7 +10,7 @@ import Link from 'next/link'
 import { CarService } from "@/services/car.service";
 import ConfirmationModal from "@/components/modal/modal"
 import './CarCard.css';
-
+import { carStatusData } from '@/utils/constants'
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
@@ -91,7 +91,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
             </button>
             {isDropdownMenuVisible && (
               <div className='absolute w-60 right-0 shadow-xl rounded-lg'>
-                {["Бронь", "Арендовано", "Свободно", "Временно недоступно", "Недоступно"].map((status) => (
+                {carStatusData.map((status) => (
                   <button
                     key={status}
                     className="block w-full text-left px-3 py-2 hover:bg-gray-100 text-black font-medium"

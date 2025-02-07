@@ -1,0 +1,107 @@
+[33m255ae51[m[33m ([m[1;36mHEAD -> [m[1;32m66-77-fix_bug[m[33m, [m[1;31morigin/66-77-fix_bug[m[33m)[m Merge branch '15-business-app' into 66-77-fix_bug
+[33mb01b83e[m fixed url access on user role and added a dropdown menu on car status
+[33me6a40b6[m[33m ([m[1;31morigin/15-business-app[m[33m)[m fixed bugs
+[33m004a2ae[m Обновление календаря, добавление модального окна (#67)
+[33m7009700[m #68 fixed auth form (#75)
+[33m380fafd[m[33m ([m[1;31morigin/fix/68-registration-togle-problem[m[33m, [m[1;32mfix/68-registration-togle-problem[m[33m)[m fixed conflicts
+[33mec67cc7[m Исправила добавление ошибки при переключении (closes #68)
+[33maae0bd5[m[33m ([m[1;32m15-business-app[m[33m)[m Merge pull request #69 from tachki/65-auth-logic
+[33ma52de70[m #65 upd auth navigation logic
+[33m5a5d94a[m 22 update car (#58)
+[33m56d74b6[m Update README.md (#42) (#62)
+[33mcceaacf[m 59 clean fields and redirect after create car (#61)
+[33mcd208bb[m fetching car from server (#60)
+[33m5b0d7b4[m fix: issue 48 with double adding img (#56)
+[33mf3a5e9a[m Car information (#57)
+[33m5c46cfa[m[33m ([m[1;31morigin/car-information[m[33m, [m[1;32mcar-information[m[33m)[m Replaced types in car service
+[33m4309305[m Corrected mistakes and added adaptive design
+[33m3eeb9ad[m Improved slider and fixed header problem
+[33m955ec7f[m Aded slider, fixed problem w header
+[33m8bb44a2[m add braces
+[33md24e237[m added brace
+[33m00cded9[m Merge branch '15-business-app' of https://github.com/tachki/crm-frontend into 15-business-app
+[33mf7234f4[m tmp
+[33mf494778[m Merge pull request #55 from tachki/reactoring-API
+[33m6c42441[m[33m ([m[1;31morigin/reactoring-API[m[33m)[m Merge branch '15-business-app' into reactoring-API
+[33mc937d14[m api changes
+[33m1a0c18d[m Merge pull request #52 from tachki/51-merge-branches
+[33m2d8e6d8[m[33m ([m[1;31morigin/51-merge-branches[m[33m)[m Merge branch '51-merge-branches' of https://github.com/tachki/crm-frontend into 51-merge-branches
+[33mfcdaa43[m merge branches
+[33m0fc367c[m Update Auth.tsx
+[33m8940129[m Update interceptors.ts
+[33m3f28dbf[m #51 merge feature branches
+[33mdaf374b[m merge braches
+[33m7ceb1ba[m Merge branches
+[33m03ac44e[m[33m ([m[1;31morigin/car_info[m[33m)[m Car ingo, url pages, url in site
+[33m80c5240[m Merge pull request #43 from tachki/15-main-page-auto
+[33mbe9bb85[m Update Auth.tsx
+[33mc7b7af7[m #20 added main page
+[33m2066624[m #20 images for card
+[33m278b7fb[m feat: start make car adding
+[33m917b684[m feat: start make add-car work
+[33m1fd216e[m feat: make adaptive
+[33mad78d7d[m починил баги
+[33m71e7450[m tmp
+[33mb87ead0[m delete unused file
+[33m29df0ab[m Merge branch '11-business-card-with-status' of https://github.com/tachki/crm-frontend into 11-business-card-with-status
+[33m614ce37[m added ui for car card
+[33mf55ccb7[m reservation model
+[33m6facac8[m calendar
+[33m4261aad[m car model
+[33m151b1bc[m fixed conflicts
+[33m229aca1[m card draft
+[33m8b623e0[m Merge branch 'master' of https://github.com/tachki/crm-frontend into 11-business-card-with-status
+[33m2a69ad6[m tmp
+[33m159910d[m Header based on user type (#38)
+[33m9b9a1c1[m Chenged customer and superuser roles
+[33m939767f[m Changed business role
+[33m96abbd3[m Header based on user type
+[33m446d3b7[m Merge pull request #37 from tachki/header
+[33mb8d4514[m added header for business
+[33m3fd4928[m Merge pull request #36 from tachki/user-cookie
+[33mb14ce88[m Merge branch 'master' of https://github.com/tachki/crm-frontend
+[33m3ce296c[m Added user into cookie
+[33m074098f[m Merge pull request #35 from tachki/fix-merge-tailwind
+[33m4cc8ca8[m Update deploy.yml
+[33m50c552c[m Update build.yaml
+[33m2eb5999[m Merge pull request #33 from tachki/dependabot/npm_and_yarn/next-15.1.2
+[33mda5abe8[m Merging tailwind.config file
+[33mf2fd351[m Merge pull request #34 from tachki/css-base-styles
+[33md5b69e1[m Changed auth styles and tailwind.config.ts file
+[33m3a51a1f[m changed auth styles
+[33m98a744d[m Bump next from 15.0.3 to 15.1.2
+[33m71bb4c7[m Create deploy.yml
+[33m62bac41[m build
+[33m9deb2e4[m build
+[33m235a54b[m linting
+[33m6e6206c[m linting
+[33mc63a86f[m linting
+[33m0c9c6fb[m linting
+[33m8f65008[m Merge pull request #27 from tachki/css-base-styles
+[33mf752b91[m Resolve merge conflict in globals.css
+[33mfbfe08c[m import reset.css file
+[33m7a7c3ae[m Merge branch 'master' of https://github.com/tachki/crm-frontend
+[33m4989412[m feat: delete debug line
+[33m2398f6c[m feat: add base styles
+[33m22d9eab[m Merge branch 'interceptor-and-middleware'
+[33m91dbe34[m changed main page and next.config.ts file
+[33m2cfe1fd[m Merge pull request #26 from tachki/interceptor-and-middleware
+[33m586e9c1[m Resolved merge conflicts
+[33m469f32a[m middleware
+[33m2ff529c[m added middleware and changed interceptors
+[33m7e64497[m feat: resolve merge conflict in Cars.tsx
+[33m8cde2f4[m Cars add input , css correction
+[33mc9bfad6[m feat: teature add-car-image
+[33m96e00d2[m feature add-car-photo low styles
+[33m0b9865e[m Added layout and provider
+[33mcbeecd0[m Added Car Form
+[33m9ad40ed[m renamed files
+[33mb6368ef[m Added AddCar file
+[33m3cd23d3[m Merge pull request #12 from tachki/user-registration-form
+[33m40a6108[m Merge branch 'master' of https://github.com/tachki/crm-frontend into user-registration-form
+[33md24fcab[m Updated inetrceptors
+[33m75c09b2[m Merge pull request #10 from tachki/user-registration-form
+[33m8162031[m Added registartion/authorization form
+[33m768d6a9[m Merge pull request #4 from tachki/registration-form
+[33m70d2ff7[m #1 added registration form
+[33mff155a1[m Initialized project

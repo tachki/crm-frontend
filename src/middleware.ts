@@ -1,43 +1,6 @@
-import { NextRequest, NextResponse } from "next/server"
-import { EnumTokens } from "./services/auth-token.service"
-import { DASHBOARD_PAGES } from './config/pages-url.config'
-
-export async function middleware(request: NextRequest) {
-  const { cookies, nextUrl } = request
-  const path = nextUrl.pathname
-
-  const userJson = cookies.get('userData')?.value
-  const user = userJson ? JSON.parse(userJson) : null
-  const userType = user?.user_type ?? ''
-
-  const isAuthPage = path.startsWith('/auth')
-  const isDashboardRoot = path === '/dashboard'
-  const refreshToken = cookies.get(EnumTokens.REFRESH_TOKEN)?.value
-
-  if (isAuthPage && refreshToken) {
-    return redirectToUserDashboard(userType, request)
-  }
-
-  if (isAuthPage) {
-    return NextResponse.next()
-  }
-
-  if (!refreshToken) {
-    return NextResponse.redirect(new URL('/auth', request.url))
-  }
-
-  if (isDashboardRoot) {
-    return redirectToUserDashboard(userType, request)
-  }
-
-  const isAuthorized = DASHBOARD_PAGES.accessURLs[userType]?.some(regex => regex.test(path)) ?? false
-
-  if (!isAuthorized) {
-    return NextResponse.rewrite(new URL('/auth', request.url))
-  }
-
-  return NextResponse.next()
-}
+import { NextRequest, NextResponse } from "next/server";
+import { EnumTokens } from "./services/auth-token.service";
+import { DASHBOARD_PAGES } from "./config/pages-url.config";
 
 function redirectToUserDashboard(userType: string, request: NextRequest) {
   let redirectUrl = '/auth'
@@ -49,8 +12,53 @@ function redirectToUserDashboard(userType: string, request: NextRequest) {
   } else if (userType === 'superuser') {
     redirectUrl = DASHBOARD_PAGES.SUPER_BUSINESS
   }
-
+  
   return NextResponse.redirect(new URL(redirectUrl, request.url))
+}
+
+function matchRoute(pathname: string, allowedRoutes: string[]): boolean {
+  return allowedRoutes.some((route) => {
+    const pattern = new RegExp("^" + route.replace("*", ".*") + "$");
+    return pattern.test(pathname);
+  })
+}
+
+export async function middleware(
+  request: NextRequest,
+  response: NextResponse
+) {
+  const { url, cookies, nextUrl } = request
+
+  const refreshToken = cookies.get(EnumTokens.REFRESH_TOKEN)?.value
+
+  const userJson = cookies.get('userData')?.value
+  const user = userJson ? JSON.parse(userJson) : null
+  const userType = user?.user_type as keyof typeof DASHBOARD_PAGES.ACCESS_URL
+
+  const isAuthPage = url.includes('/auth')
+  const isDashboardPage = nextUrl.pathname.startsWith("/dashboard");
+
+  if (isAuthPage && refreshToken) {
+    return redirectToUserDashboard(userType, request)
+  }
+
+  if (isAuthPage) {
+    return NextResponse.next()
+  }
+
+  if(!refreshToken) {
+    return NextResponse.redirect(new URL('/auth', request.url))
+  }
+
+  if (isDashboardPage) {
+    const allowedRoutes = DASHBOARD_PAGES.ACCESS_URL[userType] || []
+
+    if (!matchRoute(nextUrl.pathname.replace("/dashboard", ""), allowedRoutes)) {
+      return new NextResponse("Forbidden", { status: 403 })
+    }
+  }
+
+  return NextResponse.next()
 }
 
 export const config = {
