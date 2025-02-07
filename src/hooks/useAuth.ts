@@ -8,7 +8,6 @@ import { useState } from "react"
 
 export function useAuth(
   isLoginForm: boolean,
-  setIsLoginForm: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   type AuthResponse = IAuthLoginResponse | IAuthRegisterResponse
 

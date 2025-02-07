@@ -12,4 +12,18 @@ const nextConfig: NextConfig = {
   },
 };
 
+module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '9000',
+        pathname: '/cars/**',
+      },
+    ],
+  },
+};
+
+
 export default nextConfig;

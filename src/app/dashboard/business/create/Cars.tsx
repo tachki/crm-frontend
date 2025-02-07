@@ -6,7 +6,6 @@ import { DASHBOARD_PAGES } from "@/config/pages-url.config";
 import Link from "next/link";
 import { carBrandData, carClassData, carTransmissionsData } from "@/utils/constants";
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 
 export default function Cars() {
   const router = useRouter();
@@ -379,7 +378,7 @@ export default function Cars() {
             <div className={styles.photosWrapper}>
               {photos.map((photo, index) => (
                 <div key={index} className={styles.photoContainer}>
-                  <Image
+                  <img
                     src={URL.createObjectURL(photo)}
                     alt={`Фото ${index + 1}`}
                   />

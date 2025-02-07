@@ -29,10 +29,11 @@ export default function Header() {
 		<div className='h-20 flex justify-between items-center'>
 
 			<div>
-				<Image
+				<img
 					className='m-auto 2sm-max:w-20'
 					src="/logo_tachki.svg"
 					alt="logo"
+					
 				/>
 			</div>
 
