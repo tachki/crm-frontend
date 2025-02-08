@@ -18,17 +18,6 @@ export async function middleware(
   const isAuthPage = url.includes('/auth')
   const isDashboardPage = nextUrl.pathname.startsWith("/dashboard");
 
-  if (request.url.includes('404')) {
-    console.log("404")
-    return redirectToUserDashboard(userType, request)
-  }
-
-  //  console.log("IS_DASHBOARD: ", isDashboardPage)
-
-  // if(!isDashboardPage && refreshToken) {
-  //   return redirectToUserDashboard(userType, request)
-  // }
-
   if (isDashboardPage) {
     if (!matchRoute(nextUrl.pathname.replace("/dashboard", ""), allowedRoutes)) {
       return redirectToUserDashboard(userType, request)

@@ -9,7 +9,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
     ];
-  },
 
   images: {
     remotePatterns: [
