@@ -14,6 +14,8 @@ export function useAuth(
   const { push } = useRouter()
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const {BUSINESS_CARS} = DASHBOARD_PAGES;
+
   const { mutate: authMutate, isError, reset } = useMutation<
     AxiosResponse<AuthResponse>,
     AxiosError<unknown>,
@@ -28,10 +30,10 @@ export function useAuth(
     },
     onSuccess: (_, variables) => {
       if (isLoginForm) {
-        push(DASHBOARD_PAGES.BUSINESS_CARS)
+        push(BUSINESS_CARS)
       } else {
         authService.login(variables).then(() => {
-          push(DASHBOARD_PAGES.BUSINESS_CARS) 
+          push(BUSINESS_CARS) 
         })
       }
     },
