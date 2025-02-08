@@ -2,27 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { EnumTokens } from "./services/auth-token.service";
 import { DASHBOARD_PAGES } from "./config/pages-url.config";
 
-function redirectToUserDashboard(userType: string, request: NextRequest) {
-  let redirectUrl = '/auth'
-
-  if (userType === 'worker' || userType === 'admin') {
-    redirectUrl = DASHBOARD_PAGES.BUSINESS_CARS
-  } else if (userType === 'customer') {
-    redirectUrl = DASHBOARD_PAGES.CUSTOMER_FEED
-  } else if (userType === 'superuser') {
-    redirectUrl = DASHBOARD_PAGES.SUPER_BUSINESS
-  }
-  
-  return NextResponse.redirect(new URL(redirectUrl, request.url))
-}
-
-function matchRoute(pathname: string, allowedRoutes: string[]): boolean {
-  return allowedRoutes.some((route) => {
-    const pattern = new RegExp("^" + route.replace("*", ".*") + "$");
-    return pattern.test(pathname);
-  })
-}
-
 export async function middleware(
   request: NextRequest,
 ) {
@@ -34,11 +13,26 @@ export async function middleware(
   const user = userJson ? JSON.parse(userJson) : null
   const userType = user?.user_type as keyof typeof DASHBOARD_PAGES.ACCESS_URL
 
+  const allowedRoutes = DASHBOARD_PAGES.ACCESS_URL[userType] || []
+
   const isAuthPage = url.includes('/auth')
   const isDashboardPage = nextUrl.pathname.startsWith("/dashboard");
 
-  if (nextUrl.pathname === '/') {
-    return NextResponse.redirect(new URL('/auth', request.url));
+  if (request.url.includes('404')) {
+    console.log("404")
+    return redirectToUserDashboard(userType, request)
+  }
+
+  //  console.log("IS_DASHBOARD: ", isDashboardPage)
+
+  // if(!isDashboardPage && refreshToken) {
+  //   return redirectToUserDashboard(userType, request)
+  // }
+
+  if (isDashboardPage) {
+    if (!matchRoute(nextUrl.pathname.replace("/dashboard", ""), allowedRoutes)) {
+      return redirectToUserDashboard(userType, request)
+    }
   }
 
   if (isAuthPage && refreshToken) {
@@ -53,17 +47,27 @@ export async function middleware(
     return NextResponse.redirect(new URL('/auth', request.url))
   }
 
-  if (isDashboardPage) {
-    const allowedRoutes = DASHBOARD_PAGES.ACCESS_URL[userType] || []
-
-    if (!matchRoute(nextUrl.pathname.replace("/dashboard", ""), allowedRoutes)) {
-      return new NextResponse("Forbidden", { status: 403 })
-    }
-  }
-
   return NextResponse.next()
 }
 
 export const config = {
   matcher: ['/', '/auth/:path*', '/dashboard/:path*'],
+}
+
+function redirectToUserDashboard(userType: string, request: NextRequest) {
+  const userRoutes: Record<string, string> = {
+    worker: DASHBOARD_PAGES.BUSINESS_CARS,
+    admin: DASHBOARD_PAGES.BUSINESS_CARS,
+    customer: DASHBOARD_PAGES.CUSTOMER_FEED,
+    superuser: DASHBOARD_PAGES.SUPER_BUSINESS,
+  };
+
+  return NextResponse.redirect(new URL(userRoutes[userType] || "/auth", request.url));
+}
+
+function matchRoute(pathname: string, allowedRoutes: string[]): boolean {
+  return allowedRoutes.some((route) => {
+    const pattern = new RegExp("^" + route.replace("*", ".*") + "$");
+    return pattern.test(pathname);
+  })
 }
