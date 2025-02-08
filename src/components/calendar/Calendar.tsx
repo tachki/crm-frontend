@@ -26,9 +26,7 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
       const redDays = reservations
         .map((reservation) => {
           const startDate = stringToDate(reservation.start_date);
-          console.log(reservation.start_date, startDate)
           const endDate = stringToDate(reservation.end_date);
-          console.log(endDate, reservation.end_date)
 
           const days = [];
           for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
@@ -38,36 +36,10 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
         })
         .flat();
 
-        console.log(redDays);
       setUnavailableDates(redDays); 
     }
   }, [reservations]);
 
-  const handleMarkDate = () => {
-    if (!selectedDates.length) return;
-
-    const sortedDates = [...selectedDates].sort((a, b) => a.getTime() - b.getTime());
-
-    for (let i = 1; i < sortedDates.length; i++) {
-      const prevDate = new Date(sortedDates[i - 1]);
-      prevDate.setDate(prevDate.getDate() + 1);
-      if (prevDate.getTime() !== sortedDates[i].getTime()) {
-        alert("Даты должны идти подряд");
-        return;
-      }
-    }
-
-    const formatDate = (date: Date) => {
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const year = date.getFullYear();
-      return `${day}.${month}.${year}`;
-    };
-
-    formatDate(sortedDates[0]);
-    formatDate(sortedDates[sortedDates.length - 1]);
-  }
-  
   const handleRemoveMark = () => {
     if (!selectedDates.length) return;
     setMarkedDates((prev) =>
@@ -160,7 +132,6 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
 
         <div className="flex justify-between mt-4 gap-2 w-full">
           <button
-            onClick={handleMarkDate}
             className={`border border-[#3B44FF] text-[#3B44FF] font-light text-sm px-2 py-1 rounded transition-all w-1/3 ${
               isMarked ? "bg-[#3B44FF] text-white" : "hover:bg-[#3B44FF] hover:text-white"
             }`}
