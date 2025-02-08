@@ -8,6 +8,9 @@ export interface Reservation {
     status: string;
     updated_at: string;
     user_id: string;
+    login: string;
+    brand: string;
+    model: string;
 }
 
 export interface ReservationsResponseDto {
