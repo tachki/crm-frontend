@@ -9,11 +9,8 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
     ];
-  },  
-};
+  },
 
-
-module.exports = {
   images: {
     remotePatterns: [
       {
