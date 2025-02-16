@@ -13,6 +13,7 @@ export const getAccessToken = () => {
 
 export const getRefreshToken = () => {
 	const refreshToken = Cookies.get(EnumTokens.REFRESH_TOKEN)
+	console.log('Retrieved refresh token:', refreshToken);
 	return refreshToken || null
 }
 
@@ -38,6 +39,9 @@ export const saveUserStorage = (user: IUser) => {
 }
 
 export const getUserStorage = (): IUser | null => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
   const userJson = Cookies.get('userData');
   if (userJson) {
     try {
@@ -47,7 +51,8 @@ export const getUserStorage = (): IUser | null => {
     }
   }
   return null;
-}
+};
+
 
 export const removeFromStorage = () => {
 	Cookies.remove(EnumTokens.ACCESS_TOKEN)

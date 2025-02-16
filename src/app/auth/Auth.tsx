@@ -9,16 +9,19 @@ import { setAuth } from '@/store/slice/isAuthSlice'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/buttons/Button'
 
+
 export default function Auth() {
 	const [isLoginForm, setIsLoginForm] = useState(true)
 
-	const { register, handleSubmit, reset, formState: { errors } } = useForm<IAuthForm>({
+
+  const { register, handleSubmit, reset, formState: { errors }, clearErrors } = useForm<IAuthForm>({
 		mode: 'onChange'
 	})
 
 	const dispatch = useAppDispatch()
 
-	const { authMutate, isError, errorMessage, reset: resetForm } = useAuth(isLoginForm, setIsLoginForm)
+	const { authMutate, isError, errorMessage } = useAuth(isLoginForm);
+
 
 	const onSubmit: SubmitHandler<IAuthForm> = data => {
 		reset()
@@ -35,6 +38,7 @@ export default function Auth() {
 	const toggleForm = () => {
 		setIsLoginForm(prevState => !prevState)
 		reset()
+		clearErrors()
 	}
 
 	return (
@@ -59,13 +63,13 @@ export default function Auth() {
 						id='email'
 						label=''
 						placeholder='Логин'
-						type='email'
+						type='text'
 						extra=''
 						{...register('email', {
 							required: 'Необходимо ввести логин'
 						})}
 					/>
-					{errors.email && (
+					{errors.email?.message && (
 						<p
 							role='alert'
 							className='text-xs text-red-500 font-medium pt-1.5'
@@ -82,13 +86,13 @@ export default function Auth() {
 						{...register('password', {
 							required: 'Необходимо ввести пароль',
 							minLength: {
-								value: 8,
-								message: 'Пароль должен содержать не менее 8 символов',
+								value: 4,
+								message: 'Пароль должен содержать не менее 4 символов',
 							},
 						})}
 						extra=''
 					/>
-					{errors.password && (
+					{errors.password?.message && (
 						<p
 							role='alert'
 							className='text-xs text-red-500 font-medium pt-1.5'
@@ -96,7 +100,6 @@ export default function Auth() {
 							{errors.password.message}
 						</p>
 					)}
-
 
 					{isError && (
 						<p
@@ -107,8 +110,8 @@ export default function Auth() {
 						</p>
 					)}
 
-					<Button className='mt-6 mb-8'>
-						{isLoginForm ? "Войти" : "Зарегестрироваться"}
+					<Button className='mt-6 mb-8 w-full bg-primary text-white'>
+						{isLoginForm ? "Войти" : "Зарегистрироваться"}	
 					</Button>
 
 					<div className='justify-center flex items-center font-medium'>
@@ -117,7 +120,7 @@ export default function Auth() {
 							className='text-primary underline pl-2'
 							onClick={toggleForm}
 						>
-							{isLoginForm ? "Зарегестрироваться" : "Войти"}
+							{isLoginForm ? "Зарегистрироваться" : "Войти"}
 						</button>
 					</div>
 				</form>
@@ -125,5 +128,5 @@ export default function Auth() {
 			</div>
 
 		</div>
-	);
+	)
 }
