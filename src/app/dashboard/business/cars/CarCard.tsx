@@ -1,7 +1,7 @@
 "use client"
 
 import Calendar from "@/components/calendar/Calendar"
-import { CarCardProps, statusStyles } from "@/types/car.type"
+import { CarCardProps, CarStatus, statusStyles } from "@/types/car.type"
 import React, { useState, useRef, useEffect } from "react"
 import calendarIcon from '@/images/car_card/buttons/calendar_logo.png'
 import deleteIcon from '@/images/car_card/buttons/bucket_logo.png'
