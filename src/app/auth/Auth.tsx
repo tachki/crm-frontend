@@ -13,7 +13,6 @@ import { Button } from '@/components/buttons/Button'
 export default function Auth() {
 	const [isLoginForm, setIsLoginForm] = useState(true)
 
-
   const { register, handleSubmit, reset, formState: { errors }, clearErrors } = useForm<IAuthForm>({
 		mode: 'onChange'
 	})
@@ -21,7 +20,6 @@ export default function Auth() {
 	const dispatch = useAppDispatch()
 
 	const { authMutate, isError, errorMessage } = useAuth(isLoginForm);
-
 
 	const onSubmit: SubmitHandler<IAuthForm> = data => {
 		reset()
@@ -38,7 +36,7 @@ export default function Auth() {
 	const toggleForm = () => {
 		setIsLoginForm(prevState => !prevState)
 		reset()
-		clearErrors()
+    clearErrors()
 	}
 
 	return (
@@ -111,7 +109,7 @@ export default function Auth() {
 					)}
 
 					<Button className='mt-6 mb-8 w-full bg-primary text-white'>
-						{isLoginForm ? "Войти" : "Зарегистрироваться"}	
+						{isLoginForm ? "Войти" : "Зарегистрироваться"}
 					</Button>
 
 					<div className='justify-center flex items-center font-medium'>
@@ -128,5 +126,5 @@ export default function Auth() {
 			</div>
 
 		</div>
-	)
+	);
 }

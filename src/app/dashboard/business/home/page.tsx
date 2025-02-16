@@ -10,7 +10,6 @@ import CarCard from "../cars/CarCard";
 import { useCarsByBusiness } from "./hooks/useCarByBusiness";
 
 
-
 export default function Home() {
   const businessId = getUserStorage()?.business_id ?? 'default-business-id';
 

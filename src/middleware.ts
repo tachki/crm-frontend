@@ -29,14 +29,30 @@ export async function middleware(
   }
 
   if (isAuthPage) {
-    return NextResponse.next()
+    return NextResponse.next();
   }
 
-  if(!refreshToken) {
-    return NextResponse.redirect(new URL('/auth', request.url))
+  if (!refreshToken) {
+    return NextResponse.redirect(new URL('/auth', request.url));
   }
 
-  return NextResponse.next()
+
+  const userData = JSON.parse(cookies.get("user")?.value || "{}"); 
+
+  if (userData?.user_type === "admin" || userData?.user_type === "worker") {
+    return NextResponse.redirect(new URL(DASHBOARD_PAGES.BUSINESS_CARS, url));
+  }
+
+  if (userData?.user_type === "customer") {
+    return NextResponse.redirect(new URL(DASHBOARD_PAGES.FEED, url));
+  }
+
+  //раскомментировать когда будет панель суперюзера
+  // if (userData?.user_type === "superuser") {
+  //   return NextResponse.redirect(new URL(DASHBOARD_PAGES., url));
+  // }
+
+  return NextResponse.next();
 }
 
 export const config = {
@@ -47,7 +63,7 @@ function redirectToUserDashboard(userType: string, request: NextRequest) {
   const userRoutes: Record<string, string> = {
     worker: DASHBOARD_PAGES.BUSINESS_CARS,
     admin: DASHBOARD_PAGES.BUSINESS_CARS,
-    customer: DASHBOARD_PAGES.CUSTOMER_FEED,
+    customer: DASHBOARD_PAGES.FEED,
     superuser: DASHBOARD_PAGES.SUPER_BUSINESS,
   };
 

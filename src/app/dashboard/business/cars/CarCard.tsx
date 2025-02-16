@@ -1,7 +1,8 @@
 "use client"
+
 import Calendar from "@/components/calendar/Calendar"
 import { CarCardProps, CarStatus, statusStyles } from "@/types/car.type"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import calendarIcon from '@/images/car_card/buttons/calendar_logo.png'
 import deleteIcon from '@/images/car_card/buttons/bucket_logo.png'
 import { DASHBOARD_PAGES } from "@/config/pages-url.config"
@@ -72,8 +73,6 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
         className="object-cover rounded-2xl"
       />
     </div>
-
-
       <div className="w-1/2 p-2 flex mt-4 flex-col justify-between h-full">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-xl font-extrabold text-black">
@@ -153,22 +152,14 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
             onClick={toggleCalendarVisibility}
             className="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 font-medium text-sm w-1/3 flex items-center justify-center gap-2"
           >
-            <img
-            src={calendarIcon.src} 
-            alt="Календарь" 
-            className="w-5 h-5"
-            />
+            <img src={calendarIcon.src} alt="Календарь" className="w-5 h-5" />
             Календарь
           </button>
           <button
             className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 font-medium text-sm w-1/3 flex items-center justify-center gap-2"
             onClick={openDeleteModal}
           >
-            <img 
-            src={deleteIcon.src} 
-            alt="Удалить" 
-            className="w-5 h-5"/>
-    
+            <img src={deleteIcon.src} alt="Удалить" className="w-5 h-5" />
             Удалить
           </button>
         </div>

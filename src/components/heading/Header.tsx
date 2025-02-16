@@ -6,7 +6,6 @@ import { DASHBOARD_PAGES } from '@/config/pages-url.config'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Loader from '../Loader'
-import { LogOut } from 'lucide-react'
 
 export default function Header() {
 	const router = useRouter()
@@ -34,17 +33,15 @@ export default function Header() {
 					alt="logo"
 				/>
 			</div>
-
-
+      
 			<nav className='font-medium flex gap-4'>
 				{user?.user_type === 'admin' || user?.user_type === 'worker' ? (
 					<>
 						<Link href={DASHBOARD_PAGES.BUSINESS_CARS}>Автопарк</Link>
-						<Link href={DASHBOARD_PAGES.CARS_RESERVATIONS}>Запросы на аренду</Link>
+						<Link href={DASHBOARD_PAGES.RESERVATIONS}>Запросы на аренду</Link>
 					</>
 				) : user?.user_type === 'customer' ? (
 					<>
-
 					</>
 				) : user?.user_type === 'superuser' ? (
 					<>
@@ -54,19 +51,21 @@ export default function Header() {
 				) : <Loader />}
 			</nav>
 
-			<button
-				className='w-48 h-12 bg-errorRed text-white font-medium text-base rounded-xl 2sm-max:hidden'
-				onClick={logout}
-			>
-				Выйти
-			</button>
-
-			<div className='2sm-max:block hidden'>
-				<LogOut
-					className='text-errorRed w-8 h-8 cursor-pointer'
-					onClick={logout}
-				/>
-			</div>
+            {user ? 
+                <button
+                    className='w-48 h-12 bg-errorRed text-white font-medium text-base rounded-xl 2sm-max:hidden'
+                    onClick={logout}
+                >
+                    Выйти
+                </button>
+                :
+                <button
+                    className='w-48 h-12 bg-errorRed text-white font-medium text-base rounded-xl 2sm-max:hidden'
+                    onClick={() => router.push(DASHBOARD_PAGES.AUTH)}
+                >
+                    Войти
+                </button>
+            }
 		</div>
 	)
 }

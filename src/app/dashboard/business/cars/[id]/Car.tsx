@@ -77,6 +77,28 @@ export default function Car() {
         </div>
       </div>
 
+      <div className='font-medium text-2xl lg-max:text-lg text-gray-500 flex flex-wrap gap-y-6 justify-center items-center 2sm-max:flex-col 2sm-max:gap-y-2'>
+        <div className='w-full 2sm:w-1/3 text-center'>
+          Общий пробег: <span className="text-black">{car?.totalMileage}км</span>
+        </div>
+        <div className='w-full 2sm:w-1/3 text-center'>
+          Пробег на 1 аренду: <span className="text-black">{car?.averageMileage}км</span>
+        </div>
+        <div className='w-full 2sm:w-1/3 text-center'>
+          Рейтинг: <span className="text-black">{car?.rating}</span>
+        </div>
+        <div className='w-full 2sm:w-1/3 text-center'>
+          Средний расход топлива: <span className="text-black">{car?.averageConsumption}л</span>
+        </div>
+        <div className='w-full 2sm:w-1/3 text-center'>
+          Цена в сутки: <span className="text-black">{car?.pricePerDay}BYN</span>
+        </div>
+        <div className='w-full 2sm:w-1/3 text-center'>
+          Коэфф. простоев: <span className="text-black">{car?.downtimeCoefficient}</span>
+        </div>
+      </div>
+
+
       <h6 className='text-xl font-medium mb-3 mt-12'>Описание</h6>
       <p className='font-normal text-lg leading-5 2sm-max:text-base 2sm-max:leading-4'>{car?.description}</p>
 

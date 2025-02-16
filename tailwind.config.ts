@@ -8,6 +8,7 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+
   safelist: [
 	"bg-orange-500",
 	"bg-red-500",
@@ -15,6 +16,7 @@ const config: Config = {
 	"bg-yellow-500",
 	"bg-gray-500",
   ],
+
   theme: {
     extend: {
 			colors: {
@@ -53,7 +55,7 @@ const config: Config = {
 			'4xl': '1850px',
 			'4xl-max': { max: '1850px' }
 		},
-		
+
   },
   plugins: [],
 }

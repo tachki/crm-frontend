@@ -47,7 +47,6 @@ export default function Home() {
             width={550}
             height={350}
             className="mb-4"
-            
           />
 
           <p className="text-lg font-medium text-black">Добавьте автомобили для их отображения на странице</p>
