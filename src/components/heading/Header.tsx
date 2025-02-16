@@ -38,7 +38,7 @@ export default function Header() {
 				{user?.user_type === 'admin' || user?.user_type === 'worker' ? (
 					<>
 						<Link href={DASHBOARD_PAGES.BUSINESS_CARS}>Автопарк</Link>
-						<Link href={DASHBOARD_PAGES.CARS_RESERVATIONS}>Запросы на аренду</Link>
+						<Link href={DASHBOARD_PAGES.RESERVATIONS}>Запросы на аренду</Link>
 					</>
 				) : user?.user_type === 'customer' ? (
 					<>

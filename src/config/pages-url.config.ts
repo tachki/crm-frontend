@@ -3,13 +3,18 @@ class DASHBOARD {
 
   private businessRoot = '/business'
   private superRoot = '/super'
+  private clientRoot = '/client'
 
   AUTH = `/auth`
+
   BUSINESS_CARS = `${this.root}${this.businessRoot}/cars`
-  CREATE = `${this.root}${this.businessRoot}/create`
-  CARS_RESERVATIONS = `${this.root}${this.businessRoot}/reservations`
   CAR_DETAILS = `${this.BUSINESS_CARS}/[id]`
-  CUSTOMER_FEED = `${this.root}/feed`
+  CREATE = `${this.root}${this.businessRoot}/create`
+  RESERVATIONS = `${this.root}${this.businessRoot}/reservations`
+
+  FEED = `${this.clientRoot}/feed`
+  VERIFICATION = `${this.clientRoot}/verification`
+
   SUPER_BUSINESS = `${this.root}${this.superRoot}/businesses`
 
   ACCESS_URL: Record<'worker' | 'admin' | 'customer' | 'superuser', string[]> = {

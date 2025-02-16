@@ -1,10 +1,10 @@
 "use client";
+
+import React from 'react';
 import styles from "./Verification.module.css";
 import { useRef, useState } from "react";
 import { VerificationService } from "@/services/verification.service";
 
-import React from 'react';
-import logo from '../../../../public/logo.svg';
 
 export default function Verification () {
     const [name, setName] = useState("");
@@ -98,13 +98,6 @@ export default function Verification () {
                       e.preventDefault();
                   }}
             >
-                <img
-                    className='mb-12'
-                    src={logo.src}
-                    alt="logo"
-                    width={'120px'}
-                    height={'48px'}
-                />
                 <span className='text-2xl font-bold mb-3'>
                     Подтвердите личность
                 </span>

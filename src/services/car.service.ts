@@ -1,5 +1,5 @@
 import { axiosWithAuth } from "@/api/interceptors";
-import { CarDto, GetCarDto } from "@/types/car.type";
+import { CarDto, GetCarDto, GetCarsDto } from "@/types/car.type";
 
 
 export const CarService = {
@@ -86,4 +86,18 @@ export const CarService = {
         throw error;
       }
     },
-  }
+    
+    async getCars(params: {
+      class?: string;
+      brand?: string;
+      start_date?: string;
+      end_date?: string;
+      sort?: 'prc.d' | 'prc.a';
+      limit?: number;
+      offset?: number;
+    }) {
+      const response = await axiosWithAuth.get<GetCarsDto>('/v1/cars/', { params });
+      return response.data.cars;
+    }
+
+ }
