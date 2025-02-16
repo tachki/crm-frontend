@@ -20,51 +20,38 @@ export default function Car() {
   const router = useRouter();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const openDeleteModal = () => {
-    setIsDeleteModalOpen(true);
-  };
-
-  const closeDeleteModal = () => {
-    setIsDeleteModalOpen(false);
-  };
+  const openDeleteModal = () => setIsDeleteModalOpen(true);
+  const closeDeleteModal = () => setIsDeleteModalOpen(false);
 
   const handleDeleteCar = async () => {
-      try {
-        await CarService.deleteCar(carId);
-        router.replace(DASHBOARD_PAGES.BUSINESS_CARS)
-      } catch (error) {
-        console.log(error);
-      } finally {
-        closeDeleteModal();
-      }
-    };
-
-
-  const fetchCar = async () => {
     try {
-      const resp = await CarService.getCar(carId)
-      setCarDto(resp.car as CarDto)
+      await CarService.deleteCar(carId);
+      router.replace(DASHBOARD_PAGES.BUSINESS_CARS);
     } catch (error) {
-      console.error("Ошибка при получении авто:", error)
+      console.log(error);
+    } finally {
+      closeDeleteModal();
     }
-  }
+  };
 
   useEffect(() => {
-    if (carId) {
-      fetchCar()
-    }
-  }, [carId])
+    const fetchCar = async () => {
+      try {
+        const resp = await CarService.getCar(carId);
+        setCarDto(resp.car as CarDto);
+      } catch (error) {
+        console.error("Ошибка при получении авто:", error);
+      }
+    };
+    if (carId) fetchCar();
+  }, [carId]);
 
   const car: Car | null = carDto ? mapCarDtoToCar(carDto) : null;
-
-  const colorClass = car ? statusStyles[car.status as CarStatus] : "bg-gray-300"
+  const colorClass = car ? statusStyles[car.status as CarStatus] : "bg-gray-300";
 
   return (
     <div>
-      <h1 className="font-bold text-5xl text-center 2sm-max:text-4xl">
-        {car?.brand}
-      </h1>
-
+      <h1 className="font-bold text-5xl text-center 2sm-max:text-4xl">{car?.brand}</h1>
       <div className='flex text-2xl justify-center mt-6 2sm-max:text-base'>
         <h4>{car?.model}</h4>
         <div className='px-3 font-light'> | </div>
@@ -117,34 +104,22 @@ export default function Car() {
 
       <div className='mt-12 flex justify-between lg-max:flex-col lg-max:items-center lg-max:w-full gap-2'>
         <Link href={DASHBOARD_PAGES.BUSINESS_CARS} className='lg-max:w-full'>
-          <Button
-            children={'Назад'}
-            className={'px-28 bg-transparent hover:bg-primary hover:text-white w-full'}
-          />
+          <Button className={'px-28 bg-transparent hover:bg-primary hover:text-white w-full'}>Назад</Button>
         </Link>
         <Link href={`${DASHBOARD_PAGES.CAR_DETAILS.replace('[id]', carId)}/update`}>
-          <Button
-            children={'Изменить'}
-            className={'bg-orangeEdit border-none w-full'}
-            icon={'/edit-icon.svg'}
-          />
+          <Button className={'bg-orangeEdit border-none w-full'} icon={'/edit-icon.svg'}>Изменить</Button>
         </Link>
-        <Button
-          children={'Удалить'}
-          className={'bg-errorRed border-none text-white lg-max:w-full'}
-          icon={'/delete-icon.svg'}
-          onClick={openDeleteModal}
-        />
-
+        <Button className={'bg-errorRed border-none text-white lg-max:w-full'} icon={'/delete-icon.svg'} onClick={openDeleteModal}>
+          Удалить
+        </Button>
         <ConfirmationModal
-        isOpen={isDeleteModalOpen}
-        onClose={closeDeleteModal}
-        onConfirm={handleDeleteCar}
-        title="Удаление автомобиля"
-        message="Вы уверены, что хотите удалить этот автомобиль? Это действие нельзя отменить."
-      />
-    
+          isOpen={isDeleteModalOpen}
+          onClose={closeDeleteModal}
+          onConfirm={handleDeleteCar}
+          title="Удаление автомобиля"
+          message="Вы уверены, что хотите удалить этот автомобиль? Это действие нельзя отменить."
+        />
       </div>
     </div>
-  )
+  );
 }

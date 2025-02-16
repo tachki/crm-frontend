@@ -55,6 +55,7 @@ const config: Config = {
 			'4xl': '1850px',
 			'4xl-max': { max: '1850px' }
 		},
+
   },
   plugins: [],
 }

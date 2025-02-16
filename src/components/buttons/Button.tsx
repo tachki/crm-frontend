@@ -1,4 +1,6 @@
 import cn from 'clsx'
+import Image from 'next/image';
+
 import type { ButtonHTMLAttributes, PropsWithChildren } from 'react'
 
 type TypeButton = ButtonHTMLAttributes<HTMLButtonElement>
@@ -17,7 +19,14 @@ export function Button({
       )}
       {...rest}
     >
-      {icon && <img src={icon} alt="icon" className="mr-2 inline-block w-7 h-7" />}
+      {icon && 
+      <Image 
+      src={icon} 
+      alt="icon" 
+      className="mr-2 inline-block w-7 h-7" 
+      width={0} 
+      height={0}
+      layout="intrinsic" />}
       {children}
     </button>
   )

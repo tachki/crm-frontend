@@ -3,12 +3,10 @@ import { useMutation } from "@tanstack/react-query"
 import { AxiosError, AxiosResponse } from "axios"
 import { authService } from "@/services/auth.service"
 import { useRouter } from "next/navigation"
-import { DASHBOARD_PAGES } from "@/config/pages-url.config"
 import { useState } from "react"
 
 export function useAuth(
   isLoginForm: boolean,
-  setIsLoginForm: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   type AuthResponse = IAuthLoginResponse | IAuthRegisterResponse
 
@@ -17,7 +15,7 @@ export function useAuth(
 
   const { mutate: authMutate, isError, reset } = useMutation<
     AxiosResponse<AuthResponse>,
-    AxiosError<any>,
+    AxiosError<unknown>,
     IAuthForm
   >({
     mutationKey: ['auth'],
@@ -27,20 +25,8 @@ export function useAuth(
         ? authService.login(data)
         : authService.registration(data);
     },
-    onSuccess: (data) => {
-      if ('user' in data.data) { 
-        const userData = data.data.user
-
-        if (isLoginForm) {
-          if (userData?.user_type === 'admin' || userData?.user_type === 'worker') {
-            push(DASHBOARD_PAGES.BUSINESS_CARS)
-          } else if (userData?.user_type === 'customer') {
-            push(DASHBOARD_PAGES.FEED)
-          }
-        } else {
-          setIsLoginForm(true) 
-        }
-      }
+    onSuccess: () => {
+      push('/') 
     },
     onError: (error) => {
       console.log('error: ', error)

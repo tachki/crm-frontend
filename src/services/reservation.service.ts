@@ -57,16 +57,15 @@ export const useGetReservationsByCar = (carId: string) => {
       },
     });
   };
-  
-  export const useLockCar = () => {
-    return useMutation({
-      mutationFn: async ({ carId, startDate, endDate }: { carId: string; startDate: string; endDate: string }) => {
-        const response = await axiosWithAuth.post(`/v1/cars/${carId}/lock`, {
-          start_date: startDate,
-          end_date: endDate,
-        });
-        return response.data;
-      },
-    });
-  };
-  
+
+  export const useGetAllPendingReservationsByBusiness = () => {
+      return useQuery({
+          queryKey: ["getAllPendingReservationsByBusiness"],
+          queryFn: async () => {
+              const response = await axiosWithAuth.get<ReservationsResponseDto>(
+                `/v1/businesses/reservations`
+              ); 
+              return response.data.reservations
+          }
+      });
+  }

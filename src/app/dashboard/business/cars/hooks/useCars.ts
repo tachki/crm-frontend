@@ -17,8 +17,8 @@ export const useCars = (businessId: string) => {
         const carsResponse = await CarService.getCarsByBusiness(businessId);
         setCars(carsResponse);
         setTotalCars(carsResponse.length);
-      } catch (err: any) {
-        setError(`Произошла ошибка при загрузке автомобилей: ${err.message}`);
+      } catch (err: unknown) {
+        setError(`Произошла ошибка при загрузке автомобилей: ${err}`);
       } finally {
         setIsLoading(false);
       }

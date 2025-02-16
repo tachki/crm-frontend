@@ -60,10 +60,10 @@ export interface GetCarDto {
   car: CarDto;
 }
 
-
 export interface GetCarsDto {
   cars: CarDto[];
 }
+
   
 export interface CarDto {
   brand: string;
@@ -76,7 +76,7 @@ export interface CarDto {
   model: string;
   preview_image: string;
   price_per_day: number;
-  status: string;
+  status: CarStatus;
   transmission: string;
   updated_at: string;
   year: string;

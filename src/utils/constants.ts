@@ -35,3 +35,11 @@ export const carBrandData = [
   "Skoda",
   "Volkswagen",
 ];
+
+export const carStatusData = [
+  "Бронь",
+  "Арендовано",
+  "Свободно",
+  "Временно недоступно",
+  "Недоступно"
+]

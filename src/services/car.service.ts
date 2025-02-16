@@ -1,5 +1,5 @@
 import { axiosWithAuth } from "@/api/interceptors";
-import { CarDto, GetCarsDto, GetCarDto } from "@/types/car.type";
+import { CarDto, GetCarDto } from "@/types/car.type";
 
 
 export const CarService = {
@@ -20,7 +20,6 @@ export const CarService = {
         throw error;
       }
     },
-
 
     async getCar(id: string) {
       const response = await axiosWithAuth.get<GetCarDto>(`/v1/cars/${id}`);
@@ -65,11 +64,15 @@ export const CarService = {
       }
     },
 
-    async updateCar(carId: string, carData: any) {
+    async updateCar(carId: string, status: string) {
       try {
+        const data = JSON.stringify({
+            status: status
+        })
+
         const response = await axiosWithAuth.patch(
           `/v1/cars/${carId}`,
-          carData
+          data,
         );
 
         if (response.status === 204) {
@@ -83,19 +86,4 @@ export const CarService = {
         throw error;
       }
     },
-
-
-    async getCars(params: {
-      class?: string;
-      brand?: string;
-      start_date?: string;
-      end_date?: string;
-      sort?: 'prc.d' | 'prc.a';
-      limit?: number;
-      offset?: number;
-    }) {
-      const response = await axiosWithAuth.get<GetCarsDto>('/v1/cars/', { params });
-      return response.data.cars;
-    }
-    
   }

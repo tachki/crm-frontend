@@ -1,5 +1,4 @@
 'use client'
-
 import { getUserStorage, removeFromStorage } from '@/services/auth-token.service'
 import { useRouter } from 'next/navigation'
 import { IUser } from '@/types/auth.type'
@@ -26,6 +25,7 @@ export default function Header() {
 
 	return (
 		<div className='h-20 flex justify-between items-center'>
+
 			<div>
 				<img
 					className='m-auto 2sm-max:w-20'
@@ -33,15 +33,15 @@ export default function Header() {
 					alt="logo"
 				/>
 			</div>
+      
 			<nav className='font-medium flex gap-4'>
 				{user?.user_type === 'admin' || user?.user_type === 'worker' ? (
 					<>
 						<Link href={DASHBOARD_PAGES.BUSINESS_CARS}>Автопарк</Link>
-						<Link href='#'>Запросы на аренду</Link>
+						<Link href={DASHBOARD_PAGES.CARS_RESERVATIONS}>Запросы на аренду</Link>
 					</>
 				) : user?.user_type === 'customer' ? (
 					<>
-						
 					</>
 				) : user?.user_type === 'superuser' ? (
 					<>
@@ -66,7 +66,7 @@ export default function Header() {
                     Войти
                 </button>
             }
-			
 		</div>
 	)
 }
+

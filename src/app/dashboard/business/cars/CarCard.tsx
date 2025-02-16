@@ -10,13 +10,15 @@ import Link from 'next/link'
 import { CarService } from "@/services/car.service";
 import ConfirmationModal from "@/components/modal/modal"
 import './CarCard.css';
-
+import { carStatusData } from '@/utils/constants'
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
   const [calendarPosition, setCalendarPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
   const calendarButtonRef = useRef<HTMLButtonElement | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDropdownMenuVisible, setIsDropdownMenuVisible] = useState(false)
+  const [carStatus, setCarStatus] = useState<CarStatus>(car.status as CarStatus)
 
   const toggleCalendarVisibility = () => {
     setIsCalendarVisible(!isCalendarVisible);
@@ -50,26 +52,56 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
     } finally {
       closeDeleteModal();
     }
-  };
-  return (
-    <div className="car-card flex gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
-      <div className="w-1/2 pt-5 pb-5 ml-5 flex justify-center items-center">
-        <img
-          src={car.previewImage}
-          alt={`${car.brand} ${car.model}`}
-          className="object-cover w-full h-full rounded-2xl"
-        />
-      </div>
+  }
 
+  const updateCarStatus = (carId: string, status: CarStatus) => {
+    try {
+      CarService.updateCar(carId, status)
+      setCarStatus(status)
+      setIsDropdownMenuVisible(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return (
+    <div className="car-card flex  gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
+      <div className="relative w-1/2 pt-10 pb-10 ml-5 flex justify-center items-center">
+      <img
+        src={car.previewImage}
+        alt={`${car.brand} ${car.model}`}
+        className="object-cover rounded-2xl"
+      />
+    </div>
       <div className="w-1/2 p-2 flex mt-4 flex-col justify-between h-full">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-xl font-extrabold text-black">
             {car.brand} {car.model} ({car.year})
           </h2>
-          <p className="text-black font-medium px-2 py-1 rounded inline-flex items-center">
-            {car.status}
-            <span className={`ml-2 w-3 h-3 rounded-full ${statusStyles[car.status]}`}></span>
-          </p>
+          <div
+            className='relative'
+          >
+            <button
+              className='text-black font-medium px-2 py-1 rounded inline-flex items-center'
+              onClick={() => setIsDropdownMenuVisible(!isDropdownMenuVisible)}
+            >
+              {carStatus}
+              <span className={`ml-2 w-3 h-3 rounded-full ${statusStyles[carStatus]}`}></span>
+            </button>
+            {isDropdownMenuVisible && (
+              <div className='absolute w-60 right-0 shadow-xl rounded-lg'>
+                {carStatusData.map((status) => (
+                  <button
+                    key={status}
+                    className="block w-full text-left px-3 py-2 hover:bg-gray-100 text-black font-medium"
+                    onClick={() => updateCarStatus(car.id, status as CarStatus)}
+                  >
+                    {status}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <p className="text-black text-lg font-medium mb-2">

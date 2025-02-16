@@ -9,16 +9,17 @@ import { setAuth } from '@/store/slice/isAuthSlice'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/buttons/Button'
 
+
 export default function Auth() {
 	const [isLoginForm, setIsLoginForm] = useState(true)
 
-    const { register, handleSubmit, reset, formState: { errors }, clearErrors } = useForm<IAuthForm>({
+  const { register, handleSubmit, reset, formState: { errors }, clearErrors } = useForm<IAuthForm>({
 		mode: 'onChange'
 	})
 
 	const dispatch = useAppDispatch()
 
-    const { authMutate, isError, errorMessage } = useAuth(isLoginForm, setIsLoginForm)
+	const { authMutate, isError, errorMessage } = useAuth(isLoginForm);
 
 	const onSubmit: SubmitHandler<IAuthForm> = data => {
 		reset()
@@ -35,7 +36,7 @@ export default function Auth() {
 	const toggleForm = () => {
 		setIsLoginForm(prevState => !prevState)
 		reset()
-        clearErrors()
+    clearErrors()
 	}
 
 	return (
@@ -97,7 +98,6 @@ export default function Auth() {
 							{errors.password.message}
 						</p>
 					)}
-
 
 					{isError && (
 						<p
