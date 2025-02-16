@@ -15,7 +15,7 @@ export function useAuth(
   const { push } = useRouter()
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { mutate: authMutate, isError, error, reset } = useMutation<
+  const { mutate: authMutate, isError, reset } = useMutation<
     AxiosResponse<AuthResponse>,
     AxiosError<any>,
     IAuthForm

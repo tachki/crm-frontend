@@ -59,6 +59,11 @@ export const statusStyles: Record<CarStatus, string> = {
 export interface GetCarDto {
   car: CarDto;
 }
+
+
+export interface GetCarsDto {
+  cars: CarDto[];
+}
   
 export interface CarDto {
   brand: string;

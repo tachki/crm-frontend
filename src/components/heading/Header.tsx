@@ -7,7 +7,6 @@ import { DASHBOARD_PAGES } from '@/config/pages-url.config'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Loader from '../Loader'
-import { LogOut } from 'lucide-react'
 
 export default function Header() {
 	const router = useRouter()
@@ -16,7 +15,6 @@ export default function Header() {
 
 	useEffect(() => {
 		const userData = getUserStorage()
-		console.log("Данные пользователя из cookies:", userData)
 		setUser(userData)
 	}, [])
 
@@ -53,18 +51,22 @@ export default function Header() {
 				) : <Loader />}
 			</nav>
 
-			<button
-				className='w-48 h-12 bg-errorRed text-white font-medium text-base rounded-xl 2sm-max:hidden'
-				onClick={logout}
-			>
-				Выйти
-			</button>
-			<div className='2sm-max:block hidden'>
-				<LogOut
-					className='text-errorRed w-8 h-8 cursor-pointer'
-					onClick={logout}
-				/>
-			</div>
+            {user ? 
+                <button
+                    className='w-48 h-12 bg-errorRed text-white font-medium text-base rounded-xl 2sm-max:hidden'
+                    onClick={logout}
+                >
+                    Выйти
+                </button>
+                :
+                <button
+                    className='w-48 h-12 bg-errorRed text-white font-medium text-base rounded-xl 2sm-max:hidden'
+                    onClick={() => router.push(DASHBOARD_PAGES.AUTH)}
+                >
+                    Войти
+                </button>
+            }
+			
 		</div>
 	)
 }

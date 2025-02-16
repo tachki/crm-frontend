@@ -1,6 +1,5 @@
 import { axiosWithAuth } from "@/api/interceptors";
-import { CarDto, GetCarDto, mapCarDtoToCar } from "@/types/car.type";
-import { useQuery } from "@tanstack/react-query";
+import { CarDto, GetCarsDto, GetCarDto } from "@/types/car.type";
 
 
 export const CarService = {
@@ -95,9 +94,8 @@ export const CarService = {
       limit?: number;
       offset?: number;
     }) {
-      const response = await axiosWithAuth.get<GetCarDto[]>('/v1/cars', { params });
-      return response.data.map((item) => item.car);
+      const response = await axiosWithAuth.get<GetCarsDto>('/v1/cars/', { params });
+      return response.data.cars;
     }
     
-
   }

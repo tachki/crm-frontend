@@ -1,5 +1,5 @@
 import { axiosWithAuth } from '@/api/interceptors'
-import { getRefreshToken, getUserStorage, removeFromStorage, saveTokenStorage, saveUserStorage } from './auth-token.service'
+import { getRefreshToken, getUserStorage, saveTokenStorage, saveUserStorage } from './auth-token.service'
 import { IAuthForm, IAuthLoginResponse, IAuthRefreshResponse, IAuthRegisterResponse } from '@/types/auth.type'
 
 export const authService = {

@@ -1,6 +1,8 @@
 import React from "react";
+import { STATIC_URL } from "@/config/pages-url.config"
 import classIcon from '../../../images/client/car_post_icons/class_icon.png';
 import typeIcon from '../../../images/client/car_post_icons/type_icon.png';
+
 interface CarCardProps {
   car: {
     id: string;
@@ -13,7 +15,6 @@ interface CarCardProps {
     price_per_day: number;
   };
 }
-
 
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
@@ -44,7 +45,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
         </div>
       </div>
       <img
-        src={car.preview_image}
+        src={STATIC_URL + car.preview_image}
         alt={`${car.brand} ${car.model}`}
         className="w-full h-48 object-cover rounded-lg mt-3"
       />
