@@ -89,7 +89,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
               <span className={`ml-2 w-3 h-3 rounded-full ${statusStyles[carStatus]}`}></span>
             </button>
             {isDropdownMenuVisible && (
-              <div className='absolute w-60 right-0 shadow-xl rounded-lg'>
+              <div className='absolute w-60 right-0 shadow-xl rounded-lg bg-white z-3'>
                 {carStatusData.map((status) => (
                   <button
                     key={status}
