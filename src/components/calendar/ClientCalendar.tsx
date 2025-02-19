@@ -2,6 +2,7 @@ import { useGetAcceptedReservationsByCarId } from "@/services/reservation.servic
 import React, { useEffect, useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import { da } from "react-day-picker/locale";
 
 interface CalendarProps {
   carId: string;
@@ -18,7 +19,7 @@ const ClientCalendar: React.FC<CalendarProps> = ({ carId }) => {
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]); // Заблокированные дни
   const [currentMonth, setCurrentMonth] = useState(new Date()); // Текущий месяц
   const [firstSelectedDate, setFirstSelectedDate] = useState<Date | null>(null);
- 
+
   const { data: reservations } = useGetAcceptedReservationsByCarId(carId);
  
   useEffect(() => {
@@ -74,26 +75,28 @@ const ClientCalendar: React.FC<CalendarProps> = ({ carId }) => {
     return range;
   };
 
-  const handleSelect = (dates: Date[] | undefined) => {
-      if (!dates || dates.length === 0) return;
+  const handleSelect = (date: Date | undefined) => {
+    if (!date) return;
 
-      const sortedDates = [...dates].sort((a, b) => a.getTime() - b.getTime());
+    if (!firstSelectedDate) {
+      setFirstSelectedDate(date);
+    }
 
-      if (!firstSelectedDate) {
-        setFirstSelectedDate(sortedDates[0]);
-        setSelectedDates(sortedDates);
-      } else {
-        const firstDate = firstSelectedDate;
-        const lastDate = sortedDates[sortedDates.length - 1];
-
-        if (lastDate >= firstDate) {
-          setSelectedDates(sortedDates);
-          setMarkedDates(getDateRange(firstDate, lastDate));
-        }
-      }
+    if (selectedDates.length === 0) {
+      setSelectedDates([date]);
+    } else if (selectedDates.length === 1) {
+      const [startDate] = selectedDates;
+      const endDate = date < startDate ? startDate : date;
+      setSelectedDates([startDate, endDate]);
+      setMarkedDates(getDateRange(startDate, endDate));
+    } else {
+      setSelectedDates([date]); 
+      setMarkedDates([]);
+      setFirstSelectedDate(date);
+    }
   };
 
-  return (
+   return (
     <div className="border-6 border-black rounded-lg">
       <div className="flex flex-col justify-center items-center border-2 border-gray-300 rounded-lg">
         <div className="flex justify-between items-center w-full mb-4">
@@ -115,8 +118,8 @@ const ClientCalendar: React.FC<CalendarProps> = ({ carId }) => {
         </div>
 
         <DayPicker
-          mode="multiple"
-          selected={selectedDates}
+          mode="single"
+          selected={selectedDates.length ? selectedDates[0] : undefined}
           onSelect={handleSelect}
           modifiers={{
             marked: markedDates,
@@ -124,8 +127,8 @@ const ClientCalendar: React.FC<CalendarProps> = ({ carId }) => {
             today: new Date(),
           }}
           disabled={[
-            { before: firstSelectedDate || new Date() },
-            ...unavailableDates, 
+            ...(firstSelectedDate ? [{ before: firstSelectedDate }] : []),
+            ...unavailableDates,
           ]}
           modifiersClassNames={{
             marked: "bg-gray-400 text-white rounded-full",
