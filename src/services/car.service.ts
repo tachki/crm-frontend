@@ -1,7 +1,5 @@
 import { axiosWithAuth } from "@/api/interceptors";
 import { CarDto, GetCarDto, GetCarsDto } from "@/types/car.type";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
-import { memo } from "react";
 
 
 export const CarService = {
