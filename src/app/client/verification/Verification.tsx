@@ -15,7 +15,7 @@ export default function Verification () {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true);
 
-    const createCar = async () => {
+    const createVerification = async () => {
         const formData = new FormData();
 
         formData.append("full_name", `${name} ${surname}`);
@@ -58,7 +58,7 @@ export default function Verification () {
             phoneNumber &&
             photos.length
         ) {
-            createCar();
+            createVerification();
         }
     };
 
