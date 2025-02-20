@@ -23,15 +23,12 @@ export default function Auth() {
 
 	const onSubmit: SubmitHandler<IAuthForm> = data => {
 		reset()
-		console.log("data datadatadata")
 		if (!isLoginForm) {
 			authMutate(data)
-			console.log("data datadatadata", data)
 		}
 		else {
 			dispatch(setAuth(true))
 			authMutate(data)
-			console.log("111data datadatadata", data)
 		}
 	}
 
