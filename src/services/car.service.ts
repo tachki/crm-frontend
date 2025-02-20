@@ -1,5 +1,7 @@
 import { axiosWithAuth } from "@/api/interceptors";
 import { CarDto, GetCarDto, GetCarsDto } from "@/types/car.type";
+import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+import { memo } from "react";
 
 
 export const CarService = {
@@ -98,6 +100,19 @@ export const CarService = {
     }) {
       const response = await axiosWithAuth.get<GetCarsDto>('/v1/cars/', { params });
       return response.data.cars;
-    }
+    },
 
+    async createReservation(carID: string, start: string, end: string) {
+      try {
+        const response = await axiosWithAuth.post(`/v1/cars/${carID}/reserve`, { 
+            start_date: start,
+            end_date: end,
+          });
+          if (response.status != 204) {
+              throw new Error("failed to create reservation")
+          }
+      } catch (error) {
+          throw error
+      }
+    }
  }

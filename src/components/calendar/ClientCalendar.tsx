@@ -2,10 +2,11 @@ import { useGetAcceptedReservationsByCarId } from "@/services/reservation.servic
 import React, { useEffect, useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import { da } from "react-day-picker/locale";
 
 interface CalendarProps {
   carId: string;
+  selectedDates: Date[];
+  setSelectedDates: (dates: Date[]) => void; 
 }
 
 function stringToDate(dateString: string) {
@@ -13,8 +14,7 @@ function stringToDate(dateString: string) {
   return new Date(year, month - 1, day);
 }
 
-const ClientCalendar: React.FC<CalendarProps> = ({ carId }) => {
-  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+const ClientCalendar: React.FC<CalendarProps> = ({ carId, selectedDates, setSelectedDates }) => {
   const [markedDates, setMarkedDates] = useState<Date[]>([]); // Серые дни
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]); // Заблокированные дни
   const [currentMonth, setCurrentMonth] = useState(new Date()); // Текущий месяц
@@ -127,6 +127,7 @@ const ClientCalendar: React.FC<CalendarProps> = ({ carId }) => {
             today: new Date(),
           }}
           disabled={[
+            {before: new Date()},
             ...(firstSelectedDate ? [{ before: firstSelectedDate }] : []),
             ...unavailableDates,
           ]}

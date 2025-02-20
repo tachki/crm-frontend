@@ -7,10 +7,15 @@ import { CarService } from "@/services/car.service";
 import ClientCalendar from '@/components/calendar/ClientCalendar'
 import Slider from '@/components/slider/Slider'
 
+const formatDate = (date: Date | null) => {
+  return date ? date.toLocaleDateString("ru-RU") : "";
+};
+
 export default function CarDetails() {
   const { id } = useParams<{ id: string }>();
   const [car, setCar] = useState<Car | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
 
   useEffect(() => {
     async function fetchCar() {
@@ -24,6 +29,22 @@ export default function CarDetails() {
     }
     fetchCar();
   }, [id]);
+
+  const handleRent = async () => {
+    if (selectedDates.length != 2) {
+      alert("Выберите даты для аренды");
+      return;
+    }
+
+    try {
+      await CarService.createReservation(id, formatDate(selectedDates[0]), formatDate(selectedDates[1]));
+      alert("Аренда успешно забронирована!");
+      window.location.reload();
+    } catch (error) {
+      console.error("Ошибка бронирования:", error);
+      alert("Не удалось забронировать аренду. Попробуйте позже.: ");
+    }
+  };
 
   if (error) return <div className="text-center p-10 text-red-500">{error}</div>;
   if (!car) return <div className="text-center p-10">Loading...</div>;
@@ -43,8 +64,18 @@ export default function CarDetails() {
         <div className='flex-1'>
           <Slider images={car?.images || []} />
         </div>
-        <div className='flex-1'>
-          <ClientCalendar carId={id} />
+        <div>
+          <div className='flex-1 flex flex-col items-center justify-between h-full'>
+            <ClientCalendar carId={id} selectedDates={selectedDates} setSelectedDates={setSelectedDates} />
+            <div className="flex justify-center mt-4">
+              <button
+                className="bg-blue-600 text-white px-6 py-3 rounded-full text-lg font-semibold shadow-md hover:bg-blue-700 transition"
+                onClick={handleRent}
+                >
+                Арендовать
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
