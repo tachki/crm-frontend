@@ -4,16 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useGetReservationsByUserId } from "@/services/reservation.service";
 import { CarService } from "@/services/car.service";
 
-interface Reservation {
-    car_id: string;
-    start_date: string;
-    end_date: string;
-    price: number;
-    status: string;
-    id: string;
-    user_id: string;
-}
-
 interface Car {
     brand: string;
     class: string;
