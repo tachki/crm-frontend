@@ -31,8 +31,8 @@ export default function Reservation() {
                 const carData: Record<string, Car> = {};
                 for (const reservation of reservations) {
                     if (!cars[reservation.car_id]) {
-                        const carResponse: {car: Car} = await CarService.getCar(reservation.car_id);
-                        carData[reservation.car_id] = carResponse.car;
+                        const {car} = await CarService.getCar(reservation.car_id);
+                        carData[reservation.car_id] = car;
                     }
                 }
                 setCars(prevCars => ({ ...prevCars, ...carData }));
