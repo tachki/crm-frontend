@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { DASHBOARD_PAGES } from '@/config/pages-url.config'
 import Calendar from '@/components/calendar/Calendar'
 import Slider from '@/components/slider/Slider'
-import { CarDto, CarStatus, statusStyles } from '@/types/car.type'
+import { CarDto, CarStatus, mapCarDtoToCar, statusStyles } from '@/types/car.type'
 import type { Car } from '@/types/car.type'
 import { CarService } from '@/services/car.service'
 import { useEffect, useState } from 'react'
@@ -46,7 +46,7 @@ export default function Car() {
     if (carId) fetchCar();
   }, [carId]);
 
-  const car: CarDto | null = carDto ? carDto : null;
+  const car: Car | null = carDto ? mapCarDtoToCar(carDto) : null;
   const colorClass = car ? statusStyles[car.status as CarStatus] : "bg-gray-300";
 
   return (
