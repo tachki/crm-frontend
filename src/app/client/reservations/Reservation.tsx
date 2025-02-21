@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { useGetReservationsByUserId } from "@/services/reservation.service";
 import { CarService } from "@/services/car.service";
-import {CarDto, mapCarDtoToCar} from "@/types/car.type";
 
 interface Car {
     brand: string;
