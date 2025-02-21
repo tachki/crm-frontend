@@ -27,3 +27,10 @@ class DASHBOARD {
 
 export const STATIC_URL = "http://localhost:9000/cars/"
 export const DASHBOARD_PAGES = new DASHBOARD()
+
+class CLIENT {
+  private root = '/client'
+  RESERVATIONS = `${this.root}/reservations`
+}
+
+export const CLIENT_PAGES = new CLIENT()

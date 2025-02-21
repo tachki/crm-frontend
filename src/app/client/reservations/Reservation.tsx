@@ -5,7 +5,7 @@ import { useGetReservationsByUserId } from "@/services/reservation.service";
 import { CarService } from "@/services/car.service";
 
 interface Reservation {
-    car_id: string; // или number, если car_id - число
+    car_id: string;
     start_date: string;
     end_date: string;
     price: number;
@@ -50,11 +50,27 @@ export default function Reservation() {
                     const car = cars[reservation.car_id];
                     return (
                         car && (
-                            <div key={reservation.id} className="p-4 rounded" style={{border: "1px solid #3b44ff"}}>
-                                <p className="font-medium">{car.brand}, {car.class}</p>
-                                <p className="font-medium">Срок: {reservation.start_date} - {reservation.end_date}</p>
-                                <p className="font-medium">Цена: ${reservation.price}</p>
+                            <div key={reservation.id} className="gap-14 items-center justify-center flex flex-row p-4 rounded flex-wrap"
+                                 style={{border: "1px solid #3b44ff"}}>
+                                <div className="flex flex-col">
+                                    <p className="font-medium">{car.brand}</p>
+                                    <p className="font-medium">{car.class}</p>
+                                </div>
+                                <div className="flex justify-end gap-5">
+                                    <div className="flex flex-col">
+                                        <p className="font-bold text-right">От</p>
+                                        <p className="font-medium">{reservation.start_date}</p>
+                                    </div>
+                                    <div className="font-bold">
+                                        —
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <p className="font-bold">До</p>
+                                        <p className="font-medium">{reservation.end_date}</p>
+                                    </div>
+                                </div>
                                 <p className="font-medium">Статус: {reservation.status}</p>
+                                <p className="font-bold">Цена: {reservation.price} BYN</p>
                             </div>
                         )
                     );
