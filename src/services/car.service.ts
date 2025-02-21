@@ -25,6 +25,7 @@ export const CarService = {
       const response = await axiosWithAuth.get<GetCarDto>(`/v1/cars/${id}`);
       return response.data;
     },
+    
 
     async createCar(formData: FormData) {
       try {
