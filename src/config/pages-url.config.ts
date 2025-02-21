@@ -31,6 +31,8 @@ export const DASHBOARD_PAGES = new DASHBOARD()
 class CLIENT {
   private root = '/client'
   RESERVATIONS = `${this.root}/reservations`
+  FEED = `${this.root}/feed`
+  VERIFICATION = `${this.root}/verification`
 }
 
 export const CLIENT_PAGES = new CLIENT()
