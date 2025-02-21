@@ -1,11 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "next/navigation";
-import { Car, mapCarDtoToCar } from "@/types/car.type";
 import { CarService } from "@/services/car.service";
 import ClientCalendar from '@/components/calendar/ClientCalendar'
 import Slider from '@/components/slider/Slider'
+import { useCar } from "../hooks/useGetCar";
+import { CarDto, mapCarDtoToCar } from "@/types/car.type";
 
 const formatDate = (date: Date | null) => {
   return date ? date.toLocaleDateString("ru-RU") : "";
@@ -13,29 +14,14 @@ const formatDate = (date: Date | null) => {
 
 export default function CarDetails() {
   const { id } = useParams<{ id: string }>();
-  const [car, setCar] = useState<Car | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
-
-  useEffect(() => {
-    async function fetchCar() {
-      try {
-        const resp = await CarService.getCar(id)
-        setCar(mapCarDtoToCar(resp.car));
-      } catch (error) {
-        console.error("Error fetching car details:", error);
-        setError("Failed to load car details. Please try again later.");
-      }
-    }
-    fetchCar();
-  }, [id]);
+  const { data: carDto, isLoading, error } = useCar(id);
 
   const handleRent = async () => {
     if (selectedDates.length != 2) {
       alert("Выберите даты для аренды");
       return;
     }
-
     try {
       await CarService.createReservation(id, formatDate(selectedDates[0]), formatDate(selectedDates[1]));
       alert("Аренда успешно забронирована!");
@@ -46,8 +32,10 @@ export default function CarDetails() {
     }
   };
 
-  if (error) return <div className="text-center p-10 text-red-500">{error}</div>;
-  if (!car) return <div className="text-center p-10">Loading...</div>;
+  if (error) return <div className="text-center p-10 text-red-500">{error.message}</div>;
+  if (isLoading) return <div className="text-center p-10">Loading...</div>;
+
+  const car = mapCarDtoToCar(carDto as CarDto);
 
   return (
     <div>

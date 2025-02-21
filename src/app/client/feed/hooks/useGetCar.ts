@@ -19,3 +19,11 @@ export const useCars = (filters: CarsParams) => {
       staleTime: 5 * 60 * 1000, 
     });
   };
+
+export const useCar = (carId: string) => {
+    return useQuery({
+      queryKey: ["car", carId],
+      queryFn: () => CarService.getCar(carId),
+      staleTime: 5 * 60 * 1000, 
+    });
+  };
