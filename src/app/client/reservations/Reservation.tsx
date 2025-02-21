@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useGetReservationsByUserId } from "@/services/reservation.service";
 import { CarService } from "@/services/car.service";
+import {CarDto, mapCarDtoToCar} from "@/types/car.type";
 
 interface Car {
     brand: string;
@@ -20,8 +21,10 @@ export default function Reservation() {
                 const carData: Record<string, Car> = {};
                 for (const reservation of reservations) {
                     if (!cars[reservation.car_id]) {
-                        const {car} = await CarService.getCar(reservation.car_id);
-                        carData[reservation.car_id] = car;
+                        const res = await CarService.getCar(reservation.car_id);
+                        const carDto = res.car as CarDto
+                        const carRes: Car = mapCarDtoToCar(carDto)
+                        carData[reservation.car_id] = carRes;
                     }
                 }
                 setCars(prevCars => ({ ...prevCars, ...carData }));
