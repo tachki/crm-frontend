@@ -21,7 +21,7 @@ export const CarService = {
       }
     },
 
-    async getCar(id: string):Promise<GetCarDto> {
+    async getCar(id: string) {
       const response = await axiosWithAuth.get<GetCarDto>(`/v1/cars/${id}`);
       return response.data;
     },
