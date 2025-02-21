@@ -37,8 +37,8 @@ export default function Car() {
   useEffect(() => {
     const fetchCar = async () => {
       try {
-        const resp = await CarService.getCar(carId);
-        setCarDto(resp.car as CarDto);
+        const car = await CarService.getCar(carId);
+        setCarDto(car as CarDto);
       } catch (error) {
         console.error("Ошибка при получении авто:", error);
       }
