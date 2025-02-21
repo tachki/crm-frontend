@@ -23,7 +23,7 @@ export const CarService = {
 
     async getCar(id: string) {
       const response = await axiosWithAuth.get<GetCarDto>(`/v1/cars/${id}`);
-      return response.data;
+      return response.data.car;
     },
 
     async createCar(formData: FormData) {
@@ -98,6 +98,19 @@ export const CarService = {
     }) {
       const response = await axiosWithAuth.get<GetCarsDto>('/v1/cars/', { params });
       return response.data.cars;
-    }
+    },
 
+    async createReservation(carID: string, start: string, end: string) {
+      try {
+        const response = await axiosWithAuth.post(`/v1/cars/${carID}/reserve`, { 
+            start_date: start,
+            end_date: end,
+          });
+          if (response.status != 204) {
+              throw new Error("failed to create reservation")
+          }
+      } catch (error) {
+          throw error
+      }
+    }
  }
