@@ -87,7 +87,7 @@ export const CarService = {
       }
     },
     
-    async getCars(params: {
+    async getCarsWithFilters(params: {
       class?: string;
       brand?: string;
       start_date?: string;

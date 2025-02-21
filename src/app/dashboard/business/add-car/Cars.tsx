@@ -1,6 +1,6 @@
 "use client";
 import styles from "./Cars.module.css";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CarService } from "@/services/car.service";
 import { DASHBOARD_PAGES } from "@/config/pages-url.config";
 import Link from "next/link";
@@ -25,9 +25,9 @@ export default function Cars() {
 
   const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true);
 
-  const createCar = async () => {
+  const createCar = useCallback(async () => {
     const formData = new FormData();
-
+  
     formData.append("brand", carBrand);
     formData.append("class", carClass);
     formData.append("description", carDescription);
@@ -35,18 +35,18 @@ export default function Cars() {
     formData.append("price_per_day", carPrice.toString());
     formData.append("transmission", carTransmission);
     formData.append("year", carYear.toString());
-
+  
     photos.forEach((photo) => {
       formData.append(`image`, photo);
     });
-
+  
     try {
       const createdCar = await CarService.createCar(formData);
       console.log("Созданная машина:", createdCar);
     } catch (error) {
       console.error("Ошибка при создании машины:", error);
     }
-  };
+  }, [carBrand, carClass, carDescription, carModel, carPrice, carTransmission, carYear, photos]);
 
   const handleCancelAddCar = () => {
     setIsFieldPreparing(true);
@@ -93,7 +93,7 @@ export default function Cars() {
     console.log("--------------------------------------");
     createCar();
     console.log("addCarData", addCarData);
-  }, [addCarData]);
+  }, [addCarData, createCar]);
 
   const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
