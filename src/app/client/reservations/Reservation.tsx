@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useGetReservationsByUserId } from "@/services/reservation.service";
 import { CarService } from "@/services/car.service";
-import {CarDto} from "@/types/car.type";
+import {mapCarDtoToCar} from "@/types/car.type";
 
 interface Reservation {
     car_id: string;
@@ -18,7 +18,7 @@ interface Reservation {
 interface Car {
     brand: string;
     class: string;
-    preview_image: string;
+    preview_image?: string;
 }
 
 export default function Reservation() {
@@ -32,7 +32,7 @@ export default function Reservation() {
                 for (const reservation of reservations) {
                     if (!cars[reservation.car_id]) {
                         const carResponse = await CarService.getCar(reservation.car_id);
-                        carData[reservation.car_id] = carResponse.car as CarDto;
+                        carData[reservation.car_id] = mapCarDtoToCar(carResponse.car);
                     }
                 }
                 setCars(prevCars => ({ ...prevCars, ...carData }));

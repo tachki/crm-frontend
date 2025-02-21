@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { EnumTokens } from "./services/auth-token.service";
-import { DASHBOARD_PAGES } from "./config/pages-url.config";
+import {CLIENT_PAGES, DASHBOARD_PAGES} from "./config/pages-url.config";
 
 export async function middleware(
   request: NextRequest,
@@ -44,7 +44,7 @@ export async function middleware(
   }
 
   if (userData?.user_type === "customer") {
-    return NextResponse.redirect(new URL(DASHBOARD_PAGES.FEED, url));
+    return NextResponse.redirect(new URL(CLIENT_PAGES.FEED, url));
   }
 
   //раскомментировать когда будет панель суперюзера

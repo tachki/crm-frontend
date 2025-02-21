@@ -33,7 +33,7 @@ export default function Header() {
 					alt="logo"
 				/>
 			</div>
-      
+			
 			<nav className='font-medium flex gap-4'>
 				{user?.user_type === 'admin' || user?.user_type === 'worker' ? (
 					<>

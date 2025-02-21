@@ -4,7 +4,7 @@ import { AxiosError, AxiosResponse } from "axios"
 import { authService } from "@/services/auth.service"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { DASHBOARD_PAGES } from "@/config/pages-url.config"
+import {CLIENT_PAGES, DASHBOARD_PAGES} from "@/config/pages-url.config"
 
 export function useAuth(
   isLoginForm: boolean,
@@ -34,7 +34,7 @@ export function useAuth(
           if (userData?.user_type === 'admin' || userData?.user_type === 'worker') {
             push(DASHBOARD_PAGES.BUSINESS_CARS)
           } else if (userData?.user_type === 'customer') {
-            push(DASHBOARD_PAGES.FEED)
+            push(CLIENT_PAGES.FEED)
           }
         }  
       }
