@@ -1,9 +1,7 @@
 class DASHBOARD {
   private root = '/dashboard'
-
   private businessRoot = '/business'
   private superRoot = '/super'
-  private clientRoot = '/client'
 
   AUTH = `/auth`
 
@@ -11,9 +9,6 @@ class DASHBOARD {
   CAR_DETAILS = `${this.BUSINESS_CARS}/[id]`
   CREATE = `${this.root}${this.businessRoot}/create`
   RESERVATIONS = `${this.root}${this.businessRoot}/reservations`
-
-  FEED = `${this.clientRoot}/feed`
-  VERIFICATION = `${this.clientRoot}/verification`
 
   SUPER_BUSINESS = `${this.root}${this.superRoot}/businesses`
 

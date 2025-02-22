@@ -63,7 +63,7 @@ function redirectToUserDashboard(userType: string, request: NextRequest) {
   const userRoutes: Record<string, string> = {
     worker: DASHBOARD_PAGES.BUSINESS_CARS,
     admin: DASHBOARD_PAGES.BUSINESS_CARS,
-    customer: DASHBOARD_PAGES.FEED,
+    customer: CLIENT_PAGES.FEED,
     superuser: DASHBOARD_PAGES.SUPER_BUSINESS,
   };
 
