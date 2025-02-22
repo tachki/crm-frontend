@@ -22,11 +22,11 @@ export default function Update() {
 
   useEffect(() => {
     if (!isLoading) {
-        setCarPrice(data?.car.price_per_day);
-        setCarYear(data?.car.year);
-        setCarDescription(data?.car.description);
+        setCarPrice(data?.price_per_day);
+        setCarYear(data?.year);
+        setCarDescription(data?.description);
     }
-  }, [isLoading, data?.car.description, data?.car.price_per_day, data?.car.year]);
+  }, [isLoading, data?.description, data?.price_per_day, data?.year]);
 
   const updateCar = async () => {
     const carData = {
@@ -59,15 +59,15 @@ export default function Update() {
   return (
     <div>
       <h1 className={styles.h1}>
-        Редактирование авто <br /> {data?.car.brand} {data?.car.model}{" "}
-        ({data?.car.year}) <span></span>{" "}
-        {data?.car.class === "Эконом класс"
+        Редактирование авто <br /> {data?.brand} {data?.model}{" "}
+        ({data?.year}) <span></span>{" "}
+        {data?.class === "Эконом класс"
           ? "Эконом"
-          : data?.car.class}{" "}
+          : data?.class}{" "}
         <span></span>{" "}
-        {data?.car.transmission === "Автоматическая"
+        {data?.transmission === "Автоматическая"
           ? "Автомат"
-          : data?.car.transmission}
+          : data?.transmission}
       </h1>
       <form
           onSubmit={(e) => {

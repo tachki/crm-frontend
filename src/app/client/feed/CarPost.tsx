@@ -17,7 +17,6 @@ interface CarCardProps {
   };
 }
 
-
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   return (
     <div key={car.id} className="bg-white shadow-md rounded-2xl p-4">
@@ -34,7 +33,6 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           />
           {car.class}
         </div>
-
 
         <div className="flex items-center">
           <img
