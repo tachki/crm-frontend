@@ -1,5 +1,5 @@
 import React from "react";
-import { DASHBOARD_PAGES, STATIC_URL } from "@/config/pages-url.config"
+import { CLIENT_PAGES, STATIC_URL } from "@/config/pages-url.config"
 import classIcon from '../../../images/client/car_post_icons/class_icon.png';
 import typeIcon from '../../../images/client/car_post_icons/type_icon.png';
 import Link from "next/link";
@@ -51,7 +51,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
       <div className="flex justify-between items-center mt-4">
         <div className="text-xl font-medium">{car.price_per_day} BYN/сутки</div>
         <button className="bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-lg">
-          <Link href={`${DASHBOARD_PAGES.FEED}/${car.id}`} >
+          <Link href={`${CLIENT_PAGES.FEED}/${car.id}`}>
             Арендовать
           </Link>
         </button>
