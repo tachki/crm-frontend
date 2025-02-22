@@ -46,6 +46,16 @@ export const useGetReservationsByCar = (carId: string) => {
       },
     });
   };
+
+  export const useGetReservationsByUserId = (params: {id: string}) => {
+    return useQuery<Reservation[]>({
+      queryKey: ["acceptedReservations", params],
+      queryFn: async () => {
+        const response = await axiosWithAuth.get(`/v1/users/reservations`, {params});
+        return response.data.reservations;
+      },
+    });
+  };
   
   export const useGetPendingReservationsByCarId = (carId: string) => {
     return useQuery({
