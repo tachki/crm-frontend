@@ -13,17 +13,13 @@ export async function middleware(
   const user = userJson ? JSON.parse(userJson) : null
   const userType = user?.user_type as keyof typeof DASHBOARD_PAGES.ACCESS_URL
 
+
   const allowedRoutes = DASHBOARD_PAGES.ACCESS_URL[userType] || []
 
   const isAuthPage = url.includes('/auth')
   const isDashboardPage = nextUrl.pathname.startsWith("/dashboard");
-
-  if (isDashboardPage) {
-    if (!matchRoute(nextUrl.pathname.replace("/dashboard", ""), allowedRoutes)) {
-      return redirectToUserDashboard(userType, request)
-    }
-  }
-
+  const isClientPage = nextUrl.pathname.startsWith("/client");
+  
   if (isAuthPage && refreshToken) {
     return redirectToUserDashboard(userType, request)
   }
@@ -32,31 +28,21 @@ export async function middleware(
     return NextResponse.next();
   }
 
-  if (!refreshToken) {
-    return NextResponse.redirect(new URL('/auth', request.url));
+  if (isDashboardPage || isClientPage) {
+    const cleanedPathname = isDashboardPage
+      ? nextUrl.pathname.replace("/dashboard", "")
+      : nextUrl.pathname.replace("/client", "");
+    
+    if (!matchRoute(cleanedPathname, allowedRoutes)) {
+      return redirectToUserDashboard(userType, request);
+    }
   }
-
-
-  const userData = JSON.parse(cookies.get("user")?.value || "{}"); 
-
-  if (userData?.user_type === "admin" || userData?.user_type === "worker") {
-    return NextResponse.redirect(new URL(DASHBOARD_PAGES.BUSINESS_CARS, url));
-  }
-
-  if (userData?.user_type === "customer") {
-    return NextResponse.redirect(new URL(DASHBOARD_PAGES.FEED, url));
-  }
-
-  //раскомментировать когда будет панель суперюзера
-  // if (userData?.user_type === "superuser") {
-  //   return NextResponse.redirect(new URL(DASHBOARD_PAGES., url));
-  // }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/', '/auth/:path*', '/dashboard/:path*'],
+  matcher: ['/', '/auth/:path*', '/dashboard/:path*', '/client/:path*'],
 }
 
 function redirectToUserDashboard(userType: string, request: NextRequest) {
@@ -67,7 +53,14 @@ function redirectToUserDashboard(userType: string, request: NextRequest) {
     superuser: DASHBOARD_PAGES.SUPER_BUSINESS,
   };
 
-  return NextResponse.redirect(new URL(userRoutes[userType] || "/auth", request.url));
+  const fallbackRoute = DASHBOARD_PAGES.FEED;
+  const targetRoute = userRoutes[userType] || fallbackRoute;
+
+  if (request.nextUrl.pathname === targetRoute) {
+    return NextResponse.next();
+  }
+
+  return NextResponse.redirect(new URL(targetRoute, request.url));
 }
 
 function matchRoute(pathname: string, allowedRoutes: string[]): boolean {
