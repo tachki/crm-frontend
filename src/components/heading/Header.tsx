@@ -2,7 +2,7 @@
 import { getUserStorage, removeFromStorage } from '@/services/auth-token.service'
 import { useRouter } from 'next/navigation'
 import { IUser } from '@/types/auth.type'
-import { DASHBOARD_PAGES } from '@/config/pages-url.config'
+import {CLIENT_PAGES, DASHBOARD_PAGES} from '@/config/pages-url.config'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Loader from '../Loader'
@@ -33,7 +33,7 @@ export default function Header() {
 					alt="logo"
 				/>
 			</div>
-      
+			
 			<nav className='font-medium flex gap-4'>
 				{user?.user_type === 'admin' || user?.user_type === 'worker' ? (
 					<>
@@ -42,6 +42,7 @@ export default function Header() {
 					</>
 				) : user?.user_type === 'customer' ? (
 					<>
+						<Link href={CLIENT_PAGES.RESERVATIONS}>Бронирования</Link>
 					</>
 				) : user?.user_type === 'superuser' ? (
 					<>

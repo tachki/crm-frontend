@@ -12,10 +12,18 @@ interface CarsParams {
   }
   
 
-export const useCars = (filters: CarsParams) => {
+export const useFilteredCars = (filters: CarsParams) => {
     return useQuery({
       queryKey: ["cars", filters],
-      queryFn: () => CarService.getCars(filters),
+      queryFn: () => CarService.getCarsWithFilters(filters),
+      staleTime: 5 * 60 * 1000, 
+    });
+  };
+
+export const useCar = (carId: string) => {
+    return useQuery({
+      queryKey: ["car", carId],
+      queryFn: () => CarService.getCar(carId),
       staleTime: 5 * 60 * 1000, 
     });
   };

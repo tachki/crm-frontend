@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { EnumTokens } from "./services/auth-token.service";
-import { DASHBOARD_PAGES } from "./config/pages-url.config";
+import {CLIENT_PAGES, DASHBOARD_PAGES} from "./config/pages-url.config";
 
 export async function middleware(
   request: NextRequest,
@@ -49,11 +49,11 @@ function redirectToUserDashboard(userType: string, request: NextRequest) {
   const userRoutes: Record<string, string> = {
     worker: DASHBOARD_PAGES.BUSINESS_CARS,
     admin: DASHBOARD_PAGES.BUSINESS_CARS,
-    customer: DASHBOARD_PAGES.FEED,
+    customer: CLIENT_PAGES.FEED,
     superuser: DASHBOARD_PAGES.SUPER_BUSINESS,
   };
 
-  const fallbackRoute = DASHBOARD_PAGES.FEED;
+  const fallbackRoute = CLIENT_PAGES.FEED;
   const targetRoute = userRoutes[userType] || fallbackRoute;
 
   if (request.nextUrl.pathname === targetRoute) {

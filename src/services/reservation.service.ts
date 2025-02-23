@@ -28,11 +28,10 @@ export const useGetReservationsByCar = (carId: string) => {
   export const useReserveCar = () => {
     return useMutation({
       mutationFn: async ({ carId, startDate, endDate }: { carId: string; startDate: string; endDate: string }) => {
-        const response = await axiosWithAuth.post(`/v1/cars/${carId}/reserve`, {
+        await axiosWithAuth.post(`/v1/cars/${carId}/reserve`, {
           start_date: startDate,
           end_date: endDate,
         });
-        return response.data;
       },
     });
   };
@@ -43,6 +42,16 @@ export const useGetReservationsByCar = (carId: string) => {
       queryKey: ["acceptedReservations", carId],
       queryFn: async () => {
         const response = await axiosWithAuth.get(`/v1/cars/${carId}/reservations/accepted`);
+        return response.data.reservations;
+      },
+    });
+  };
+
+  export const useGetReservationsByUserId = (params: {id: string}) => {
+    return useQuery<Reservation[]>({
+      queryKey: ["acceptedReservations", params],
+      queryFn: async () => {
+        const response = await axiosWithAuth.get(`/v1/users/reservations`, {params});
         return response.data.reservations;
       },
     });
