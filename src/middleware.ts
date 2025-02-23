@@ -18,6 +18,7 @@ export async function middleware(
   const isAuthPage = url.includes('/auth')
   const isDashboardPage = nextUrl.pathname.startsWith("/dashboard");
   const isClientPage = nextUrl.pathname.startsWith("/client");
+  const isClientFeedPage = nextUrl.pathname.match(/^\/client\/feed\/\d+/);
 
   if (url === '/') {
     if (refreshToken && user) {
@@ -32,6 +33,10 @@ export async function middleware(
   }
 
   if (isAuthPage) {
+    return NextResponse.next();
+  }
+
+  if (allowedRoutes.length === 0 && (nextUrl.pathname.startsWith("/client/feed") || isClientFeedPage)) {
     return NextResponse.next();
   }
 
