@@ -15,8 +15,8 @@ class DASHBOARD {
   ACCESS_URL: Record<'worker' | 'admin' | 'customer' | 'superuser', string[]> = {
     'worker': ['/business/*'],
     'admin': ['/business/*'],
-    'customer': ['/feed', '/cars/:id', '/сars/:id/reservation', '/verification', '/reservations', '/reservations/:id'],
-    'superuser': ['/super/*']
+    'customer': ['/feed/*'],
+    'superuser': ['/superuser/*']
   }
 }
 

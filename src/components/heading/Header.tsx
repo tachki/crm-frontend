@@ -19,8 +19,8 @@ export default function Header() {
 
 
 	const logout = () => {
-		removeFromStorage()
-		router.replace('/')
+		removeFromStorage();
+		window.location.reload();
 	}
 
 	return (
