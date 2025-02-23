@@ -13,12 +13,19 @@ export async function middleware(
   const user = userJson ? JSON.parse(userJson) : null
   const userType = user?.user_type as keyof typeof DASHBOARD_PAGES.ACCESS_URL
 
-
   const allowedRoutes = DASHBOARD_PAGES.ACCESS_URL[userType] || []
 
   const isAuthPage = url.includes('/auth')
   const isDashboardPage = nextUrl.pathname.startsWith("/dashboard");
   const isClientPage = nextUrl.pathname.startsWith("/client");
+
+  if (url === '/') {
+    if (refreshToken && user) {
+      const userType = user?.user_type as keyof typeof DASHBOARD_PAGES.ACCESS_URL;
+      return redirectToUserDashboard(userType, request);
+    }
+    return NextResponse.redirect(new URL(CLIENT_PAGES.FEED, request.url));
+  }
   
   if (isAuthPage && refreshToken) {
     return redirectToUserDashboard(userType, request)
