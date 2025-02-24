@@ -1,7 +1,6 @@
 "use client"
 
 import { mapCarDtoToCar } from "@/types/car.type"
-import { useCars } from "./hooks/useCars"
 import { getUserStorage } from "@/services/auth-token.service"
 import { TailSpin } from 'react-loader-spinner'
 import emptyParkImage from '@/images/main_page_park/empty_park.png'
