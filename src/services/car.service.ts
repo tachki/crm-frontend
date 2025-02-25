@@ -101,6 +101,19 @@ export const CarService = {
       return response.data.cars;
     },
 
+    async getBusinessCarsWithFilters(params: {
+      class?: string;
+      brand?: string;
+      start_date?: string;
+      end_date?: string;
+      sort?: 'prc.d' | 'prc.a';
+      limit?: number;
+      offset?: number;
+    }, id: string) {
+      const response = await axiosWithAuth.get<GetCarsDto>(`/v1/cars/business/${id}`, { params });
+      return response.data.cars;
+    },
+
     async createReservation(carID: string, start: string, end: string) {
       try {
         const response = await axiosWithAuth.post(`/v1/cars/${carID}/reserve`, { 
