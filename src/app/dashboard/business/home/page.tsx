@@ -11,9 +11,13 @@ import { useCarsByBusiness } from "./hooks/useCarByBusiness";
 
 
 export default function Home() {
-  const businessId = getUserStorage()?.business_id ?? 'default-business-id';
+  let business_id = ""
 
-  const { data: cars = [], isLoading, error } = useCarsByBusiness(businessId);
+  if (user?.business_id) {
+      business_id = user?.business_id
+  }
+
+  const { data: cars = [], isLoading, error } = useCarsByBusiness(business_id)
 
   return (
     <div className="p-4">
