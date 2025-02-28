@@ -1,0 +1,8 @@
+services:
+
+  with-docker-multi-env-production:
+    image: docker-multi-env-production
+    build:
+      context: .
+    ports:
+      - "3000:3000"
