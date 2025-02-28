@@ -1,52 +1,53 @@
 'use client'
 
+import { useParams } from 'next/navigation'
 import { Button } from '@/components/buttons/Button'
-import Calendar from '@/components/calendar/Calendar'
-import ConfirmationModal from '@/components/modal/modal'
-import Slider from '@/components/slider/Slider'
-import { DASHBOARD_PAGES } from '@/config/pages-url.config'
-import { CarService } from '@/services/car.service'
-import type { Car } from '@/types/car.type'
-import { CarDto, CarStatus, mapCarDtoToCar, statusStyles } from '@/types/car.type'
 import Link from 'next/link'
-import { useParams, useRouter } from 'next/navigation'
+import { DASHBOARD_PAGES } from '@/config/pages-url.config'
+import Calendar from '@/components/calendar/Calendar'
+import Slider from '@/components/slider/Slider'
+import { CarDto, CarStatus, mapCarDtoToCar, statusStyles } from '@/types/car.type'
+import type { Car } from '@/types/car.type'
+import { CarService } from '@/services/car.service'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation';
+import ConfirmationModal from '@/components/modal/modal'
 
 export default function Car() {
   const { id } = useParams()
   const carId = Array.isArray(id) ? id.join('') : id || ''
   const [carDto, setCarDto] = useState<CarDto | null>(null)
-  const router = useRouter()
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const router = useRouter();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const openDeleteModal = () => setIsDeleteModalOpen(true)
-  const closeDeleteModal = () => setIsDeleteModalOpen(false)
+  const openDeleteModal = () => setIsDeleteModalOpen(true);
+  const closeDeleteModal = () => setIsDeleteModalOpen(false);
 
   const handleDeleteCar = async () => {
     try {
-      await CarService.deleteCar(carId)
-      router.replace(DASHBOARD_PAGES.BUSINESS_CARS)
+      await CarService.deleteCar(carId);
+      router.replace(DASHBOARD_PAGES.BUSINESS_CARS);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      closeDeleteModal()
+      closeDeleteModal();
     }
-  }
+  };
 
   useEffect(() => {
     const fetchCar = async () => {
       try {
-        const car = await CarService.getCar(carId)
-        setCarDto(car as CarDto)
+        const car = await CarService.getCar(carId);
+        setCarDto(car as CarDto);
       } catch (error) {
-        console.error("Ошибка при получении авто:", error)
+        console.error("Ошибка при получении авто:", error);
       }
-    }
-    if (carId) fetchCar()
-  }, [carId])
+    };
+    if (carId) fetchCar();
+  }, [carId]);
 
-  const car: Car | null = carDto ? mapCarDtoToCar(carDto) : null
-  const colorClass = car ? statusStyles[car.status as CarStatus] : "bg-gray-300"
+  const car: Car | null = carDto ? mapCarDtoToCar(carDto) : null;
+  const colorClass = car ? statusStyles[car.status as CarStatus] : "bg-gray-300";
 
   return (
     <div>
@@ -120,5 +121,5 @@ export default function Car() {
         />
       </div>
     </div>
-  )
+  );
 }
