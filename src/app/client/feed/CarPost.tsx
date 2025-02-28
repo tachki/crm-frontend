@@ -1,20 +1,20 @@
+import React from "react";
 import { CLIENT_PAGES, STATIC_URL } from "@/config/pages-url.config"
-import Link from "next/link"
-import React from "react"
-import classIcon from '../../../images/client/car_post_icons/class_icon.png'
-import typeIcon from '../../../images/client/car_post_icons/type_icon.png'
+import classIcon from '../../../images/client/car_post_icons/class_icon.png';
+import typeIcon from '../../../images/client/car_post_icons/type_icon.png';
+import Link from "next/link";
 
 interface CarCardProps {
   car: {
-    id: string
-    brand: string
-    model: string
-    year: string
-    class: string
-    transmission: string
-    preview_image: string
-    price_per_day: number
-  }
+    id: string;
+    brand: string;
+    model: string;
+    year: string;
+    class: string;
+    transmission: string;
+    preview_image: string;
+    price_per_day: number;
+  };
 }
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
@@ -24,10 +24,10 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
         {car.brand} {car.model} ({car.year})
       </h2>
       <div className="flex items-center text-gray-400 text-sm mt-1 space-x-4 font-light">
-
+     
         <div className="flex items-center">
           <img
-            src={classIcon.src}
+            src={classIcon.src} 
             alt="Car Class"
             className="w-3 h-3 mr-2"
           />
@@ -36,7 +36,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
         <div className="flex items-center">
           <img
-            src={typeIcon.src}
+            src={typeIcon.src}  
             alt="Transmission"
             className="w-3 h-3 mr-2"
           />
@@ -57,7 +57,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CarCard
+export default CarCard;
