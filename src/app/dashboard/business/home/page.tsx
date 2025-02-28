@@ -1,19 +1,21 @@
 "use client"
 
-import { getUserStorage } from "@/services/auth-token.service";
-import { TailSpin } from 'react-loader-spinner';
-import Image from 'next/image';
-import emptyParkImage from '@/images/main_page_park/empty_park.png';
-import plusIcon from '@/images/main_page_park/plus.png';
-import { DASHBOARD_PAGES } from "@/config/pages-url.config";
-import CarCard from "../cars/CarCard";
-import { useCarsByBusiness } from "./hooks/useCarByBusiness";
+import { DASHBOARD_PAGES } from "@/config/pages-url.config"
+import emptyParkImage from '@/images/main_page_park/empty_park.png'
+import plusIcon from '@/images/main_page_park/plus.png'
+import Image from 'next/image'
+import { TailSpin } from 'react-loader-spinner'
+import CarCard from "../cars/CarCard"
+import { useCarsByBusiness } from "./hooks/useCarByBusiness"
+import { useAppSelector } from '@/hooks/redux'
 
 
 export default function Home() {
-  const businessId = getUserStorage()?.business_id ?? 'default-business-id';
+  const { user } = useAppSelector((state) => state.user)
 
-  const { data: cars = [], isLoading, error } = useCarsByBusiness(businessId);
+  const businessId = user?.business_id ?? 'default-business-id'
+
+  const { data: cars = [], isLoading, error } = useCarsByBusiness(businessId)
 
   return (
     <div className="p-4">
@@ -49,11 +51,11 @@ export default function Home() {
       <button
         className="fixed bottom-10 right-10 bg-yellow-500 rounded-full w-16 h-16 flex items-center justify-center shadow-lg hover:bg-yellow-600 transition-colors"
         onClick={() => {
-          window.location.href = DASHBOARD_PAGES.CREATE;
+          window.location.href = DASHBOARD_PAGES.CREATE
         }}
       >
         <Image src={plusIcon} alt="Plus Icon" width={18} height={18} />
       </button>
     </div>
-  );
+  )
 }

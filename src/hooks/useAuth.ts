@@ -1,10 +1,13 @@
+import { CLIENT_PAGES, DASHBOARD_PAGES } from "@/config/pages-url.config"
+import { authService } from "@/services/auth.service"
+import { setAuth } from '@/store/slice/isAuthSlice'
+import { setUser } from '@/store/slice/userSlice'
 import { IAuthForm, IAuthLoginResponse, IAuthRegisterResponse } from "@/types/auth.type"
 import { useMutation } from "@tanstack/react-query"
 import { AxiosError, AxiosResponse } from "axios"
-import { authService } from "@/services/auth.service"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import {CLIENT_PAGES, DASHBOARD_PAGES} from "@/config/pages-url.config"
+import { useAppDispatch } from './redux'
 
 export function useAuth(
   isLoginForm: boolean,
@@ -12,7 +15,9 @@ export function useAuth(
   type AuthResponse = IAuthLoginResponse | IAuthRegisterResponse
 
   const { push } = useRouter()
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const dispatch = useAppDispatch()
 
   const { mutate: authMutate, isError, reset } = useMutation<
     AxiosResponse<AuthResponse>,
@@ -24,10 +29,10 @@ export function useAuth(
       : Promise<AxiosResponse<AuthResponse>> => {
       return isLoginForm
         ? authService.login(data)
-        : authService.registration(data);
+        : authService.registration(data)
     },
     onSuccess: (data) => {
-      if ('user' in data.data) { 
+      if ('user' in data.data) {
         const userData = data.data.user
 
         if (isLoginForm) {
@@ -36,7 +41,10 @@ export function useAuth(
           } else if (userData?.user_type === 'customer') {
             push(CLIENT_PAGES.FEED)
           }
-        }  
+        }
+
+        dispatch(setAuth(true))
+        dispatch(setUser(userData))
       }
     },
     onError: (error) => {
@@ -50,7 +58,7 @@ export function useAuth(
               ? "Пользователь с таким email уже существует"
               : "Произошла ошибка. Попробуйте позже."
 
-      setErrorMessage(message);
+      setErrorMessage(message)
     }
   })
 
