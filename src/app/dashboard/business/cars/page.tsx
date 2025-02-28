@@ -1,24 +1,25 @@
 "use client"
 
-import { mapCarDtoToCar } from "@/types/car.type"
-import { useCars } from "./hooks/useCars"
-import { getUserStorage } from "@/services/auth-token.service"
-import { TailSpin } from 'react-loader-spinner'
+import { DASHBOARD_PAGES } from "@/config/pages-url.config"
 import emptyParkImage from '@/images/main_page_park/empty_park.png'
 import plusIcon from '@/images/main_page_park/plus.png'
-import { DASHBOARD_PAGES } from "@/config/pages-url.config"
-import CarCard from './CarCard'
+import { mapCarDtoToCar } from "@/types/car.type"
 import Link from 'next/link'
+import { TailSpin } from 'react-loader-spinner'
+import CarCard from './CarCard'
+import { useCars } from "./hooks/useCars"
+import { useAppSelector } from '@/hooks/redux'
 
 
 export default function Home() {
-  const userStorage = getUserStorage()
+  const { user } = useAppSelector((state) => state.user)
+
   let businessId: string = 'default-business-id'
-  if (userStorage && userStorage.business_id !== undefined) {
-    businessId = userStorage.business_id
+  if (user && user.business_id !== undefined) {
+    businessId = user.business_id
   }
 
-  const { cars, isLoading, error, totalCars } = useCars(businessId);
+  const { cars, isLoading, error, totalCars } = useCars(businessId)
 
   return (
     <div className="">

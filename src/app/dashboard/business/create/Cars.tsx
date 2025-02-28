@@ -1,76 +1,76 @@
-"use client";
-import styles from "./Cars.module.css";
-import { useRef, useState } from "react";
-import { CarService } from "@/services/car.service";
-import { DASHBOARD_PAGES } from "@/config/pages-url.config";
-import Link from "next/link";
-import { carBrandData, carClassData, carTransmissionsData } from "@/utils/constants";
-import { useRouter } from 'next/navigation';
+"use client"
+import { DASHBOARD_PAGES } from "@/config/pages-url.config"
+import { CarService } from "@/services/car.service"
+import { carBrandData, carClassData, carTransmissionsData } from "@/utils/constants"
+import Link from "next/link"
+import { useRouter } from 'next/navigation'
+import { useRef, useState } from "react"
+import styles from "./Cars.module.css"
 
 export default function Cars() {
-  const router = useRouter();
-  const [carBrand, setCarBrand] = useState("");
-  const [carModel, setCarModel] = useState("");
-  const [carNumber, setCarNumber] = useState("");
-  const [carTransmission, setCarTransmission] = useState("");
-  const [carClass, setCarClass] = useState("");
-  const [carPrice, setCarPrice] = useState(1);
-  const [carYear, setCarYear] = useState(2010);
-  const [carDescription, setCarDescription] = useState("");
-  const [photos, setPhotos] = useState<File[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter()
+  const [carBrand, setCarBrand] = useState("")
+  const [carModel, setCarModel] = useState("")
+  const [carNumber, setCarNumber] = useState("")
+  const [carTransmission, setCarTransmission] = useState("")
+  const [carClass, setCarClass] = useState("")
+  const [carPrice, setCarPrice] = useState(1)
+  const [carYear, setCarYear] = useState(2010)
+  const [carDescription, setCarDescription] = useState("")
+  const [photos, setPhotos] = useState<File[]>([])
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true);
+  const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true)
 
   const createCar = async () => {
-    const formData = new FormData();
+    const formData = new FormData()
 
-    formData.append("brand", carBrand);
-    formData.append("class", carClass);
-    formData.append("description", carDescription);
-    formData.append("model", carModel);
-    formData.append("price_per_day", carPrice.toString());
-    formData.append("transmission", carTransmission);
-    formData.append("year", carYear.toString());
+    formData.append("brand", carBrand)
+    formData.append("class", carClass)
+    formData.append("description", carDescription)
+    formData.append("model", carModel)
+    formData.append("price_per_day", carPrice.toString())
+    formData.append("transmission", carTransmission)
+    formData.append("year", carYear.toString())
     photos.forEach((photo) => {
-      formData.append(`image`, photo);
-    });
+      formData.append(`image`, photo)
+    })
 
     setIsFieldPreparing(true)
-    setCarBrand(()=>"")
-    setCarModel(()=> "")
-    setCarNumber(()=> "")
-    setCarTransmission(()=> "")
-    setCarClass(()=> "")
-    setCarPrice(()=> 1)
-    setCarYear(()=> 2010)
-    setCarDescription(()=> "")
-    setPhotos(()=> [])
+    setCarBrand(() => "")
+    setCarModel(() => "")
+    setCarNumber(() => "")
+    setCarTransmission(() => "")
+    setCarClass(() => "")
+    setCarPrice(() => 1)
+    setCarYear(() => 2010)
+    setCarDescription(() => "")
+    setPhotos(() => [])
 
     try {
-      const createdCar = await CarService.createCar(formData);
-      router.replace(DASHBOARD_PAGES.BUSINESS_CARS);
-      console.log("Созданная машина:", createdCar);
+      const createdCar = await CarService.createCar(formData)
+      router.replace(DASHBOARD_PAGES.BUSINESS_CARS)
+      console.log("Созданная машина:", createdCar)
     } catch (error) {
-      console.error("Ошибка при создании машины:", error);
+      console.error("Ошибка при создании машины:", error)
     }
-  };
+  }
 
   const handleCancelAddCar = () => {
-    setIsFieldPreparing(true);
-    setCarBrand("");
-    setCarModel("");
-    setCarNumber("");
-    setCarTransmission("");
-    setCarClass("");
-    setCarPrice(0);
-    setCarYear(2010);
-    setCarDescription("");
-    setPhotos([]);
-  };
+    setIsFieldPreparing(true)
+    setCarBrand("")
+    setCarModel("")
+    setCarNumber("")
+    setCarTransmission("")
+    setCarClass("")
+    setCarPrice(0)
+    setCarYear(2010)
+    setCarDescription("")
+    setPhotos([])
+  }
 
   const handleAddCar = () => {
-    setIsFieldPreparing(false);
+    setIsFieldPreparing(false)
     if (
       carBrand &&
       carModel &&
@@ -82,48 +82,48 @@ export default function Cars() {
       carDescription &&
       photos.length
     ) {
-      createCar();
+      createCar()
 
     }
-  };
+  }
 
   const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      const newPhotos = [...photos, ...Array.from(event.target.files)];
+      const newPhotos = [...photos, ...Array.from(event.target.files)]
       if (newPhotos.length > 8) {
-        newPhotos.length = 8;
+        newPhotos.length = 8
       }
-      setPhotos(newPhotos);
+      setPhotos(newPhotos)
     }
-  };
+  }
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
+    event.preventDefault()
     if (event.dataTransfer.files) {
-      const newPhotos = [...photos, ...Array.from(event.dataTransfer.files)];
+      const newPhotos = [...photos, ...Array.from(event.dataTransfer.files)]
       if (newPhotos.length > 8) {
-        newPhotos.length = 8;
+        newPhotos.length = 8
       }
-      setPhotos(newPhotos);
+      setPhotos(newPhotos)
     }
-  };
+  }
 
   const handleRemovePhoto = (index: number) => {
-    setPhotos(photos.filter((_, i) => i !== index));
-  };
+    setPhotos(photos.filter((_, i) => i !== index))
+  }
 
   const openFilePicker = () => {
     if (fileInputRef.current) {
-      fileInputRef.current.click();
+      fileInputRef.current.click()
     }
-  };
+  }
 
   return (
     <div>
       <h1 className={styles.h1}>Добавление нового автомобиля</h1>
       <form
         onSubmit={(e) => {
-          e.preventDefault();
+          e.preventDefault()
         }}
       >
         <div
@@ -134,15 +134,15 @@ export default function Cars() {
             <select
               className={styles.choiceBottom}
               onChange={(e) => {
-                setCarBrand(e.target.value);
+                setCarBrand(e.target.value)
               }}
               value={carBrand}
               style={
                 (isFieldPreparing || carBrand) === ""
                   ? {
-                      backgroundColor: "rgba(255,0,0,0.025)",
-                      border: "2px solid red",
-                    }
+                    backgroundColor: "rgba(255,0,0,0.025)",
+                    border: "2px solid red",
+                  }
                   : {}
               }
             >
@@ -167,9 +167,9 @@ export default function Cars() {
               style={
                 (isFieldPreparing || carModel) === ""
                   ? {
-                      backgroundColor: "rgba(255,0,0,0.025)",
-                      border: "2px solid red",
-                    }
+                    backgroundColor: "rgba(255,0,0,0.025)",
+                    border: "2px solid red",
+                  }
                   : {}
               }
             />
@@ -183,18 +183,18 @@ export default function Cars() {
               className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
               onChange={(e) => {
                 if (Number(e.target.value) < 1) {
-                  e.target.value = "1";
+                  e.target.value = "1"
                 } else if (Number(e.target.value) > 2025) {
-                  e.target.value = "2025";
+                  e.target.value = "2025"
                 }
-                setCarYear(Number(e.target.value));
+                setCarYear(Number(e.target.value))
               }}
               style={
                 (isFieldPreparing || carYear) === 1
                   ? {
-                      backgroundColor: "rgba(255,0,0,0.025)",
-                      border: "2px solid red",
-                    }
+                    backgroundColor: "rgba(255,0,0,0.025)",
+                    border: "2px solid red",
+                  }
                   : {}
               }
             />
@@ -210,9 +210,9 @@ export default function Cars() {
               style={
                 (isFieldPreparing || carNumber) === ""
                   ? {
-                      backgroundColor: "rgba(255,0,0,0.025)",
-                      border: "2px solid red",
-                    }
+                    backgroundColor: "rgba(255,0,0,0.025)",
+                    border: "2px solid red",
+                  }
                   : {}
               }
             />
@@ -227,15 +227,15 @@ export default function Cars() {
             <select
               className={styles.choiceBottom}
               onChange={(e) => {
-                setCarClass(e.target.value);
+                setCarClass(e.target.value)
               }}
               value={carClass}
               style={
                 (isFieldPreparing || carClass) === ""
                   ? {
-                      backgroundColor: "rgba(255,0,0,0.025)",
-                      border: "2px solid red",
-                    }
+                    backgroundColor: "rgba(255,0,0,0.025)",
+                    border: "2px solid red",
+                  }
                   : {}
               }
             >
@@ -254,15 +254,15 @@ export default function Cars() {
             <select
               className={styles.choiceBottom}
               onChange={(e) => {
-                setCarTransmission(e.target.value);
+                setCarTransmission(e.target.value)
               }}
               value={carTransmission}
               style={
                 (isFieldPreparing || carTransmission) === ""
                   ? {
-                      backgroundColor: "rgba(255,0,0,0.025)",
-                      border: "2px solid red",
-                    }
+                    backgroundColor: "rgba(255,0,0,0.025)",
+                    border: "2px solid red",
+                  }
                   : {}
               }
             >
@@ -285,16 +285,16 @@ export default function Cars() {
               className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
               onChange={(e) => {
                 if (Number(e.target.value) < 1) {
-                  e.target.value = "1";
+                  e.target.value = "1"
                 }
-                setCarPrice(Number(e.target.value));
+                setCarPrice(Number(e.target.value))
               }}
               style={
                 (isFieldPreparing || carPrice) === 1
                   ? {
-                      backgroundColor: "rgba(255,0,0,0.025)",
-                      border: "2px solid red",
-                    }
+                    backgroundColor: "rgba(255,0,0,0.025)",
+                    border: "2px solid red",
+                  }
                   : {}
               }
             />
@@ -310,9 +310,9 @@ export default function Cars() {
             style={
               (isFieldPreparing || carDescription) === ""
                 ? {
-                    backgroundColor: "rgba(255,0,0,0.025)",
-                    border: "2px solid red",
-                  }
+                  backgroundColor: "rgba(255,0,0,0.025)",
+                  border: "2px solid red",
+                }
                 : {}
             }
           ></textarea>
@@ -344,9 +344,9 @@ export default function Cars() {
                 style={
                   !isFieldPreparing || photos.length
                     ? {
-                        backgroundColor: "rgba(255,0,0,0.025)",
-                        border: "2px solid red",
-                      }
+                      backgroundColor: "rgba(255,0,0,0.025)",
+                      border: "2px solid red",
+                    }
                     : {}
                 }
               >
@@ -470,5 +470,5 @@ export default function Cars() {
         </div>
       </form>
     </div>
-  );
+  )
 }
