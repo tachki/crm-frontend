@@ -1,42 +1,45 @@
-# Use Node.js to build the Next.js app
-FROM node:18-alpine AS builder
+FROM node:18-alpine AS base
 
-# Set working directory
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
+
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
 
-# Install dependencies
-RUN npm install
 
-# Copy the rest of the application
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Build the Next.js app
+# This will do the trick, use the corresponding env file for each environment.
+COPY .env.production .env.production
 RUN npm run build
 
-# Install only production dependencies
-RUN npm ci --only=production
-
-# Create a lightweight production image
-FROM node:18-alpine AS runner
+FROM base AS runner
 WORKDIR /app
 
-# Copy built app from builder stage
-COPY --from=builder /app/.next .next
-COPY --from=builder /app/public public
-COPY --from=builder /app/node_modules node_modules
-COPY --from=builder /app/package.json package.json
+ENV NODE_ENV=production
 
-# Install Nginx
-RUN apk add --no-cache nginx
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
 
-# Copy Nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder /app/public ./public
 
-# Expose port 3000
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+
+USER nextjs
+
 EXPOSE 3000
 
-# Start Next.js app
-CMD ["npm", "run", "start"]
+ENV PORT=3000
+
+CMD HOSTNAME="0.0.0.0" node server.js
