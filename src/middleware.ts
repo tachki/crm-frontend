@@ -27,7 +27,7 @@ export async function middleware(
     }
     return NextResponse.redirect(new URL(CLIENT_PAGES.FEED, request.url))
   }
-
+  
   if (isAuthPage && refreshToken) {
     return redirectToUserDashboard(userType, request)
   }

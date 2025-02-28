@@ -20,6 +20,14 @@ export const useFilteredCars = (filters: CarsParams) => {
     });
   };
 
+  export const useFilteredCarsByBusiness = (filters: CarsParams, id: string) => {
+    return useQuery({
+      queryKey: ["cars", filters],
+      queryFn: () => CarService.getBusinessCarsWithFilters(filters, id),
+      staleTime: 5 * 60 * 1000, 
+    });
+  };
+
 export const useCar = (carId: string) => {
     return useQuery({
       queryKey: ["car", carId],

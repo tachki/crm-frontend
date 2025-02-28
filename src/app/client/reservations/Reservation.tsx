@@ -28,7 +28,7 @@ export default function Reservation() {
             };
             fetchCars();
         }
-    }, [reservations]);
+    }, [reservations, cars]);
 
     if (!reservations) return <p>Загрузка бронирований...</p>;
 
