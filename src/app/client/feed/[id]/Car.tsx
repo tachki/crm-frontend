@@ -1,41 +1,61 @@
 "use client"
 
-import { useState } from "react";
-import { useParams } from "next/navigation";
-import { CarService } from "@/services/car.service";
 import ClientCalendar from '@/components/calendar/ClientCalendar'
 import Slider from '@/components/slider/Slider'
-import { useCar } from "../hooks/useGetCar";
-import { CarDto, mapCarDtoToCar } from "@/types/car.type";
+import { CLIENT_PAGES, DASHBOARD_PAGES } from '@/config/pages-url.config'
+import { CarService } from "@/services/car.service"
+import { CarDto, mapCarDtoToCar } from "@/types/car.type"
+import { useParams, useRouter } from "next/navigation"
+import { useState } from "react"
+import { useCar } from "../hooks/useGetCar"
+import { useAppSelector } from '@/hooks/redux'
 
 const formatDate = (date: Date | null) => {
-  return date ? date.toLocaleDateString("ru-RU") : "";
-};
+  return date ? date.toLocaleDateString("ru-RU") : ""
+}
 
 export default function CarDetails() {
-  const { id } = useParams<{ id: string }>();
-  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
-  const { data: carDto, isLoading, error } = useCar(id);
+  const { id } = useParams<{ id: string }>()
+  const [selectedDates, setSelectedDates] = useState<Date[]>([])
+  const { data: carDto, isLoading, error } = useCar(id)
+  const { user } = useAppSelector((state) => state.user)
+  const router = useRouter()
 
   const handleRent = async () => {
-    if (selectedDates.length != 2) {
-      alert("Выберите даты для аренды");
-      return;
+    if (!user) {
+      router.push(DASHBOARD_PAGES.AUTH)
+      return
     }
+
+    if (!user.is_verified) {
+      router.push(CLIENT_PAGES.VERIFICATION)
+      return
+    }
+
+    if (selectedDates.length !== 2) {
+      alert("Выберите даты для аренды")
+      return
+    }
+
     try {
-      await CarService.createReservation(id, formatDate(selectedDates[0]), formatDate(selectedDates[1]));
-      alert("Аренда успешно забронирована!");
-      window.location.reload();
+      await CarService.createReservation(
+        id,
+        formatDate(selectedDates[0]),
+        formatDate(selectedDates[1])
+      )
+      alert("Аренда успешно забронирована!")
+      window.location.reload()
     } catch (error) {
-      console.error("Ошибка бронирования:", error);
-      alert("Не удалось забронировать аренду. Попробуйте позже.: ");
+      console.error("Ошибка бронирования:", error)
+      alert("Не удалось забронировать аренду. Попробуйте позже.")
     }
-  };
+  }
 
-  if (error) return <div className="text-center p-10 text-red-500">{error.message}</div>;
-  if (isLoading) return <div className="text-center p-10">Loading...</div>;
 
-  const car = mapCarDtoToCar(carDto as CarDto);
+  if (error) return <div className="text-center p-10 text-red-500">{error.message}</div>
+  if (isLoading) return <div className="text-center p-10">Loading...</div>
+
+  const car = mapCarDtoToCar(carDto as CarDto)
 
   return (
     <div>
@@ -59,7 +79,7 @@ export default function CarDetails() {
               <button
                 className="bg-blue-600 text-white px-6 py-3 rounded-full text-lg font-semibold shadow-md hover:bg-blue-700 transition"
                 onClick={handleRent}
-                >
+              >
                 Арендовать
               </button>
             </div>
@@ -93,5 +113,5 @@ export default function CarDetails() {
       <p className='font-normal text-lg leading-5 2sm-max:text-base 2sm-max:leading-4'>{car?.description}</p>
 
     </div>
-  );
+  )
 }

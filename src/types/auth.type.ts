@@ -13,8 +13,6 @@ export interface IUser {
   user_type: 'worker' | 'admin' | 'customer' | 'superuser'
 }
 
-// export type TypeNoteListFormState = Partial<Omit<IUser, 'id' | 'updatedAt' | 'createdAt'>>
-
 export interface IAuthLoginResponse {
   access_token: string;
   refresh_token: string;
@@ -28,15 +26,4 @@ export interface IAuthRegisterResponse {
 export interface IAuthRefreshResponse {
   access_token: string;
   refresh_token: string;
-}
-
-export interface IСhoiceCar {
-  stamp: string;
-  model: string;
-  year: string;
-  number: string;
-  kpp: string;
-  classCar: string;
-  price: string;
-  text: string;
 }

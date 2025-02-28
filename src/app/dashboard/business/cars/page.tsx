@@ -1,23 +1,23 @@
 "use client"
 
 import { mapCarDtoToCar } from "@/types/car.type"
-import { getUserStorage } from "@/services/auth-token.service"
 import { TailSpin } from 'react-loader-spinner'
 import emptyParkImage from '@/images/main_page_park/empty_park.png'
 import plusIcon from '@/images/main_page_park/plus.png'
-import { DASHBOARD_PAGES } from "@/config/pages-url.config"
-import CarCard from './CarCard'
 import Link from 'next/link'
 import Filters from "./filters"
 import { useState } from "react"
 import { useFilteredCarsByBusiness } from "@/app/client/feed/hooks/useGetCar"
-
+import { useAppSelector } from '@/hooks/redux'
+import { DASHBOARD_PAGES } from '@/config/pages-url.config'
+import CarCard from './CarCard'
 
 export default function Home() {
-  const userStorage = getUserStorage()
+  const { user } = useAppSelector((state) => state.user)
+
   let businessId: string = 'default-business-id'
-  if (userStorage && userStorage.business_id !== undefined) {
-    businessId = userStorage.business_id
+  if (user && user.business_id !== undefined) {
+    businessId = user.business_id
   }
 
   const [filters, setFilters] = useState<{
