@@ -7,7 +7,7 @@
   @media (max-width: 768px) {
     .car-card {
       flex-direction: column;
-      height: auto;
+  
       align-items: center;
       text-align: center;
     }
