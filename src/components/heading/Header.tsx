@@ -6,15 +6,11 @@ import {CLIENT_PAGES, DASHBOARD_PAGES} from '@/config/pages-url.config'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Loader from '../Loader'
-import { setAuth } from '@/store/slice/isAuthSlice'
-import { useAppDispatch } from '@/hooks/redux'
 
 export default function Header() {
 	const router = useRouter()
 
 	const [user, setUser] = useState<IUser | null>(null)
-
-	const dispatch = useAppDispatch()
 
 	useEffect(() => {
 		const userData = getUserStorage()
@@ -23,10 +19,8 @@ export default function Header() {
 
 
 	const logout = () => {
-		removeFromStorage()
-		dispatch(setAuth(false))
-		setUser(null);
-		router.replace('/')
+		removeFromStorage();
+		window.location.reload();
 	}
 
 	return (

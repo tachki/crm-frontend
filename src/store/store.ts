@@ -1,11 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import isAuthReducer from "./slice/isAuthSlice";
-import userReducer from "./slice/userSlice";
-
+import isCarReducer from "./slice/isCarSlice";
 export const store = configureStore({
   reducer: {
     isAuth: isAuthReducer,
-    user: userReducer
+    isCar: isCarReducer,
   },
 });
 

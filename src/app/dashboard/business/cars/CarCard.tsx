@@ -1,56 +1,56 @@
 "use client"
 
 import Calendar from "@/components/calendar/Calendar"
-import ConfirmationModal from "@/components/modal/modal"
-import { DASHBOARD_PAGES } from "@/config/pages-url.config"
-import deleteIcon from '@/images/car_card/buttons/bucket_logo.png'
-import calendarIcon from '@/images/car_card/buttons/calendar_logo.png'
-import { CarService } from "@/services/car.service"
 import { CarCardProps, CarStatus, statusStyles } from "@/types/car.type"
-import { carStatusData } from '@/utils/constants'
+import React, { useState, useRef, useEffect } from "react"
+import calendarIcon from '@/images/car_card/buttons/calendar_logo.png'
+import deleteIcon from '@/images/car_card/buttons/bucket_logo.png'
+import { DASHBOARD_PAGES } from "@/config/pages-url.config"
 import Link from 'next/link'
-import React, { useEffect, useRef, useState } from "react"
-import './CarCard.css'
+import { CarService } from "@/services/car.service";
+import ConfirmationModal from "@/components/modal/modal"
+import './CarCard.css';
+import { carStatusData } from '@/utils/constants'
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
-  const [calendarPosition, setCalendarPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 })
-  const calendarButtonRef = useRef<HTMLButtonElement | null>(null)
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [calendarPosition, setCalendarPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const calendarButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDropdownMenuVisible, setIsDropdownMenuVisible] = useState(false)
   const [carStatus, setCarStatus] = useState<CarStatus>(car.status as CarStatus)
 
   const toggleCalendarVisibility = () => {
-    setIsCalendarVisible(!isCalendarVisible)
-  }
+    setIsCalendarVisible(!isCalendarVisible);
+  };
 
   const openDeleteModal = () => {
-    setIsDeleteModalOpen(true)
-  }
+    setIsDeleteModalOpen(true);
+  };
 
   const closeDeleteModal = () => {
-    setIsDeleteModalOpen(false)
-  }
+    setIsDeleteModalOpen(false);
+  };
 
   useEffect(() => {
     if (isCalendarVisible && calendarButtonRef.current) {
-      const buttonRect = calendarButtonRef.current.getBoundingClientRect()
+      const buttonRect = calendarButtonRef.current.getBoundingClientRect();
       setCalendarPosition({
-        top: buttonRect.bottom + window.scrollY,
-        left: buttonRect.left + window.scrollX,
-      })
+        top: buttonRect.bottom + window.scrollY, 
+        left: buttonRect.left + window.scrollX, 
+      });
     }
-  }, [isCalendarVisible])
+  }, [isCalendarVisible]); 
 
 
-  const handleDeleteCar = async () => {
+ const handleDeleteCar = async () => {
     try {
-      await CarService.deleteCar(car.id)
-      window.location.reload()
+      await CarService.deleteCar(car.id);
+      window.location.reload();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      closeDeleteModal()
+      closeDeleteModal();
     }
   }
 
@@ -67,12 +67,12 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
   return (
     <div className="car-card flex  gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
       <div className="relative w-1/2 pt-10 pb-10 ml-5 flex justify-center items-center">
-        <img
-          src={car.previewImage}
-          alt={`${car.brand} ${car.model}`}
-          className="object-cover rounded-2xl"
-        />
-      </div>
+      <img
+        src={car.previewImage}
+        alt={`${car.brand} ${car.model}`}
+        className="object-cover rounded-2xl"
+      />
+    </div>
       <div className="w-1/2 p-2 flex mt-4 flex-col justify-between h-full">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-xl font-extrabold text-black">
@@ -165,19 +165,19 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
       </div>
 
       {isCalendarVisible && (
-        <div
-          className="absolute z-50 bg-white shadow-lg p-4 rounded-lg"
-          style={{
-            top: `${calendarPosition.top - 450}px`,
-            left: `${calendarPosition.left - 200}px`,
-            width: "590px",
-          }}
-        >
-          <Calendar carId={car.id} />
-        </div>
-      )}
+      <div
+        className="absolute z-50 bg-white shadow-lg p-4 rounded-lg"
+        style={{
+          top: `${calendarPosition.top - 450}px`,
+          left: `${calendarPosition.left - 200}px`, 
+          width: "590px",
+        }}
+      >
+        <Calendar carId={car.id} />
+      </div>
+    )}
 
-      <ConfirmationModal
+    <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={closeDeleteModal}
         onConfirm={handleDeleteCar}
