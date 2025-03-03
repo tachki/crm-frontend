@@ -38,7 +38,7 @@ export default function Home() {
         <Filters filters={filters} setFilters={setFilters} />
       </div>
       <div className="flex-1 flex flex-col">
-        {!(cars?.length === 0) && <h1 className="text-2xl font-bold text-center">
+        {(cars?.length === 0) && <h1 className="text-2xl font-bold text-center">
           Кажется, здесь пока что пусто...
         </h1>}
 

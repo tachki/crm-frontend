@@ -4,8 +4,6 @@ import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { IAuthForm } from '@/types/auth.type'
 import { Field } from '@/components/fields/Field'
-import { useAppDispatch } from '@/hooks/redux'
-import { setAuth } from '@/store/slice/isAuthSlice'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/buttons/Button'
 
@@ -17,19 +15,11 @@ export default function Auth() {
 		mode: 'onChange'
 	})
 
-	const dispatch = useAppDispatch()
-
 	const { authMutate, isError, errorMessage } = useAuth(isLoginForm);
 
 	const onSubmit: SubmitHandler<IAuthForm> = data => {
 		reset()
-		if (!isLoginForm) {
-			authMutate(data)
-		}
-		else {
-			dispatch(setAuth(true))
-			authMutate(data)
-		}
+		authMutate(data)
 	}
 
 	const toggleForm = () => {
@@ -43,7 +33,7 @@ export default function Auth() {
 			<div>
 				<img
 					className='m-auto'
-					src="logo.svg"
+					src="logo_tachki.svg"
 					alt="logo"
 				/>
 			</div>
