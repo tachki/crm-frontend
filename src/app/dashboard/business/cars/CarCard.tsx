@@ -65,8 +65,8 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
   }
 
   return (
-    <div className="car-card flex  gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
-      <div className="relative w-1/2 pt-10 pb-10 ml-5 flex justify-center items-center">
+    <div className=" bg-white car-card flex gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
+      <div className="flex justify-center items-center mt-5 mb-5 ml-5">
       <img
         src={car.previewImage}
         alt={`${car.brand} ${car.model}`}
