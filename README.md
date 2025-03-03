@@ -1,4 +1,6 @@
 # CRM FRONTEND 
+[![Build Status][ci-badge]][ci-runs]
+
 монолитное фронтенд приложение, включающее сразу три клиентских приложения (customer, business, superuser) 
 
 ## Локальная разработка
