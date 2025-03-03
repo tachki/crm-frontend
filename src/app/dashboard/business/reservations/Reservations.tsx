@@ -12,14 +12,19 @@ export default function Reservations() {
 
   return (
     <div className="flex flex-col items-center justify-center w-full">
-      <h2 className="text-xl font-bold">Входящие</h2>
-      {reservations && reservations.length > 0 ? (
-          reservations.map((reservation: Reservation) => (
-            <ReservationCard key={reservation.id} reservation={reservation} />
-          ))
-      ) : (
-        <p>Нет принятых бронирований</p>
-      )}
-    </div>
+    <h2 className="text-2xl font-bold mb-4">
+    Входящие {reservations?.length ? `(${reservations.length})` : ""}
+  </h2>
+    {reservations && reservations.length > 0 ? (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full px-4">
+        {reservations.map((reservation: Reservation) => (
+          <ReservationCard key={reservation.id} reservation={reservation} />
+        ))}
+      </div>
+    ) : (
+      <p>Нет принятых бронирований</p>
+    )}
+  </div>
+  
   );
 }

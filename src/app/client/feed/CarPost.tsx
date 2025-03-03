@@ -19,7 +19,7 @@ interface CarCardProps {
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   return (
-    <div key={car.id} className="bg-white shadow-md rounded-2xl p-4">
+    <div key={car.id} className=" shadow-md rounded-2xl p-4">
       <h2 className="text-lg font-semibold">
         {car.brand} {car.model} ({car.year})
       </h2>
@@ -43,11 +43,14 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           {car.transmission}
         </div>
       </div>
+      <div>
       <img
         src={STATIC_URL + car.preview_image}
         alt={`${car.brand} ${car.model}`}
         className="w-full h-48 object-cover rounded-lg mt-3"
       />
+      </div>
+
       <div className="flex justify-between items-center mt-4">
         <div className="text-xl font-medium">{car.price_per_day} BYN/сутки</div>
         <button className="bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-lg">
