@@ -1,8 +1,8 @@
 # CRM FRONTEND 
 [![Build Status][ci-badge]][ci-runs]
 
-[ci-badge]:            https://github.com/tachki/crm-backend/actions/workflows/build.yaml/badge.svg
-[ci-runs]:             https://github.com/tachki/crm-backend/actions
+[ci-badge]:            https://github.com/tachki/crm-frontend/actions/workflows/build.yaml/badge.svg
+[ci-runs]:             https://github.com/tachki/crm-frontend/actions
 
 монолитное фронтенд приложение, включающее сразу три клиентских приложения (customer, business, superuser) 
 
