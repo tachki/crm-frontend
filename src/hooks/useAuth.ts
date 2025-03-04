@@ -5,6 +5,9 @@ import { authService } from "@/services/auth.service"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import {CLIENT_PAGES, DASHBOARD_PAGES} from "@/config/pages-url.config"
+import { useAppDispatch } from './redux'
+import { setAuth } from '@/store/slice/isAuthSlice'
+import { setUser } from '@/store/slice/userSlice'
 
 export function useAuth(
   isLoginForm: boolean,
@@ -13,6 +16,8 @@ export function useAuth(
 
   const { push } = useRouter()
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const dispatch = useAppDispatch()
 
   const { mutate: authMutate, isError, reset } = useMutation<
     AxiosResponse<AuthResponse>,
@@ -29,8 +34,11 @@ export function useAuth(
     onSuccess: (data) => {
       if ('user' in data.data) { 
         const userData = data.data.user
-
+        dispatch(setUser(userData))
+    
         if (isLoginForm) {
+          dispatch(setAuth(true))
+    
           if (userData?.user_type === 'admin' || userData?.user_type === 'worker') {
             push(DASHBOARD_PAGES.BUSINESS_CARS)
           } else if (userData?.user_type === 'customer') {
@@ -38,7 +46,7 @@ export function useAuth(
           }
         }  
       }
-    },
+    },    
     onError: (error) => {
       console.log('error: ', error)
       const message =
