@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { decodeTokens, EnumTokens } from "./services/auth-token.service";
 import {CLIENT_PAGES, DASHBOARD_PAGES} from "./config/pages-url.config";
+import { ACCESS_URL } from './config/access-url.config'
 
 export async function middleware(
   request: NextRequest,
@@ -8,12 +9,11 @@ export async function middleware(
   const { url, cookies, nextUrl } = request
 
   const refreshToken = cookies.get(EnumTokens.REFRESH_TOKEN)?.value
-
-  const accessToken = cookies.get('accessToken')?.value
+  const accessToken = cookies.get(EnumTokens.ACCESS_TOKEN)?.value
   const user = decodeTokens(accessToken)
-  const userType = user?.user_type as keyof typeof DASHBOARD_PAGES.ACCESS_URL
+  const userType = user?.user_type as keyof typeof ACCESS_URL
 
-  const allowedRoutes = DASHBOARD_PAGES.ACCESS_URL[userType] || []
+  const allowedRoutes = ACCESS_URL[userType as keyof typeof ACCESS_URL] || []
 
   const isAuthPage = url.includes('/auth')
   const isDashboardPage = nextUrl.pathname.startsWith("/dashboard");
@@ -22,7 +22,6 @@ export async function middleware(
 
   if (url === '/') {
     if (refreshToken && user) {
-      const userType = user?.user_type as keyof typeof DASHBOARD_PAGES.ACCESS_URL;
       return redirectToUserDashboard(userType, request);
     }
     return NextResponse.redirect(new URL(CLIENT_PAGES.FEED, request.url));
