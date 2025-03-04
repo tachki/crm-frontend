@@ -1,4 +1,3 @@
-import { IUser } from '@/types/auth.type'
 import Cookies from 'js-cookie'
 
 export enum EnumTokens {
