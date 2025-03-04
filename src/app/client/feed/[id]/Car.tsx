@@ -7,8 +7,8 @@ import ClientCalendar from '@/components/calendar/ClientCalendar'
 import Slider from '@/components/slider/Slider'
 import { useCar } from "../hooks/useGetCar";
 import { CarDto, mapCarDtoToCar } from "@/types/car.type";
-import { getUserStorage } from '@/services/auth-token.service'
 import { CLIENT_PAGES, DASHBOARD_PAGES } from '@/config/pages-url.config'
+import { decodeTokens } from '@/services/auth-token.service'
 
 const formatDate = (date: Date | null) => {
   return date ? date.toLocaleDateString("ru-RU") : "";
@@ -22,17 +22,15 @@ export default function CarDetails() {
 
   const router = useRouter();
   
-  const user = getUserStorage();
+  const user = decodeTokens();
 
   const handleRent = async () => {
     if (!user) {
-      console.log("ВНУТРИ БЛОКА АВТОРИЗАЦИИ")
       router.push(DASHBOARD_PAGES.AUTH)
       return
     }
 
     if (!user.is_verified) {
-      console.log("ВНУТРИ БЛОКА ВЕРИФИКАЦИИ")
       router.push(CLIENT_PAGES.VERIFICATION)
       return
     }

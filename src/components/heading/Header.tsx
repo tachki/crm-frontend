@@ -1,5 +1,5 @@
 'use client'
-import { getUserStorage, removeFromStorage } from '@/services/auth-token.service'
+import { decodeTokens, removeFromStorage } from '@/services/auth-token.service'
 import { useRouter } from 'next/navigation'
 import { IUser } from '@/types/auth.type'
 import { CLIENT_PAGES, DASHBOARD_PAGES } from '@/config/pages-url.config'
@@ -14,7 +14,7 @@ export default function Header() {
 	const [user, setUser] = useState<IUser | null>(null)
 
 	useEffect(() => {
-		const userData = getUserStorage()
+		const userData = decodeTokens()
 		setUser(userData)
 	}, [])
 

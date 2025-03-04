@@ -1,7 +1,7 @@
 "use client"
 
 import { mapCarDtoToCar } from "@/types/car.type"
-import { getUserStorage } from "@/services/auth-token.service"
+import { decodeTokens } from "@/services/auth-token.service"
 import { TailSpin } from 'react-loader-spinner'
 import emptyParkImage from '@/images/main_page_park/empty_park.png'
 import plusIcon from '@/images/main_page_park/plus.png'
@@ -14,7 +14,7 @@ import { useFilteredCarsByBusiness } from "@/app/client/feed/hooks/useGetCar"
 
 
 export default function Home() {
-  const userStorage = getUserStorage()
+  const userStorage = decodeTokens()
   let businessId: string = 'default-business-id'
   if (userStorage && userStorage.business_id !== undefined) {
     businessId = userStorage.business_id
