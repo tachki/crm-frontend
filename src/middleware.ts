@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { EnumTokens } from "./services/auth-token.service";
+import { decodeTokens, EnumTokens } from "./services/auth-token.service";
 import {CLIENT_PAGES, DASHBOARD_PAGES} from "./config/pages-url.config";
 
 export async function middleware(
@@ -9,8 +9,8 @@ export async function middleware(
 
   const refreshToken = cookies.get(EnumTokens.REFRESH_TOKEN)?.value
 
-  const userJson = cookies.get('userData')?.value
-  const user = userJson ? JSON.parse(userJson) : null
+  const accessToken = cookies.get('accessToken')?.value
+  const user = decodeTokens(accessToken)
   const userType = user?.user_type as keyof typeof DASHBOARD_PAGES.ACCESS_URL
 
   const allowedRoutes = DASHBOARD_PAGES.ACCESS_URL[userType] || []

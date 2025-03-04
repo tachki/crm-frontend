@@ -1,8 +1,8 @@
 'use client'
-import { getUserStorage, removeFromStorage } from '@/services/auth-token.service'
+import { decodeTokens, removeFromStorage } from '@/services/auth-token.service'
 import { useRouter } from 'next/navigation'
 import { IUser } from '@/types/auth.type'
-import {CLIENT_PAGES, DASHBOARD_PAGES} from '@/config/pages-url.config'
+import { CLIENT_PAGES, DASHBOARD_PAGES } from '@/config/pages-url.config'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Loader from '../Loader'
@@ -13,14 +13,14 @@ export default function Header() {
 	const [user, setUser] = useState<IUser | null>(null)
 
 	useEffect(() => {
-		const userData = getUserStorage()
+		const userData = decodeTokens()
 		setUser(userData)
 	}, [])
 
 
 	const logout = () => {
-		removeFromStorage();
-		window.location.reload();
+		removeFromStorage()
+		window.location.reload()
 	}
 
 	return (
@@ -33,7 +33,7 @@ export default function Header() {
 					alt="logo"
 				/>
 			</div>
-			
+
 			<nav className='font-medium flex gap-4'>
 				{user?.user_type === 'admin' || user?.user_type === 'worker' ? (
 					<>
@@ -52,21 +52,21 @@ export default function Header() {
 				) : <Loader />}
 			</nav>
 
-            {user ? 
-                <button
-                    className='w-48 h-12 bg-errorRed text-white font-medium text-base rounded-xl 2sm-max:hidden'
-                    onClick={logout}
-                >
-                    Выйти
-                </button>
-                :
-                <button
-                    className='w-48 h-12 bg-errorRed text-white font-medium text-base rounded-xl 2sm-max:hidden'
-                    onClick={() => router.push(DASHBOARD_PAGES.AUTH)}
-                >
-                    Войти
-                </button>
-            }
+			{user ?
+				<button
+					className='w-48 h-12 bg-errorRed text-white font-medium text-base rounded-xl 2sm-max:hidden'
+					onClick={logout}
+				>
+					Выйти
+				</button>
+				:
+				<button
+					className='w-48 h-12 bg-errorRed text-white font-medium text-base rounded-xl 2sm-max:hidden'
+					onClick={() => router.push(DASHBOARD_PAGES.AUTH)}
+				>
+					Войти
+				</button>
+			}
 		</div>
 	)
 }
