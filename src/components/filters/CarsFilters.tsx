@@ -151,28 +151,6 @@ const CarsFilters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
 				</select>
 			</div>
 
-			<div>
-				<label className="block text-xl font-medium text-gray-400 mt-6">Год выпуска</label>
-				<div className="mt-1 flex space-x-2">
-					<div className="w-1/2">
-						<span className="text-sm font-medium">От</span>
-						<input
-							type="text"
-							className="font-medium w-full border pl-2 py-2 rounded-md"
-							placeholder="Не важно"
-						/>
-					</div>
-					<div className="w-1/2">
-						<span className="text-sm font-medium">До</span>
-						<input
-							type="text"
-							className="font-medium w-full border pl-2 py-2 rounded-md"
-							placeholder="Не важно"
-						/>
-					</div>
-				</div>
-			</div>
-
 			<div className="mb-10 mt-6">
 				<label className="block text-xl font-medium text-gray-400 mb-4">Выберите диапазон цен</label>
 				<div className="mt-1 flex space-x-2">
