@@ -1,6 +1,6 @@
 "use client"
 
-import { mapCarDtoToCar } from "@/types/car.type"
+import { IFilters, mapCarDtoToCar } from "@/types/car.type"
 import { decodeTokens } from "@/services/auth-token.service"
 import { TailSpin } from 'react-loader-spinner'
 import emptyParkImage from '@/images/main_page_park/empty_park.png'
@@ -8,10 +8,9 @@ import plusIcon from '@/images/main_page_park/plus.png'
 import { DASHBOARD_PAGES } from "@/config/pages-url.config"
 import CarCard from './CarCard'
 import Link from 'next/link'
-import Filters from "./filters"
 import { useState } from "react"
 import { useFilteredCarsByBusiness } from "@/app/client/feed/hooks/useGetCar"
-
+import CarsFilters from '@/components/filters/CarsFilters'
 
 export default function Home() {
   const userStorage = decodeTokens()
@@ -19,29 +18,17 @@ export default function Home() {
   if (userStorage && userStorage.business_id !== undefined) {
     businessId = userStorage.business_id
   }
-  console.log("BUSINESS ID: ", businessId)
 
-  const [filters, setFilters] = useState<{
-    class?: string
-    brand?: string
-    start_date?: string
-    end_date?: string
-    sort?: "prc.d" | "prc.a"
-    transmission?: string
-    price_from?: string
-    price_to?: string
-  }>({})
+  const [filters, setFilters] = useState<IFilters>({})
 
   const { data: cars = [], isLoading, error } = useFilteredCarsByBusiness(filters, businessId)
-
-  console.log("CARS: ", cars)
 
   if (error) return <p>Ошибка загрузки </p>
 
   return (
     <div className="flex flex-col md:flex-row gap-6 justify-between items-start mb-6">
       <div className="w-full md:w-1/4 bg-white p-4 shadow-md rounded-lg h-auto">
-        <Filters filters={filters} setFilters={setFilters} />
+        <CarsFilters filters={filters} setFilters={setFilters} />
       </div>
       <div className="flex-1 flex flex-col">
         {(cars?.length === 0) && <h1 className="text-2xl font-bold text-center">
