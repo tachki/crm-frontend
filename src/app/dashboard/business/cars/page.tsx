@@ -19,6 +19,7 @@ export default function Home() {
   if (userStorage && userStorage.business_id !== undefined) {
     businessId = userStorage.business_id
   }
+  console.log("BUSINESS ID: ", businessId)
 
   const [filters, setFilters] = useState<{
     class?: string
@@ -26,9 +27,14 @@ export default function Home() {
     start_date?: string
     end_date?: string
     sort?: "prc.d" | "prc.a"
+    transmission?: string
+    price_from?: string
+    price_to?: string
   }>({})
 
   const { data: cars = [], isLoading, error } = useFilteredCarsByBusiness(filters, businessId)
+
+  console.log("CARS: ", cars)
 
   if (error) return <p>Ошибка загрузки </p>
 

@@ -37,7 +37,7 @@ export const decodeTokens = (token?: string) => {
   token = token ?? getAccessToken() ?? undefined;
 
   if (!token) {
-    console.log("Ошибка с access токеном");
+    console.log("Ошибка с access токеном. Пользователь не авторизован");
     return null;
   }
 

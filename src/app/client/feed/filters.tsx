@@ -1,8 +1,6 @@
 import { carBrandData, carClassData, carTransmissionsData } from '@/utils/constants'
 import React, { useState } from 'react'
-import RangeSlider from 'react-range-slider-input'
 import "react-range-slider-input/dist/style.css"
-
 
 interface FiltersProps {
   filters: {
@@ -11,7 +9,13 @@ interface FiltersProps {
     start_date?: string
     end_date?: string
     sort?: "prc.d" | "prc.a"
+    limit?: number
+    offset?: number
+    transmission?: string
+    price_from?: string
+    price_to?: string
   }
+
   setFilters: React.Dispatch<
     React.SetStateAction<{
       class?: string
@@ -19,6 +23,11 @@ interface FiltersProps {
       start_date?: string
       end_date?: string
       sort?: "prc.d" | "prc.a"
+      limit?: number
+      offset?: number
+      transmission?: string
+      price_from?: string
+      price_to?: string
     }>
   >
 }
@@ -67,6 +76,27 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
         class: updatedClasses.length > 0 ? updatedClasses.join(",") : "",
       }
     })
+  }
+
+  const handleTransmission = (transmission: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      transmission,
+    }))
+  }
+
+  const handlePriceFrom = (priceFrom: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      price_from: priceFrom,
+    }))
+  }
+
+  const handlePriceTo = (priceTo: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      price_to: priceTo,
+    }))
   }
 
   return (
@@ -131,10 +161,14 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
 
       <div>
         <label className="block text-xl font-medium text-gray-400 mt-6">Тип КПП</label>
-        <select className="border rounded-lg p-2 font-medium">
-          <option className="font-normal">Не важно</option>
+        <select
+          className="border rounded-lg p-2 font-medium"
+          value={filters.transmission || ""}
+          onChange={(e) => handleTransmission(e.target.value)}
+        >
+          <option value="" className="font-normal">Не важно</option>
           {carTransmissionsData.map((transmission, index) => (
-            <option key={index} className="font-normal">
+            <option key={index} value={transmission} className="font-normal">
               {transmission}
             </option>
           ))}
@@ -165,7 +199,36 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
 
       <div className="mb-10 mt-6">
         <label className="block text-xl font-medium text-gray-400 mb-4">Выберите диапазон цен</label>
-        <RangeSlider />
+        <div className="mt-1 flex space-x-2">
+          <div className="w-1/2">
+            <span className="text-sm font-medium">От</span>
+            <input
+              type="text"
+              className="font-medium w-full border pl-2 py-2 rounded-md"
+              placeholder="Не важно"
+              onBlur={(e) => handlePriceFrom(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.currentTarget.blur()
+                }
+              }}
+            />
+          </div>
+          <div className="w-1/2">
+            <span className="text-sm font-medium">До</span>
+            <input
+              type="text"
+              className="font-medium w-full border pl-2 py-2 rounded-md"
+              placeholder="Не важно"
+              onBlur={(e) => handlePriceTo(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.currentTarget.blur()
+                }
+              }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   )

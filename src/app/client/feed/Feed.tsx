@@ -12,6 +12,9 @@ export default function Feed() {
     start_date?: string
     end_date?: string
     sort?: "prc.d" | "prc.a"
+    transmission?: string
+    price_from?: string
+    price_to?: string
   }>({})
 
   const { data: cars = [], isLoading, error } = useFilteredCars(filters)
