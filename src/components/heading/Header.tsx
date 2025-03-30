@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Loader from '../Loader'
 import { MAIN_PAGES } from '@/config/access-url.config'
+import Image from 'next/image'
 
 export default function Header() {
 	const router = useRouter()
@@ -29,10 +30,12 @@ export default function Header() {
 
 			<Link href={user ? MAIN_PAGES[user.user_type] : '/'} passHref>
 				<div style={{ cursor: 'pointer' }}>
-					<img
+					<Image
 						className='m-auto 2sm-max:w-20'
 						src="/logo_tachki.svg"
 						alt="logo"
+						width={150}
+						height={150}
 					/>
 				</div>
 			</Link>
