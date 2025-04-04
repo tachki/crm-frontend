@@ -1,27 +1,45 @@
 "use client"
 
 import { useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { CarService } from "@/services/car.service";
 import ClientCalendar from '@/components/calendar/ClientCalendar'
 import Slider from '@/components/slider/Slider'
 import { useCar } from "../hooks/useGetCar";
 import { CarDto, mapCarDtoToCar } from "@/types/car.type";
+import { CLIENT_PAGES, DASHBOARD_PAGES } from '@/config/pages-url.config'
+import { decodeTokens } from '@/services/auth-token.service'
 
 const formatDate = (date: Date | null) => {
   return date ? date.toLocaleDateString("ru-RU") : "";
 };
+
 
 export default function CarDetails() {
   const { id } = useParams<{ id: string }>();
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const { data: carDto, isLoading, error } = useCar(id);
 
+  const router = useRouter();
+  
+  const user = decodeTokens();
+
   const handleRent = async () => {
-    if (selectedDates.length != 2) {
-      alert("Выберите даты для аренды");
-      return;
+    if (!user) {
+      router.push(DASHBOARD_PAGES.AUTH)
+      return
     }
+
+    if (!user.is_verified) {
+      router.push(CLIENT_PAGES.VERIFICATION)
+      return
+    }
+
+    if (selectedDates.length !== 2) {
+      alert("Выберите даты для аренды")
+      return
+    }
+
     try {
       await CarService.createReservation(id, formatDate(selectedDates[0]), formatDate(selectedDates[1]));
       alert("Аренда успешно забронирована!");

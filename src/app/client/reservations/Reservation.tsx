@@ -11,7 +11,7 @@ interface Car {
 }
 
 export default function Reservation() {
-    const { data: reservations } = useGetReservationsByUserId({ id: "d0d47ef7-58b7-47f4-9975-e94e338110c4" });
+    const { data: reservations } = useGetReservationsByUserId();
     const [cars, setCars] = useState<Record<string, Car>>({});
 
     useEffect(() => {
@@ -28,7 +28,7 @@ export default function Reservation() {
             };
             fetchCars();
         }
-    }, [reservations, cars]);
+    }, [reservations]);
 
     if (!reservations) return <p>Загрузка бронирований...</p>;
 

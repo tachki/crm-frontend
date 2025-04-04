@@ -1,18 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import Filters from "./filters"
 import CarCard from "./CarPost"
 import { useFilteredCars } from "./hooks/useGetCar"
+import CarsFilters from '@/components/filters/CarsFilters'
+import { IFilters } from '@/types/car.type'
 
 export default function Feed() {
-  const [filters, setFilters] = useState<{
-    class?: string
-    brand?: string
-    start_date?: string
-    end_date?: string
-    sort?: "prc.d" | "prc.a"
-  }>({})
+  const [filters, setFilters] = useState<IFilters>({})
 
   const { data: cars = [], isLoading, error } = useFilteredCars(filters)
 
@@ -22,7 +17,7 @@ export default function Feed() {
     <div className="mx-auto">
       <div className="flex flex-col md:flex-row gap-6 justify-between items-start mb-6">
         <div className="w-full md:w-1/4 bg-white p-4 shadow-md rounded-lg h-auto">
-          <Filters filters={filters} setFilters={setFilters} />
+          <CarsFilters filters={filters} setFilters={setFilters} />
         </div>
 
         <div className="flex-1 flex flex-col">

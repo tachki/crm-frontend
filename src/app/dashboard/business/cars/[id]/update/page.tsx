@@ -1,9 +1,11 @@
-import Update from "./Update";
+import dynamic from 'next/dynamic'
+
+const Update = dynamic(() => import('./Update'), {
+  loading: () => <p>Загрузка...</p>,
+})
 
 export default function UpdatePage() {
   return (
-    <div className={`flex justify-center items-center m-6 mb-9`} >
-      <Update />
-    </div>
-  );
+    <Update />
+  )
 }

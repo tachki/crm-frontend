@@ -47,11 +47,11 @@ export const useGetReservationsByCar = (carId: string) => {
     });
   };
 
-  export const useGetReservationsByUserId = (params: {id: string}) => {
+  export const useGetReservationsByUserId = () => {
     return useQuery<Reservation[]>({
-      queryKey: ["acceptedReservations", params],
+      queryKey: ["acceptedReservations"],
       queryFn: async () => {
-        const response = await axiosWithAuth.get(`/v1/users/reservations`, {params});
+        const response = await axiosWithAuth.get(`/v1/users/reservations`);
         return response.data.reservations;
       },
     });
