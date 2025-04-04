@@ -5,6 +5,7 @@ import CarCard from "./CarPost"
 import { useFilteredCars } from "./hooks/useGetCar"
 import CarsFilters from '@/components/filters/CarsFilters'
 import { IFilters } from '@/types/car.type'
+import { ChoiseCarForm } from "./search/Search"
 
 export default function Feed() {
   const [filters, setFilters] = useState<IFilters>({})
@@ -16,6 +17,9 @@ export default function Feed() {
   return (
     <div className="mx-auto">
       <div className="flex flex-col md:flex-row gap-6 justify-between items-start mb-6">
+        <div className="flex mt-10 mb-10">
+          <ChoiseCarForm />
+        </div>
         <div className="w-full md:w-1/4 bg-white p-4 shadow-md rounded-lg h-auto">
           <CarsFilters filters={filters} setFilters={setFilters} />
         </div>
