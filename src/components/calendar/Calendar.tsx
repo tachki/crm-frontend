@@ -132,7 +132,8 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
 
         <div className="flex justify-between mt-4 gap-2 w-full">
           <button
-            className={`border border-[#3B44FF] text-[#3B44FF] font-light text-sm px-2 py-1 rounded transition-all w-1/3 ${
+            onClick={handleUnavailable}
+            className={`border border-[#3B44FF] text-[#3B44FF] font-light text-sm px-2 py-1 rounded transition-all w-1/2 ${
               isMarked ? "bg-[#3B44FF] text-white" : "hover:bg-[#3B44FF] hover:text-white"
             }`}
             style={{ height: "40px" }}
@@ -142,18 +143,12 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
 
           <button
             onClick={handleRemoveMark}
-            className="border border-[#F23434] text-[#F23434] font-light text-sm px-2 py-1 rounded hover:bg-[#F23434] hover:text-white transition-all w-1/3"
+            className="border border-[#F23434] text-[#F23434] font-light text-sm px-2 py-1 rounded hover:bg-[#F23434] hover:text-white transition-all w-1/2"
             style={{ height: "40px" }}
           >
             Убрать метку
           </button>
-          <button
-            onClick={handleUnavailable}
-            className="border border-[#F6C61A] text-[#F6C61A] font-light text-sm px-2 py-1 rounded hover:bg-[#F6C61A] hover:text-white transition-all w-1/3"
-            style={{ height: "40px" }}
-          >
-            Недоступно
-          </button>
+        
         </div>
       </div>
     </div>
