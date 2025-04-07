@@ -159,7 +159,7 @@ const CarsFilters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
 						<input
 							type="text"
 							className="font-medium w-full border pl-2 py-2 rounded-md"
-							placeholder="Не важно"
+							placeholder="0"
 							onBlur={(e) => handlePriceFrom(e.target.value)}
 							onKeyDown={(e) => {
 								if (e.key === "Enter") {
@@ -173,7 +173,8 @@ const CarsFilters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
 						<input
 							type="text"
 							className="font-medium w-full border pl-2 py-2 rounded-md"
-							placeholder="Не важно"
+							//TODO подумать над тем что сюда можно из ручки отдавать максимальную стоимость авто
+							placeholder="100000"
 							onBlur={(e) => handlePriceTo(e.target.value)}
 							onKeyDown={(e) => {
 								if (e.key === "Enter") {
