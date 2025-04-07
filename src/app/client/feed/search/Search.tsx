@@ -1,140 +1,88 @@
 "use client";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useCarForm } from "../../../../store/slice/iCarFormSlice";
-import searchIcon from "../../../../images/main_page_park/search.png"; 
+import searchIcon from "../../../../images/main_page_park/search.png";
 import Image from "next/image";
+import { SingleDatePicker } from "@/components/calendar/search/DateSelect";
+import { useState } from "react";
 
-export function ChoiseCarForm() {
-  const { senData } = useCarForm();
+export function ChoiseCarForm({ 
+  onSearch, 
+  initialValues = {} 
+}: {
+  onSearch: (data: object) => void;
+  initialValues?: object;
+}) {
   const {
-    register,
     handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-  const data = ["12.12.2024", "13.12.2024", "14.12.2024"];
-  const time = ["12:20", "12:21"];
- 
+  } = useForm({ defaultValues: initialValues });
 
-  const onSubmit: SubmitHandler<any> = (dataForm) => {
-    reset();
-    if (!dataForm) {
-      console.log("Ошибка");
-    } else {
-      senData(dataForm);
-      console.log(dataForm);
-    }
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+
+  const onSubmit: SubmitHandler<object> = (dataForm) => {
+    const searchData = {
+      ...dataForm,
+      // startDate,
+      // endDate
+    };
+    onSearch(searchData); 
   };
 
   return (
-    <div className="bg-gray-200 h-screen">
-      <div className="flex justify-center pt-[50px]">
-        <div className="w-[900px] h-[80px] rounded-full bg-white flex items-center">
-          <form className="flex items-center" onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col ml-[20px] w-[300px]">
-              <label className="font-bold">Откуда</label>
-              <input
-                type="text"
-                placeholder="Город, аэропорт, адрес"
-                className="border-0 bg-transparent focus:outline-none text-sm font-medium"
-                {...register("place", { required: "Введите место!" })}
-              />
-              {errors.place && typeof errors.place.message === "string" && (
-                <p className="text-red-500 text-sm">{errors.place.message}</p>
-              )}
-            </div>
-
-            <div className="w-[2px] h-[50px] bg-black mx-[20px]"></div>
-            <div className="flex flex-col rounded-none">
-              <label>С какого</label>
-              <div>
-                <select
-                  className="border-none"
-                  {...register("dataRes", { required: "Дата обязательна!" })}
-                >
-                  {data.map((item, index) => (
-                    <option key={index} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-                {errors.dataRes &&
-                  typeof errors.dataRes.message === "string" && (
-                    <p className="text-red-500 text-sm">
-                      {errors.dataRes.message}
-                    </p>
-                  )}
-                <select
-                  className="ml-[20px] border-none"
-                  {...register("timeRes", { required: "Время обязательно!" })}
-                >
-                  {time.map((item, index) => (
-                    <option key={index} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-                {errors.timeRes && errors.timeRes.message === "string" && (
-                  <p className="text-red-500 text-sm">
-                    {errors.timeRes.message}
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="w-[2px] h-[50px] bg-black mx-[20px]"></div>
-            <div>
-              <div className="flex flex-col rounded-none">
-                <label>По какое</label>
-                <div>
-                  <select
-                    className="border-none"
-                    {...register("dataRet", { required: "Дата обязательна!" })}
-                  >
-                    {data.map((item, index) => (
-                      <option key={index} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.dataRet && errors.dataRet.message === "string" && (
-                    <p className="text-red-500 text-sm">
-                      {errors.dataRet.message}
-                    </p>
-                  )}
-                  <select
-                    className="ml-[20px] border-none"
-                    {...register("timeRet", { required: "Время обязательно!" })}
-                  >
-                    {time.map((item, index) => (
-                      <option key={index} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.timeRet && errors.timeRet.message === "string" && (
-                    <p className="text-red-500 text-sm">
-                      {errors.timeRet.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-            <button
-            type="submit"
-            className="rounded-full bg-violet-700 w-[50px] h-[50px] ml-[100px] cursor-pointer flex items-center justify-center"
-        >
-            <Image 
-            src={searchIcon}
-            alt="Search"
-            width={20}
-            height={20}
-            className="text-white"
+    <div className="flex justify-center">
+      <div className="h-[80px] rounded-full bg-white flex items-center shadow-lg">
+      <form className="flex items-center" onSubmit={handleSubmit(onSubmit)}>
+         
+          <div className="flex flex-col ml-[20px] w-[300px]">
+            <label className="font-medium">Откуда</label>
+            <input
+              type="text"
+              placeholder="Город, аэропорт, адрес"
+              className="border-0 bg-transparent focus:outline-none placeholder:text-[16px] font-medium mt-2"
+             
             />
-        </button>
-          </form>
-        </div>
+          </div>
+
+          <div className="w-[1px] h-[50px] bg-black mx-[20px]"></div>
+
+          <div className="flex flex-col rounded-none">
+            <label className="font-medium">С какого</label>
+            <div className="flex flex-row text-gray-500 mt-2">
+              <SingleDatePicker
+                selectedDate={startDate}
+                onSelect={setStartDate}
+                placeholder="Выберите дату"
+              />
+            </div>
+          </div>
+          
+          <div className="w-[1px] h-[50px] bg-black mx-[20px] ml-20"></div>
+
+          <div className="flex flex-col rounded-none">
+            <label className="font-medium">По какое</label>
+            <div className="flex flex-row text-gray-500 mt-2">
+              <SingleDatePicker
+                selectedDate={endDate}
+                onSelect={setEndDate}
+                placeholder="Выберите дату"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="rounded-full bg-[#3B44FF] w-[50px] h-[50px] ml-[160px] mr-5 cursor-pointer flex items-center justify-center hover:bg-[#2a32cc] transition-colors"
+          >
+            <Image 
+              src={searchIcon}
+              alt="Search"
+              width={23}
+              height={23}
+              className="text-white"
+            />
+          </button>
+        </form>
       </div>
-      
     </div>
   );
 }
