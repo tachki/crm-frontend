@@ -1,38 +1,62 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { IAuthForm } from '@/types/auth.type'
 import { Field } from '@/components/fields/Field'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/buttons/Button'
+import Image from 'next/image'
 
+interface IFormErrors {
+	email: string
+	password: string
+	auth: string
+}
 
 export default function Auth() {
 	const [isLoginForm, setIsLoginForm] = useState(true)
+	const [formErrors, setFormErrors] = useState<IFormErrors>({
+		email: '',
+		password: '',
+		auth: '',
+	})
 
-  const { register, handleSubmit, reset, formState: { errors }, clearErrors } = useForm<IAuthForm>({
+	const { register, handleSubmit, reset, formState: { errors } } = useForm<IAuthForm>({
 		mode: 'onChange'
 	})
 
-	const { authMutate, isError, errorMessage } = useAuth(isLoginForm);
+	const { authMutate, errorMessage } = useAuth(isLoginForm)
+
+	useEffect(() => {
+		setFormErrors(prev => ({
+			...prev,
+			email: errors.email?.message || '',
+			password: errors.password?.message || '',
+			auth: errorMessage || ''
+		}))
+	}, [errors, errorMessage])
+	
 
 	const onSubmit: SubmitHandler<IAuthForm> = data => {
 		reset()
 		authMutate(data)
+		setFormErrors({ email: '', password: '', auth: '' })
 	}
 
 	const toggleForm = () => {
+		console.log(formErrors)
 		setIsLoginForm(prevState => !prevState)
-		reset()
-    clearErrors()
+		setFormErrors({ email: '', password: '', auth: '' })
 	}
 
 	return (
 		<div className="align-center w-96 m-auto flex flex-col justify-center items-center h-screen space-y-12">
 			<div>
-				<img
+				<Image
 					className='m-auto'
+					width={150}
+					height={150}
 					src="logo_tachki.svg"
 					alt="logo"
 				/>
@@ -44,6 +68,7 @@ export default function Auth() {
 				</h1>
 
 				<form
+					key={isLoginForm ? 'login' : 'register'}
 					onSubmit={handleSubmit(onSubmit)}
 				>
 					<Field
@@ -56,12 +81,9 @@ export default function Auth() {
 							required: 'Необходимо ввести логин'
 						})}
 					/>
-					{errors.email?.message && (
-						<p
-							role='alert'
-							className='text-xs text-red-500 font-medium pt-1.5'
-						>
-							{errors.email.message}
+					{formErrors.email && (
+						<p role='alert' className='text-xs text-red-500 font-medium pt-1.5'>
+							{formErrors.email}
 						</p>
 					)}
 
@@ -79,16 +101,13 @@ export default function Auth() {
 						})}
 						extra=''
 					/>
-					{errors.password?.message && (
-						<p
-							role='alert'
-							className='text-xs text-red-500 font-medium pt-1.5'
-						>
-							{errors.password.message}
+					{formErrors.password && (
+						<p role='alert' className='text-xs text-red-500 font-medium pt-1.5'>
+							{formErrors.password}
 						</p>
 					)}
 
-					{isError && (
+					{formErrors.auth && (
 						<p
 							role="alert"
 							className="text-xs text-red-500 font-medium pt-1.5"
@@ -115,5 +134,5 @@ export default function Auth() {
 			</div>
 
 		</div>
-	);
+	)
 }
