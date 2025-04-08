@@ -15,6 +15,7 @@ export default function Cars() {
   const [carTransmission, setCarTransmission] = useState("");
   const [carClass, setCarClass] = useState("");
   const [carPrice, setCarPrice] = useState(1);
+  const [carMileage, setCarMileage] = useState(1);
   const [carYear, setCarYear] = useState(2010);
   const [carDescription, setCarDescription] = useState("");
   const [photos, setPhotos] = useState<File[]>([]);
@@ -30,6 +31,7 @@ export default function Cars() {
     formData.append("description", carDescription);
     formData.append("model", carModel);
     formData.append("price_per_day", carPrice.toString());
+    formData.append("mileage", carMileage.toString());
     formData.append("transmission", carTransmission);
     formData.append("year", carYear.toString());
     photos.forEach((photo) => {
@@ -78,6 +80,7 @@ export default function Cars() {
       carTransmission &&
       carClass &&
       carPrice &&
+      carMileage &&
       carYear &&
       carDescription &&
       photos.length
@@ -300,6 +303,30 @@ export default function Cars() {
             />
           </div>
         </div>
+
+        <div className={styles.inputWrap}>
+            <label className={styles.labelBottom}>Пробег</label>
+            <input
+              type="number"
+              value={carMileage}
+              placeholder={"Введите пробег"}
+              className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
+              onChange={(e) => {
+                if (Number(e.target.value) < 1) {
+                  e.target.value = "1";
+                }
+                setCarMileage(Number(e.target.value));
+              }}
+              style={
+                (isFieldPreparing || carMileage) === 1
+                  ? {
+                      backgroundColor: "rgba(255,0,0,0.025)",
+                      border: "2px solid red",
+                    }
+                  : {}
+              }
+            />
+          </div>
 
         <div className={styles.contentText}>
           <label className={styles.labelBottom}>Описание</label>
