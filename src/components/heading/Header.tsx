@@ -16,6 +16,7 @@ export default function Header() {
 
 	useEffect(() => {
 		const userData = decodeTokens()
+		console.log("USER: ", userData)
 		setUser(userData)
 	}, [])
 
@@ -52,8 +53,8 @@ export default function Header() {
 					</>
 				) : user?.user_type === 'superuser' ? (
 					<>
-						<Link href='#'>Компании</Link>
-						<Link href='#'>Верификация</Link>
+						<Link href='#'>Бизнесы</Link>
+						<Link href='#'>Kyc</Link>
 					</>
 				) : <Loader />}
 			</nav>
