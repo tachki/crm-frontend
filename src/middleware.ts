@@ -45,8 +45,6 @@ export async function middleware(
       : nextUrl.pathname.replace("/client", "");
     
     if (!matchRoute(cleanedPathname, allowedRoutes)) {
-      console.log("PATH: ", cleanedPathname)
-      console.log("ROUTES: ", allowedRoutes)
       return redirectToUserDashboard(userType, request);
     }
   }

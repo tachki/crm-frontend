@@ -7,50 +7,51 @@ import calendarIcon from '@/images/car_card/buttons/calendar_logo.png'
 import deleteIcon from '@/images/car_card/buttons/bucket_logo.png'
 import { DASHBOARD_PAGES } from "@/config/pages-url.config"
 import Link from 'next/link'
-import { CarService } from "@/services/car.service";
+import { CarService } from "@/services/car.service"
 import ConfirmationModal from "@/components/modal/modal"
-import './CarCard.css';
+import './CarCard.css'
 import { carStatusData } from '@/utils/constants'
+import Image from 'next/image'
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
-  const [calendarPosition, setCalendarPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
-  const calendarButtonRef = useRef<HTMLButtonElement | null>(null);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [calendarPosition, setCalendarPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 })
+  const calendarButtonRef = useRef<HTMLButtonElement | null>(null)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isDropdownMenuVisible, setIsDropdownMenuVisible] = useState(false)
   const [carStatus, setCarStatus] = useState<CarStatus>(car.status as CarStatus)
 
   const toggleCalendarVisibility = () => {
-    setIsCalendarVisible(!isCalendarVisible);
-  };
+    setIsCalendarVisible(!isCalendarVisible)
+  }
 
   const openDeleteModal = () => {
-    setIsDeleteModalOpen(true);
-  };
+    setIsDeleteModalOpen(true)
+  }
 
   const closeDeleteModal = () => {
-    setIsDeleteModalOpen(false);
-  };
+    setIsDeleteModalOpen(false)
+  }
 
   useEffect(() => {
     if (isCalendarVisible && calendarButtonRef.current) {
-      const buttonRect = calendarButtonRef.current.getBoundingClientRect();
+      const buttonRect = calendarButtonRef.current.getBoundingClientRect()
       setCalendarPosition({
-        top: buttonRect.bottom + window.scrollY, 
-        left: buttonRect.left + window.scrollX, 
-      });
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
+      })
     }
-  }, [isCalendarVisible]); 
+  }, [isCalendarVisible])
 
 
- const handleDeleteCar = async () => {
+  const handleDeleteCar = async () => {
     try {
-      await CarService.deleteCar(car.id);
-      window.location.reload();
+      await CarService.deleteCar(car.id)
+      window.location.reload()
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      closeDeleteModal();
+      closeDeleteModal()
     }
   }
 
@@ -66,13 +67,15 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
   return (
     <div className=" bg-white car-card flex gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
-      <div className="flex w-1/2 justify-center items-center mt-5 mb-5 ml-5">
-      <img
-        src={car.previewImage}
-        alt={`${car.brand} ${car.model}`}
-        className="object-cover rounded-2xl"
-      />
-    </div>
+      <div className="flex justify-center items-center mt-5 mb-5 ml-5">
+        <Image
+          src={car.previewImage}
+          alt={`${car.brand} ${car.model}`}
+          className="object-cover rounded-2xl"
+          width={150}
+          height={150}
+        />
+      </div>
       <div className="w-1/2 p-2 flex mt-4 flex-col justify-between h-full">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-xl font-extrabold text-black">
@@ -151,33 +154,45 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
             onClick={toggleCalendarVisibility}
             className="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 font-medium text-sm w-1/3 flex items-center justify-center gap-2"
           >
-            <img src={calendarIcon.src} alt="Календарь" className="w-5 h-5" />
+            <Image
+              src={calendarIcon.src}
+              alt="Календарь"
+              className="w-5 h-5"
+              width={150}
+              height={150}
+            />
             Календарь
           </button>
           <button
             className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 font-medium text-sm w-1/3 flex items-center justify-center gap-2"
             onClick={openDeleteModal}
           >
-            <img src={deleteIcon.src} alt="Удалить" className="w-5 h-5" />
+            <Image
+              src={deleteIcon.src}
+              alt="Удалить"
+              className="w-5 h-5"
+              width={150}
+              height={150}
+            />
             Удалить
           </button>
         </div>
       </div>
 
       {isCalendarVisible && (
-      <div
-        className="absolute z-50 bg-white shadow-lg p-4 rounded-lg"
-        style={{
-          top: `${calendarPosition.top - 450}px`,
-          left: `${calendarPosition.left - 200}px`, 
-          width: "590px",
-        }}
-      >
-        <Calendar carId={car.id} />
-      </div>
-    )}
+        <div
+          className="absolute z-50 bg-white shadow-lg p-4 rounded-lg"
+          style={{
+            top: `${calendarPosition.top - 450}px`,
+            left: `${calendarPosition.left - 200}px`,
+            width: "590px",
+          }}
+        >
+          <Calendar carId={car.id} />
+        </div>
+      )}
 
-    <ConfirmationModal
+      <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={closeDeleteModal}
         onConfirm={handleDeleteCar}

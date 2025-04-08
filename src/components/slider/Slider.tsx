@@ -1,42 +1,48 @@
-import React, { useRef, useState, MouseEvent } from "react";
-import styles from "./Slider.module.css";
-import clsx from "clsx";
+import React, { useRef, useState, MouseEvent } from "react"
+import styles from "./Slider.module.css"
+import clsx from "clsx"
+import Image from 'next/image'
 
 interface ImageGalleryProps {
-  images: string[];
+  images: string[]
 }
 
 const Slider: React.FC<ImageGalleryProps> = ({ images }) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0)
+  const carouselRef = useRef<HTMLDivElement>(null)
+  const isDragging = useRef(false)
+  const startX = useRef(0)
+  const scrollLeft = useRef(0)
 
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    if (!carouselRef.current) return;
-    isDragging.current = true;
-    startX.current = e.pageX;
-    scrollLeft.current = carouselRef.current.scrollLeft;
-    carouselRef.current.style.cursor = "grabbing";
-  };
+    if (!carouselRef.current) return
+    isDragging.current = true
+    startX.current = e.pageX
+    scrollLeft.current = carouselRef.current.scrollLeft
+    carouselRef.current.style.cursor = "grabbing"
+  }
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!isDragging.current || !carouselRef.current) return;
-    e.preventDefault();
-    const walk = (e.pageX - startX.current) * 1.2;
-    carouselRef.current.scrollLeft = scrollLeft.current - walk;
-  };
+    if (!isDragging.current || !carouselRef.current) return
+    e.preventDefault()
+    const walk = (e.pageX - startX.current) * 1.2
+    carouselRef.current.scrollLeft = scrollLeft.current - walk
+  }
 
   const handleMouseUp = () => {
-    isDragging.current = false;
-    if (carouselRef.current) carouselRef.current.style.cursor = "grab";
-  };
+    isDragging.current = false
+    if (carouselRef.current) carouselRef.current.style.cursor = "grab"
+  }
 
   return (
     <div className={styles.slider}>
       <div className={styles.currentImage}>
-        <img src={images[currentImageIndex]} alt="Slider Image" />
+        <Image
+          src={images[currentImageIndex]}
+          alt="Slider Image"
+          width={150}
+          height={150}
+        />
       </div>
 
       <div
@@ -48,7 +54,7 @@ const Slider: React.FC<ImageGalleryProps> = ({ images }) => {
         onMouseUp={handleMouseUp}
       >
         {images.map((image, index) => (
-          <img
+          <Image
             src={image}
             alt="slider thumb image"
             key={index}
@@ -57,11 +63,13 @@ const Slider: React.FC<ImageGalleryProps> = ({ images }) => {
             })}
             onClick={() => setCurrentImageIndex(index)}
             draggable="false"
+            width={150}
+            height={150}
           />
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Slider;
+export default Slider

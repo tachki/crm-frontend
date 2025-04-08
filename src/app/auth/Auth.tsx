@@ -6,6 +6,7 @@ import { IAuthForm } from '@/types/auth.type'
 import { Field } from '@/components/fields/Field'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/buttons/Button'
+import Image from 'next/image'
 
 
 export default function Auth() {
@@ -31,8 +32,10 @@ export default function Auth() {
 	return (
 		<div className="align-center w-96 m-auto flex flex-col justify-center items-center h-screen space-y-12">
 			<div>
-				<img
+				<Image
 					className='m-auto'
+					width={150}
+					height={150}
 					src="logo_tachki.svg"
 					alt="logo"
 				/>

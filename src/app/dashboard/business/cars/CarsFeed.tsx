@@ -11,6 +11,7 @@ import Link from 'next/link'
 import { useState } from "react"
 import { useFilteredCarsByBusiness } from "@/app/client/feed/hooks/useGetCar"
 import CarsFilters from '@/components/filters/CarsFilters'
+import Image from 'next/image'
 
 export default function Home() {
 	const userStorage = decodeTokens()
@@ -50,7 +51,7 @@ export default function Home() {
 
 				{!isLoading && !error && cars?.length === 0 && (
 					<div className="flex flex-col items-center justify-center">
-						<img
+						<Image
 							src={emptyParkImage.src}
 							alt="Нет автомобилей"
 							width={550}
@@ -72,7 +73,7 @@ export default function Home() {
 					<div
 						className="fixed bottom-10 right-10 bg-yellow-500 rounded-full w-16 h-16 flex items-center justify-center shadow-lg"
 					>
-						<img
+						<Image
 							src={plusIcon.src}
 							alt="Plus Icon"
 							width={18}
