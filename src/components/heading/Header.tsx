@@ -53,8 +53,8 @@ export default function Header() {
 					</>
 				) : user?.user_type === 'superuser' ? (
 					<>
-						<Link href='#'>Бизнесы</Link>
-						<Link href='#'>Kyc</Link>
+						<Link href={DASHBOARD_PAGES.SUPER_BUSINESS}>Бизнесы</Link>
+						<Link href={DASHBOARD_PAGES.SUPER_KYC}>Kyc</Link>
 					</>
 				) : <Loader />}
 			</nav>

@@ -13,6 +13,7 @@ class DASHBOARD {
   RESERVATIONS = `${this.root}${this.businessRoot}/reservations`
   
   SUPER_BUSINESS = `${this.root}${this.superRoot}/businesses`
+  SUPER_KYC = `${this.root}${this.superRoot}/verifications`
 }
 
 class CLIENT {

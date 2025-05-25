@@ -1,5 +1,5 @@
 const BUSINESS_PATH = '/business';
-const SUPERUSER_PATH = '/superuser';
+const SUPERUSER_PATH = '/super';
 const CLIENT_PATH = '/feed';
 
 export const ACCESS_URL: Record<'worker' | 'admin' | 'customer' | 'superuser', string[]> = {
