@@ -14,6 +14,7 @@ export default function Cars() {
   const [carNumber, setCarNumber] = useState("");
   const [carTransmission, setCarTransmission] = useState("");
   const [carClass, setCarClass] = useState("");
+  const [carMileage, setCarMileage] = useState(0);
   const [carPrice, setCarPrice] = useState(1);
   const [carYear, setCarYear] = useState(2010);
   const [carDescription, setCarDescription] = useState("");
@@ -32,6 +33,7 @@ export default function Cars() {
     formData.append("price_per_day", carPrice.toString());
     formData.append("transmission", carTransmission);
     formData.append("year", carYear.toString());
+    formData.append("mileage", carMileage.toString());
     photos.forEach((photo) => {
       formData.append(`image`, photo);
     });
@@ -43,6 +45,7 @@ export default function Cars() {
     setCarTransmission(()=> "")
     setCarClass(()=> "")
     setCarPrice(()=> 1)
+    setCarMileage(()=> 0)
     setCarYear(()=> 2010)
     setCarDescription(()=> "")
     setPhotos(()=> [])
