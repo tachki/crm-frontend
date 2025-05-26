@@ -21,6 +21,14 @@ export const CarService = {
     }
   },
 
+  async findCar(query: string) {
+    const response = await axiosWithAuth.get<{ cars: CarDto[] }>(
+      `/v1/cars/find`,
+      { params: { query } }
+    );
+    return response.data.cars;
+  },
+  
   async getCar(id: string) {
     const response = await axiosWithAuth.get<GetCarDto>(`/v1/cars/${id}`)
     return response.data.car
