@@ -1,7 +1,10 @@
+import VerificationRequests from "./VerificationsList";
+
 export default function KycPage() {
 	return (
 		<div>
-			KYC
+			<VerificationRequests />
 		</div>
 	)
 }
+
