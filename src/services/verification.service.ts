@@ -1,6 +1,6 @@
 import { axiosWithAuth } from "@/api/interceptors";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
+import { VerificationEntry } from "@/types/verification.type";
 export const VerificationService = {
 
     async makeVerification(formData: FormData) {
@@ -22,9 +22,9 @@ export const VerificationService = {
         throw error;
       }
     },
-  }
+}
 
-  export const useGetVerificationApplications = () => {
+export const useGetVerificationApplications = () => {
     return useQuery<VerificationEntry[]>({
       queryKey: ['verifications'],
       queryFn: async () => {
