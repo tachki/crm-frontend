@@ -1,9 +1,7 @@
 .slider {
   position: relative;
   max-width: 100%;
-  width: 600px;
-  height: 515px;
-  margin: 0 auto;
+  height: px;
   overflow: hidden;
   display: flex;
   flex-direction: column;

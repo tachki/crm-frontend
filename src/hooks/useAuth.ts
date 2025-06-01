@@ -43,6 +43,8 @@ export function useAuth(
             push(DASHBOARD_PAGES.BUSINESS_CARS)
           } else if (userData?.user_type === 'customer') {
             push(CLIENT_PAGES.FEED)
+          } else if (userData?.user_type === "superuser") {
+            push(DASHBOARD_PAGES.SUPER_BUSINESS)
           }
         }  
       }

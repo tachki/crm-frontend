@@ -1,6 +1,6 @@
 import { useGetAcceptedReservationsByCarId } from "@/services/reservation.service";
 import React, { useEffect, useState } from "react";
-import { DayPicker } from "react-day-picker";
+import { DateRange, DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
 interface CalendarProps {
@@ -18,7 +18,9 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]); // Заблокированные дни
   const [currentMonth, setCurrentMonth] = useState(new Date()); // Текущий месяц
   const [isMarked] = useState(false);
- 
+  const [selectedRange, setSelectedRange] = useState<DateRange | undefined>(undefined);
+
+  // TODO доработать отправку запроса на резервацию на бек
   const { data: reservations } = useGetAcceptedReservationsByCarId(carId);
  
   useEffect(() => {
@@ -77,82 +79,77 @@ const Calendar: React.FC<CalendarProps> = ({ carId }) => {
     });
   };
 
-  const CaptionLabel = () => <></>;
 
   return (
-    <div className="border-6 border-black rounded-lg">
-      <div className="flex flex-col justify-center items-center border-2 border-gray-300 rounded-lg">
-        <div className="flex justify-between items-center w-full mb-4">
-          <button
-            onClick={handlePreviousMonth}
-            className="border border-[#3B44FF] text-[#3B44FF] font-light text-sm w-[40px] h-[40px] flex items-center justify-center rounded-lg hover:bg-[#3B44FF] hover:text-white transition-all"
-          >
-            {"<"}
-          </button>
-          <span className="text-xl font-bold">
-            {currentMonth.toLocaleString("default", { month: "long", year: "numeric" })}
-          </span>
-          <button
-            onClick={handleNextMonth}
-            className="border border-[#3B44FF] text-[#3B44FF] font-light text-sm w-[40px] h-[40px] flex items-center justify-center rounded-lg hover:bg-[#3B44FF] hover:text-white transition-all"
-          >
-            {">"}
-          </button>
-        </div>
-
-        <DayPicker
-          mode="multiple"
-          selected={selectedDates}
-          onSelect={setSelectedDates}
-          modifiers={{
-            marked: markedDates,
-            unavailable: unavailableDates, 
-            today: new Date(),
-          }}
-          modifiersClassNames={{
-            marked: "bg-gray-400 text-white rounded-full",
-            unavailable: "bg-red-500 text-white rounded-full",
-            today: "border-2 border-blue-500 rounded-full",
-          }}
-          classNames={{
-            day: "text-center text-gray-700 font-normal m-1",
-            cell: "w-10 h-10",
-            month_caption: "hidden",
-          
-          }}
-          month={currentMonth}
-          onMonthChange={setCurrentMonth}
-          showOutsideDays={true}
-          required={true}
-          hideNavigation
-          components={{
-            CaptionLabel: CaptionLabel,
-          }}
-        />
-
-        <div className="flex justify-between mt-4 gap-2 w-full">
-          <button
-            onClick={handleUnavailable}
-            className={`border border-[#3B44FF] text-[#3B44FF] font-light text-sm px-2 py-1 rounded transition-all w-1/2 ${
-              isMarked ? "bg-[#3B44FF] text-white" : "hover:bg-[#3B44FF] hover:text-white"
-            }`}
-            style={{ height: "40px" }}
-          >
-            {"Отметить"}
-          </button>
-
-          <button
-            onClick={handleRemoveMark}
-            className="border border-[#F23434] text-[#F23434] font-light text-sm px-2 py-1 rounded hover:bg-[#F23434] hover:text-white transition-all w-1/2"
-            style={{ height: "40px" }}
-          >
-            Убрать метку
-          </button>
-        
+    <div className="flex items-center justify-center bg-white">
+      <div className="border-6 border-black rounded-lg">
+        <div className="flex flex-col border-2 border-gray-300 rounded-lg p-4">
+          <div className="flex justify-between items-center w-full mb-4">
+            <button
+              onClick={handlePreviousMonth}
+              className="text-gray-600 hover:text-black text-xl font-medium"
+            >
+              &lt;
+            </button>
+  
+            <span className="text-xl font-semibold">
+              {currentMonth.toLocaleString("default", { month: "long", year: "numeric" })}
+            </span>
+  
+            <button
+              onClick={handleNextMonth}
+              className="text-gray-600 hover:text-black text-xl font-medium"
+            >
+              &gt;
+            </button>
+          </div>
+  
+          <DayPicker
+            mode="range"
+            selected={selectedRange}
+            onSelect={setSelectedRange}
+            month={currentMonth}
+            onMonthChange={setCurrentMonth}
+            showOutsideDays
+            hideNavigation
+            classNames={{
+              day: "text-center text-gray-700 font-normal m-1",
+              cell: "w-10 h-10",
+              month_caption: "hidden",
+            }}
+            modifiersClassNames={{
+              selected: "bg-blue-500 text-white rounded-full",
+              today: "border-2 border-blue-500 rounded-full",
+              range_start: "bg-blue-600 text-white rounded-full",
+              range_end: "bg-blue-600 text-white rounded-full",
+              range_middle: "bg-blue-100 text-blue-800 rounded-full",
+            }}
+          />
+  
+          <div className="flex justify-between mt-4 gap-2 w-full">
+            <button
+              onClick={handleUnavailable}
+              className={`border border-[#3B44FF] text-[#3B44FF] font-light text-sm px-2 py-1 rounded transition-all w-1/2 ${
+                isMarked ? "bg-[#3B44FF] text-white" : "hover:bg-[#3B44FF] hover:text-white"
+              }`}
+              style={{ height: "40px" }}
+            >
+              Отметить
+            </button>
+  
+            <button
+              onClick={handleRemoveMark}
+              className="border border-[#F23434] text-[#F23434] font-light text-sm px-2 py-1 rounded hover:bg-[#F23434] hover:text-white transition-all w-1/2"
+              style={{ height: "40px" }}
+            >
+              Убрать метку
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  );
+  );  
+  
 };
 
 export default Calendar;

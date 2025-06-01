@@ -106,3 +106,10 @@ export interface IFilters {
   price_from?: string
   price_to?: string
 }
+
+export interface UpdateCarDto {
+  description?: string
+  price_per_day?: number
+  year?: string
+  status?: CarStatus
+}

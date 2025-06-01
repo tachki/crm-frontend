@@ -1,12 +1,16 @@
 import dynamic from 'next/dynamic';
 
 const Reservations = dynamic(() => import('./Reservations'), {
-  loading: () => <p>Загрузка...</p>,
+  loading: () => (
+    <div className="flex justify-center items-center min-h-screen">
+      <p className="text-lg font-medium">Загрузка...</p>
+    </div>
+  ),
 });
 
 export default function ReservationsPage() {
   return (
-    <div className={`flex justify-between items-center m-6 mb-9`}>
+    <div className="max-w-screen-xl mx-auto px-4 py-6">
       <Reservations />
     </div>
   );
