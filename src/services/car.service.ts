@@ -65,12 +65,8 @@ export const CarService = {
     }
   },
 
-  async updateCar(carId: string, status: string) {
+  async updateCar(carId: string, data: any) {
     try {
-      const data = JSON.stringify({
-        status: status
-      })
-
       const response = await axiosWithAuth.patch(
         `/v1/cars/${carId}`,
         data,

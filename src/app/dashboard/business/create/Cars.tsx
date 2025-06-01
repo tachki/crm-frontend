@@ -1,5 +1,5 @@
 "use client"
-import styles from "./Cars.module.css"
+
 import { useRef, useState } from "react"
 import { CarService } from "@/services/car.service"
 import { DASHBOARD_PAGES } from "@/config/pages-url.config"
@@ -15,16 +15,35 @@ export default function Cars() {
   const [carNumber, setCarNumber] = useState("")
   const [carTransmission, setCarTransmission] = useState("")
   const [carClass, setCarClass] = useState("")
-  const [carMileage, setCarMileage] = useState(0);
+  const [carMileage, setCarMileage] = useState(0)
   const [carPrice, setCarPrice] = useState(1)
   const [carYear, setCarYear] = useState(2010)
   const [carDescription, setCarDescription] = useState("")
   const [photos, setPhotos] = useState<File[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<{ [key: string]: boolean }>({})
 
-  const [isFieldPreparing, setIsFieldPreparing] = useState<boolean>(true)
+  const validateForm = () => {
+    const newErrors: { [key: string]: boolean } = {}
+    if (!carBrand) newErrors.brand = true
+    if (!carModel) newErrors.model = true
+    if (!carNumber) newErrors.number = true
+    if (!carTransmission) newErrors.transmission = true
+    if (!carClass) newErrors.class = true
+    if (carPrice < 1) newErrors.price = true
+    if (carYear < 1900 || carYear > 2025) newErrors.year = true
+    if (!carDescription) newErrors.description = true
+    if (photos.length === 0) newErrors.photos = true
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const createCar = async () => {
+    if (!validateForm() || isSubmitting) return
+
+    setIsSubmitting(true)
     const formData = new FormData()
 
     formData.append("brand", carBrand)
@@ -34,60 +53,18 @@ export default function Cars() {
     formData.append("price_per_day", carPrice.toString())
     formData.append("transmission", carTransmission)
     formData.append("year", carYear.toString())
-    formData.append("mileage", carMileage.toString());
+    formData.append("mileage", carMileage.toString())
     photos.forEach((photo) => {
       formData.append(`image`, photo)
     })
 
-    setIsFieldPreparing(true)
-    setCarBrand(() => "")
-    setCarModel(() => "")
-    setCarNumber(() => "")
-    setCarTransmission(() => "")
-    setCarClass(() => "")
-    setCarPrice(() => 1)
-    setCarMileage(()=> 0)
-    setCarYear(() => 2010)
-    setCarDescription(() => "")
-    setPhotos(() => [])
-
     try {
-      const createdCar = await CarService.createCar(formData)
+      await CarService.createCar(formData)
       router.replace(DASHBOARD_PAGES.BUSINESS_CARS)
-      console.log("Созданная машина:", createdCar)
     } catch (error) {
       console.error("Ошибка при создании машины:", error)
-    }
-  }
-
-  const handleCancelAddCar = () => {
-    setIsFieldPreparing(true)
-    setCarBrand("")
-    setCarModel("")
-    setCarNumber("")
-    setCarTransmission("")
-    setCarClass("")
-    setCarPrice(0)
-    setCarYear(2010)
-    setCarDescription("")
-    setPhotos([])
-  }
-
-  const handleAddCar = () => {
-    setIsFieldPreparing(false)
-    if (
-      carBrand &&
-      carModel &&
-      carNumber &&
-      carTransmission &&
-      carClass &&
-      carPrice &&
-      carYear &&
-      carDescription &&
-      photos.length
-    ) {
-      createCar()
-
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -98,6 +75,7 @@ export default function Cars() {
         newPhotos.length = 8
       }
       setPhotos(newPhotos)
+      setErrors({ ...errors, photos: false })
     }
   }
 
@@ -109,6 +87,7 @@ export default function Cars() {
         newPhotos.length = 8
       }
       setPhotos(newPhotos)
+      setErrors({ ...errors, photos: false })
     }
   }
 
@@ -123,358 +102,290 @@ export default function Cars() {
   }
 
   return (
-    <div>
-      <h1 className={styles.h1}>Добавление нового автомобиля</h1>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-        }}
-      >
-        <div
-          className={`flex flex-row flex-wrap items-center justify-center gap-4 mb-5 mt-5`}
-        >
-          <div className={styles.inputWrap}>
-            <label className={styles.labelBottom}>Марка</label>
-            <select
-              className={styles.choiceBottom}
-              onChange={(e) => {
-                setCarBrand(e.target.value)
-              }}
-              value={carBrand}
-              style={
-                (isFieldPreparing || carBrand) === ""
-                  ? {
-                    backgroundColor: "rgba(255,0,0,0.025)",
-                    border: "2px solid red",
-                  }
-                  : {}
-              }
-            >
-              <option value="">Выберите марку</option>
+    <div className="max-w-3xl mx-auto">
+      <div className="bg-white rounded-xl shadow-md p-6 mb-8">
+        <h1 className="text-2xl font-bold text-gray-900 mb-6">
+          Добавление нового автомобиля
+        </h1>
 
-              {carBrandData.map((carBrand, index) => (
-                <option key={carBrand + index} value={carBrand}>
-                  {carBrand}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className={styles.inputWrap}>
-            <label className={styles.labelBottom}>Модель</label>
-            <input
-              type="text"
-              value={carModel}
-              className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
-              placeholder={"Введите модель"}
-              onChange={(e) => setCarModel(e.target.value)}
-              style={
-                (isFieldPreparing || carModel) === ""
-                  ? {
-                    backgroundColor: "rgba(255,0,0,0.025)",
-                    border: "2px solid red",
-                  }
-                  : {}
-              }
-            />
-          </div>
-
-          <div className={styles.inputWrap}>
-            <label className={styles.labelBottom}>Год выпуска</label>
-            <input
-              type="number"
-              value={carYear}
-              className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
-              onChange={(e) => {
-                if (Number(e.target.value) < 1) {
-                  e.target.value = "1"
-                } else if (Number(e.target.value) > 2025) {
-                  e.target.value = "2025"
-                }
-                setCarYear(Number(e.target.value))
-              }}
-              style={
-                (isFieldPreparing || carYear) === 1
-                  ? {
-                    backgroundColor: "rgba(255,0,0,0.025)",
-                    border: "2px solid red",
-                  }
-                  : {}
-              }
-            />
-          </div>
-          <div className={styles.inputWrap}>
-            <label className={styles.labelBottom}>Номерной знак</label>
-            <input
-              type="text"
-              value={carNumber}
-              className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
-              placeholder={"Введите номер"}
-              onChange={(e) => setCarNumber(e.target.value)}
-              style={
-                (isFieldPreparing || carNumber) === ""
-                  ? {
-                    backgroundColor: "rgba(255,0,0,0.025)",
-                    border: "2px solid red",
-                  }
-                  : {}
-              }
-            />
-          </div>
-        </div>
-
-        <div
-          className={`flex flex-row flex-wrap items-center justify-center gap-4 mb-5 mt-5`}
-        >
-          <div className={styles.inputWrap}>
-            <label className={styles.labelBottom}>Класс</label>
-            <select
-              className={styles.choiceBottom}
-              onChange={(e) => {
-                setCarClass(e.target.value)
-              }}
-              value={carClass}
-              style={
-                (isFieldPreparing || carClass) === ""
-                  ? {
-                    backgroundColor: "rgba(255,0,0,0.025)",
-                    border: "2px solid red",
-                  }
-                  : {}
-              }
-            >
-              <option value="">Выберите класс</option>
-
-              {carClassData.map((carClass, index) => (
-                <option key={carClass + index} value={carClass}>
-                  {carClass}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className={styles.inputWrap}>
-            <label className={styles.labelBottom}>Тип КПП</label>
-            <select
-              className={styles.choiceBottom}
-              onChange={(e) => {
-                setCarTransmission(e.target.value)
-              }}
-              value={carTransmission}
-              style={
-                (isFieldPreparing || carTransmission) === ""
-                  ? {
-                    backgroundColor: "rgba(255,0,0,0.025)",
-                    border: "2px solid red",
-                  }
-                  : {}
-              }
-            >
-              <option value="">Выберите тип КПП</option>
-
-              {carTransmissionsData.map((carTransmission, index) => (
-                <option key={carTransmission + index} value={carTransmission}>
-                  {carTransmission}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className={styles.inputWrap}>
-            <label className={styles.labelBottom}>Цена (BYN в сутки)</label>
-            <input
-              type="number"
-              value={carPrice}
-              placeholder={"Введите цену"}
-              className={`${styles.customInput} mt-2 w-full items-center border-2 border-grey bg-transparent p-4 font-light text-base outline-none placeholder:text-grey placeholder:font-normal duration-500 transition-colors focus:border-primary`}
-              onChange={(e) => {
-                if (Number(e.target.value) < 1) {
-                  e.target.value = "1"
-                }
-                setCarPrice(Number(e.target.value))
-              }}
-              style={
-                (isFieldPreparing || carPrice) === 1
-                  ? {
-                    backgroundColor: "rgba(255,0,0,0.025)",
-                    border: "2px solid red",
-                  }
-                  : {}
-              }
-            />
-          </div>
-        </div>
-
-        <div className={styles.contentText}>
-          <label className={styles.labelBottom}>Описание</label>
-          <textarea
-            value={carDescription}
-            placeholder="Введите описание"
-            onChange={(e) => setCarDescription(e.target.value)}
-            style={
-              (isFieldPreparing || carDescription) === ""
-                ? {
-                  backgroundColor: "rgba(255,0,0,0.025)",
-                  border: "2px solid red",
-                }
-                : {}
-            }
-          ></textarea>
-        </div>
-
-        <div className={`${styles.addPhotosContainer}`}>
-          <div className={styles.addPhotosTitle}>
-            {photos.length === 0 ? (
-              <label className={styles.labelBottom}>Загрузите фотографии</label>
-            ) : (
-              <>
-                <label className={styles.labelBottom}>Фотографии</label>
-                <label
-                  className={`${styles.fontGrayThin} ${styles.imagesCounter}`}
-                >
-                  Загружено: {photos.length}/8
-                </label>
-              </>
-            )}
-          </div>
-          <div
-            className={styles.addPhotosWrapper}
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={handleDrop}
-          >
-            {photos.length === 0 && (
-              <div
-                className={styles.addFirstPhotoWrapper}
-                style={
-                  !isFieldPreparing || photos.length
-                    ? {
-                      backgroundColor: "rgba(255,0,0,0.025)",
-                      border: "2px solid red",
-                    }
-                    : {}
-                }
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+          {/* Basic Info Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Марка
+              </label>
+              <select
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 ${
+                  errors.brand
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
+                value={carBrand}
+                onChange={(e) => {
+                  setCarBrand(e.target.value)
+                  setErrors({ ...errors, brand: false })
+                }}
               >
-                <label
-                  className={`${styles.labelBottom} ${styles.addPhotoText}`}
-                >
-                  Выберите или перетащите фотографии в область
-                </label>
-                <label
-                  className={`${styles.fontGrayThin} ${styles.addPhotoText}`}
-                >
-                  Форматы JPEG, JPG или PNG до 10 МБ каждый
-                </label>
-                <input
-                  type="file"
-                  accept="image/jpeg,image/jpg,image/png"
-                  multiple
-                  ref={fileInputRef}
-                  onChange={handleAddPhoto}
-                />
-                <button
-                  className={styles.addPhotoButton}
-                  type="button"
-                  onClick={openFilePicker}
-                >
-                  Выбрать фотографии
-                </button>
-              </div>
-            )}
-            <div className={styles.photosWrapper}>
-              {photos.map((photo, index) => (
-                <div key={index} className={styles.photoContainer}>
-                  <Image
-                    src={URL.createObjectURL(photo)}
-                    alt={`Фото ${index + 1}`}
-                    width={150}
-                    height={150}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleRemovePhoto(index)}
-                  >
-                    <svg
-                      width="10"
-                      height="10"
-                      viewBox="0 0 10 10"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M1.46484 8.53484L8.53684 1.46484M1.46484 1.46484L8.53684 8.53484"
-                        stroke="black"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              ))}
-              {photos.length > 0 && photos.length < 8 && (
-                <div className={styles.addMorePhotos} onClick={openFilePicker}>
-                  <label>
-                    <svg
-                      width="28"
-                      height="28"
-                      viewBox="0 0 28 28"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M18.3333 8.22222H18.3478M1 5.33333C1 4.18406 1.45655 3.08186 2.2692 2.2692C3.08186 1.45655 4.18406 1 5.33333 1H22.6667C23.8159 1 24.9181 1.45655 25.7308 2.2692C26.5435 3.08186 27 4.18406 27 5.33333V22.6667C27 23.8159 26.5435 24.9181 25.7308 25.7308C24.9181 26.5435 23.8159 27 22.6667 27H5.33333C4.18406 27 3.08186 26.5435 2.2692 25.7308C1.45655 24.9181 1 23.8159 1 22.6667V5.33333Z"
-                        stroke="black"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M1 19.7775L8.22222 12.5553C9.56267 11.2654 11.2151 11.2654 12.5556 12.5553L19.7778 19.7775"
-                        stroke="black"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M16.8887 16.8884L18.3331 15.444C19.6736 14.1541 21.326 14.1541 22.6664 15.444L26.9998 19.7773"
-                        stroke="black"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </label>
-                  <label className={styles.labelBottom}>Добавить</label>
-                  <input
-                    type="file"
-                    accept="image/jpeg,image/jpg,image/png"
-                    multiple
-                    ref={fileInputRef}
-                    onChange={handleAddPhoto}
-                  />
-                </div>
-              )}
+                <option value="">Выберите марку</option>
+                {carBrandData.map((brand) => (
+                  <option key={brand} value={brand}>
+                    {brand}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Модель
+              </label>
+              <input
+                type="text"
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 ${
+                  errors.model
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
+                placeholder="Введите модель"
+                value={carModel}
+                onChange={(e) => {
+                  setCarModel(e.target.value)
+                  setErrors({ ...errors, model: false })
+                }}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Год выпуска
+              </label>
+              <input
+                type="number"
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 ${
+                  errors.year
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
+                value={carYear}
+                min="1900"
+                max="2025"
+                onChange={(e) => {
+                  setCarYear(Number(e.target.value))
+                  setErrors({ ...errors, year: false })
+                }}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Номерной знак
+              </label>
+              <input
+                type="text"
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 ${
+                  errors.number
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
+                placeholder="Введите номер"
+                value={carNumber}
+                onChange={(e) => {
+                  setCarNumber(e.target.value)
+                  setErrors({ ...errors, number: false })
+                }}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Класс
+              </label>
+              <select
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 ${
+                  errors.class
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
+                value={carClass}
+                onChange={(e) => {
+                  setCarClass(e.target.value)
+                  setErrors({ ...errors, class: false })
+                }}
+              >
+                <option value="">Выберите класс</option>
+                {carClassData.map((carClass) => (
+                  <option key={carClass} value={carClass}>
+                    {carClass}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Трансмиссия
+              </label>
+              <select
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 ${
+                  errors.transmission
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
+                value={carTransmission}
+                onChange={(e) => {
+                  setCarTransmission(e.target.value)
+                  setErrors({ ...errors, transmission: false })
+                }}
+              >
+                <option value="">Выберите трансмиссию</option>
+                {carTransmissionsData.map((transmission) => (
+                  <option key={transmission} value={transmission}>
+                    {transmission}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Пробег (км)
+              </label>
+              <input
+                type="number"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
+                value={carMileage}
+                min="0"
+                onChange={(e) => setCarMileage(Number(e.target.value))}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Цена в сутки (BYN)
+              </label>
+              <input
+                type="number"
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 ${
+                  errors.price
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
+                value={carPrice}
+                min="1"
+                onChange={(e) => {
+                  setCarPrice(Number(e.target.value))
+                  setErrors({ ...errors, price: false })
+                }}
+              />
             </div>
           </div>
-        </div>
-        <div className="flex flex-row gap-6 justify-between flex-wrap">
-          <Link href={DASHBOARD_PAGES.BUSINESS_CARS}>
+
+          {/* Description Section */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Описание
+            </label>
+            <textarea
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 ${
+                errors.description
+                  ? 'border-red-300 bg-red-50'
+                  : 'border-gray-300 focus:ring-blue-500'
+              }`}
+              rows={4}
+              placeholder="Введите описание автомобиля"
+              value={carDescription}
+              onChange={(e) => {
+                setCarDescription(e.target.value)
+                setErrors({ ...errors, description: false })
+              }}
+            />
+          </div>
+
+          {/* Photos Section */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Фотографии
+              <span className="text-sm text-gray-500 ml-2">
+                (максимум 8 фото)
+              </span>
+            </label>
+            
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              accept="image/*"
+              multiple
+              onChange={handleAddPhoto}
+            />
+
+            {photos.length === 0 ? (
+              <div
+                className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer ${
+                  errors.photos
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-gray-300 hover:border-gray-400'
+                }`}
+                onClick={openFilePicker}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={handleDrop}
+              >
+                <div className="text-gray-500">
+                  Перетащите фото сюда или нажмите для выбора
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                {photos.map((photo, index) => (
+                  <div key={index} className="relative">
+                    <img
+                      src={URL.createObjectURL(photo)}
+                      alt={`Photo ${index + 1}`}
+                      className="w-full h-32 object-cover rounded-lg"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemovePhoto(index)}
+                      className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+                {photos.length < 8 && (
+                  <div
+                    className="border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center h-32 cursor-pointer hover:border-gray-400"
+                    onClick={openFilePicker}
+                  >
+                    <span className="text-gray-500">+</span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-4 pt-4">
+            <Link href={DASHBOARD_PAGES.BUSINESS_CARS} className="flex-1">
+              <button
+                type="button"
+                className="w-full py-2 px-4 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+              >
+                Отмена
+              </button>
+            </Link>
             <button
-              className={`${styles.whiteButton}`}
-              style={{ margin: "0 auto 0 auto" }}
-              onClick={handleCancelAddCar}
+              type="submit"
+              className="flex-1 py-2 px-4 bg-blue-600 text-white rounded-md disabled:opacity-50"
+              onClick={createCar}
+              disabled={isSubmitting}
             >
-              Отменить
+              {isSubmitting ? "Создание..." : "Создать"}
             </button>
-          </Link>
-          <button
-            className={`${styles.blueButton}`}
-            style={{ margin: "0 auto" }}
-            onClick={handleAddCar}
-          >
-            Создать
-          </button>
-        </div>
-      </form>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }

@@ -55,9 +55,9 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
     }
   }
 
-  const updateCarStatus = (carId: string, status: CarStatus) => {
+  const updateCarStatus = async (carId: string, status: CarStatus) => {
     try {
-      CarService.updateCar(carId, status)
+      await CarService.updateCar(carId, { status: status })
       setCarStatus(status)
       setIsDropdownMenuVisible(false)
     } catch (error) {
