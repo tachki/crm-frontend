@@ -1,5 +1,6 @@
 import { axiosWithAuth } from "@/api/interceptors";
-
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { VerificationEntry } from "@/types/verification.type";
 export const VerificationService = {
 
     async makeVerification(formData: FormData) {
@@ -21,4 +22,34 @@ export const VerificationService = {
         throw error;
       }
     },
-  }
+}
+
+export const useGetVerificationApplications = () => {
+    return useQuery<VerificationEntry[]>({
+      queryKey: ['verifications'],
+      queryFn: async () => {
+        const res = await axiosWithAuth.get('/v1/users/verifications');
+        return res.data.verification_applications;
+      },
+    });
+  };
+  
+  export const useApproveVerification = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: async ({ id, drive_exp }: { id: string; drive_exp: number }) => {
+        return axiosWithAuth.put(`/v1/users/verifications/approve/${id}?drive_exp=${drive_exp}`);
+      },
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: ['verifications'] }),
+    });
+  };
+  
+  export const useDeclineVerification = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: async (id: string) => {
+        return axiosWithAuth.put(`/v1/users/verifications/decline/${id}`);
+      },
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: ['verifications'] }),
+    });
+  };

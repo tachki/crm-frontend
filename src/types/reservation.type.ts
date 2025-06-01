@@ -16,3 +16,4 @@ export interface Reservation {
 export interface ReservationsResponseDto {
     reservations: Reservation[];
 }
+
