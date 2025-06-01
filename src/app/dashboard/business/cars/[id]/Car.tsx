@@ -105,11 +105,6 @@ export default function Car() {
             <Calendar carId={carId} />
             
             <div className="flex gap-3 mt-4">
-              <Link href={DASHBOARD_PAGES.BUSINESS_CARS} className="flex-1">
-                <button className="w-full border border-gray-400 text-gray-700 py-2 rounded-md">
-                  Назад
-                </button>
-              </Link>
               <Link href={`${DASHBOARD_PAGES.CAR_DETAILS.replace('[id]', carId)}/update`} className="flex-1">
                 <button className="w-full bg-yellow-500 text-white py-2 rounded-md">
                   Изменить
