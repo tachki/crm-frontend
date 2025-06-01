@@ -1,5 +1,5 @@
 import { axiosWithAuth } from "@/api/interceptors"
-import { CarDto, GetCarDto, GetCarsDto, IFilters } from "@/types/car.type"
+import { CarDto, GetCarDto, GetCarsDto, IFilters, UpdateCarDto } from "@/types/car.type"
 
 
 export const CarService = {
@@ -65,7 +65,7 @@ export const CarService = {
     }
   },
 
-  async updateCar(carId: string, data: any) {
+  async updateCar(carId: string, data: UpdateCarDto) {
     try {
       const response = await axiosWithAuth.patch(
         `/v1/cars/${carId}`,
