@@ -52,7 +52,7 @@ export default function Car() {
   return (
     <div>
       <h1 className="font-bold text-5xl text-center 2sm-max:text-4xl">{car?.brand}</h1>
-      <div className='flex text-2xl justify-center mt-6 2sm-max:text-base'>
+      <div className='flex text-2xl justify-center 2sm-max:text-base'>
         <h4>{car?.model}</h4>
         <div className='px-3 font-light'> | </div>
         <h4>{car?.class}</h4>

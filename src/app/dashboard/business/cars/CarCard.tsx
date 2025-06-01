@@ -66,46 +66,44 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
   }
 
   return (
-    <div className=" bg-white car-card flex gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] mt-5">
+    <div className=" bg-white car-card flex gap-4 shadow-xl rounded-lg overflow-hidden border border-gray-200 h-[420px] pr-5">
       <div className="flex justify-center items-center mt-5 mb-5 ml-5">
-        <Image
+        <img
           src={car.previewImage}
           alt={`${car.brand} ${car.model}`}
-          className="object-cover rounded-2xl"
-          width={150}
-          height={150}
+          className="object-cover rounded-2xl h-full"
+
         />
       </div>
-      <div className="w-1/2 p-2 flex mt-4 flex-col justify-between h-full">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-xl font-extrabold text-black">
-            {car.brand} {car.model} ({car.year})
-          </h2>
-          <div
-            className='relative'
-          >
+      <div className="w-1/2 p-2 flex mt-4 flex-col justify-between h-full relative">
+      <div className="absolute top-[5px] right-[5px] z-10">
+      <button
+      className="text-black font-medium  py-1 rounded inline-flex items-center bg-white  border-none outline-none focus:outline-none"
+      onClick={() => setIsDropdownMenuVisible(!isDropdownMenuVisible)}
+    >
+      {carStatus}
+      <span className={`ml-2 w-3 h-3 rounded-full ${statusStyles[carStatus]}`}></span>
+    </button>
+
+
+      {isDropdownMenuVisible && (
+        <div className="absolute w-60 right-0 mt-1 shadow-xl rounded-lg bg-white z-20">
+          {carStatusData.map((status) => (
             <button
-              className='text-black font-medium px-2 py-1 rounded inline-flex items-center'
-              onClick={() => setIsDropdownMenuVisible(!isDropdownMenuVisible)}
+              key={status}
+              className="block w-full text-left px-3 py-2 hover:bg-gray-100 text-black font-medium"
+              onClick={() => updateCarStatus(car.id, status as CarStatus)}
             >
-              {carStatus}
-              <span className={`ml-2 w-3 h-3 rounded-full ${statusStyles[carStatus]}`}></span>
+              {status}
             </button>
-            {isDropdownMenuVisible && (
-              <div className='absolute w-60 right-0 shadow-xl rounded-lg bg-white z-3'>
-                {carStatusData.map((status) => (
-                  <button
-                    key={status}
-                    className="block w-full text-left px-3 py-2 hover:bg-gray-100 text-black font-medium"
-                    onClick={() => updateCarStatus(car.id, status as CarStatus)}
-                  >
-                    {status}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          ))}
         </div>
+      )}
+        </div>
+
+        <h2 className="text-xl font-extrabold text-black mb-2">
+        {car.brand} {car.model} ({car.year})
+      </h2>
 
         <p className="text-black text-lg font-medium mb-2">
           {car.class} | {car.transmission}
@@ -158,8 +156,8 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
               src={calendarIcon.src}
               alt="Календарь"
               className="w-5 h-5"
-              width={150}
-              height={150}
+              width={120}
+              height={120}
             />
             Календарь
           </button>
@@ -171,8 +169,8 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
               src={deleteIcon.src}
               alt="Удалить"
               className="w-5 h-5"
-              width={150}
-              height={150}
+              width={120}
+              height={120}
             />
             Удалить
           </button>
@@ -181,11 +179,11 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
       {isCalendarVisible && (
         <div
-          className="absolute z-50 bg-white shadow-lg p-4 rounded-lg"
+          className="absolute z-50 bg-white shadow-lg p-2 rounded-lg"
           style={{
             top: `${calendarPosition.top - 450}px`,
-            left: `${calendarPosition.left - 200}px`,
-            width: "590px",
+            left: `${calendarPosition.left - 130}px`,
+            width: "400px",
           }}
         >
           <Calendar carId={car.id} />
