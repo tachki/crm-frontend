@@ -38,14 +38,12 @@ export default function BusinessesPage() {
 						</button>
 					</div>
 					<div className="flex flex-col 2sm:flex-row w-full gap-1 md:gap-6">
-						<Button
-							children="Принять"
-							className="w-full border-none bg-green-500 text-white hover:bg-green-600 py-3"
-						/>
-						<Button
-							children="Отклонить"
-							className="w-full border-none bg-errorRed text-white hover:bg-red-700 py-3"
-						/>
+						<Button className="w-full border-none bg-green-500 text-white hover:bg-green-600 py-3">
+							Принять
+						</Button>
+						<Button className="w-full border-none bg-errorRed text-white hover:bg-red-700 py-3">
+							Отклонить
+						</Button>
 					</div>
 				</div>
 			))}
