@@ -1,18 +1,18 @@
-export interface IBusinessResponse {
-	applications: IBusinessesResponse[]
+export interface IBusinessesResponse {
+	businesses: IBusiness[]
 }
 
-interface IBusinessesResponse {
-	address: string
-	checked: boolean
-	city: string
-	created_at: string
-	description: string
-	email: string
+interface IBusiness {
 	id: string
 	name: string
-	successful: boolean
+	address: string
+	city: string
+	description: string
+	email: string
 	telephone_number: string
-	updated_at: string
 	url: string
+    rating: number
+    tariff_id: number
+	created_at: string
+	updated_at: string
 }
