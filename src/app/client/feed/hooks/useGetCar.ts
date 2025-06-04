@@ -12,7 +12,7 @@ export const useFilteredCars = (filters: IFilters) => {
 
 export const useFilteredCarsByBusiness = (filters: IFilters, id: string) => {
   return useQuery({
-    queryKey: ["business cars", filters],
+    queryKey: ["cars", filters],
     queryFn: () => CarService.getBusinessCarsWithFilters(filters, id),
     staleTime: 5 * 60 * 1000,
   })
@@ -20,7 +20,7 @@ export const useFilteredCarsByBusiness = (filters: IFilters, id: string) => {
 
 export const useCar = (carId: string) => {
   return useQuery({
-    queryKey: ["car", carId],
+    queryKey: ["cars", carId],
     queryFn: () => CarService.getCar(carId),
     staleTime: 5 * 60 * 1000,
   })

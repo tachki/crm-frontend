@@ -16,7 +16,6 @@ export default function Header() {
 
 	useEffect(() => {
 		const userData = decodeTokens()
-		console.log("USER: ", userData)
 		setUser(userData)
 	}, [])
 
