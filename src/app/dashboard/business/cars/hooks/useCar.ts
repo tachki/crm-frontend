@@ -9,3 +9,4 @@ export function useCar(id: string) {
 
 	return { data, isLoading }
 }
+
